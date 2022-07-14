@@ -19,6 +19,8 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
     {
         _playerInput = gameObject.AddComponent<PlayerInput>();
         _playerInput.actions = InputActionAsset;
+        _playerInput.currentActionMap = _playerInput.actions.actionMaps[0];
+        _playerInput.currentActionMap.Enable();
     }
 
     public void OnLogTestMessage(InputValue inputValue)

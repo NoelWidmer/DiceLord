@@ -10,7 +10,16 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     protected override void OnAwake()
     {
-        Instantiate(ReferencesPrefab, transform);
-        Instantiate(PlayerControllerPrefab, transform);
+        // setup references
+        {
+            var references = Instantiate(ReferencesPrefab, transform);
+            references.name = nameof(References);
+        }
+
+        // setup player controller
+        {
+            var playerController = Instantiate(PlayerControllerPrefab, transform);
+            playerController.name = nameof(PlayerController);
+        }
     }
 }
