@@ -1,0 +1,34 @@
+{
+    "name": "InputActions",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "c6d5937b-71d1-468b-a923-b333c02e0fab",
+            "actions": [
+                {
+                    "name": "LogTestMessage",
+                    "type": "Button",
+                    "id": "f6e02a56-6dd9-450a-9e45-62ec3dda5300",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "98193c9e-8289-4b61-a8f6-65c5d05469fb",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LogTestMessage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
