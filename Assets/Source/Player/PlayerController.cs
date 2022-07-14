@@ -25,6 +25,6 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
 
     public void OnLogTestMessage(InputValue inputValue)
     {
-        Debug.Log("Input system works!");
+        Spinner.Instance.ToggleSpinDirection();
     }
 }
