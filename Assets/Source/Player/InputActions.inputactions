@@ -26,6 +26,17 @@
                     "action": "LogTestMessage",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a3a72f3-7ff7-407e-8d99-7f8ff3ba3bb1",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LogTestMessage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
