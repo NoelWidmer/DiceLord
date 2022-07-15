@@ -4,19 +4,19 @@ using UnityEngine;
 
 public interface IGrid
 {
-    void RegisterEntity(IGridObject entity);
-    IReadOnlyCollection<IGridObject> GetEntites(GridVector coordinates);
-    GridVector GetCoordiantes(IGridObject entity);
-    void UpdateEntityCoordinates(IGridObject entity, GridVector newCoordinates);
+    void RegisterEntity(IEntity entity);
+    IReadOnlyCollection<IEntity> GetEntites(GridVector coordinates);
+    GridVector GetCoordiantes(IEntity entity);
+    void UpdateEntityCoordinates(IEntity entity, GridVector newCoordinates);
 }
 
 public class Grid : Singleton<Grid, IGrid>, IGrid
 {
-    private readonly Dictionary<IGridObject, GridVector> _entities = new();
-    private readonly Dictionary<GridVector, HashSet<IGridObject>> _occupiedCoordinates = new();
-    private readonly Stack<HashSet<IGridObject>> _unusedEntityHashSets = new();
+    private readonly Dictionary<IEntity, GridVector> _entities = new();
+    private readonly Dictionary<GridVector, HashSet<IEntity>> _occupiedCoordinates = new();
+    private readonly Stack<HashSet<IEntity>> _unusedEntityHashSets = new();
 
-    public void RegisterEntity(IGridObject entity)
+    public void RegisterEntity(IEntity entity)
     {
         var coordinates = entity.GetCoordinatesFromPosition();
 
@@ -30,13 +30,13 @@ public class Grid : Singleton<Grid, IGrid>, IGrid
         }
     }
 
-    public IReadOnlyCollection<IGridObject> GetEntites(GridVector coordinates)
-        => _occupiedCoordinates.TryGetValue(coordinates, out var entities) ? entities : Array.Empty<IGridObject>();
+    public IReadOnlyCollection<IEntity> GetEntites(GridVector coordinates)
+        => _occupiedCoordinates.TryGetValue(coordinates, out var entities) ? entities : Array.Empty<IEntity>();
 
-    public GridVector GetCoordiantes(IGridObject entity)
+    public GridVector GetCoordiantes(IEntity entity)
         => _entities.TryGetValue(entity, out var coordiantes) ? coordiantes : throw new NotSupportedException("An entity must be registered before accessing it's coordinates.");
 
-    public void UpdateEntityCoordinates(IGridObject entity, GridVector newCoordinates)
+    public void UpdateEntityCoordinates(IEntity entity, GridVector newCoordinates)
     {
         if (RemoveEntityFromCell(entity))
         {
@@ -45,7 +45,7 @@ public class Grid : Singleton<Grid, IGrid>, IGrid
         }
     }
 
-    private void AddEntityToCell(IGridObject entity, GridVector coordinates)
+    private void AddEntityToCell(IEntity entity, GridVector coordinates)
     {
         if (_occupiedCoordinates.TryGetValue(coordinates, out var entities))
         {
@@ -63,11 +63,11 @@ public class Grid : Singleton<Grid, IGrid>, IGrid
         }
         else
         {
-            _occupiedCoordinates.Add(coordinates, new HashSet<IGridObject> { entity });
+            _occupiedCoordinates.Add(coordinates, new HashSet<IEntity> { entity });
         }
     }
 
-    private bool RemoveEntityFromCell(IGridObject entity)
+    private bool RemoveEntityFromCell(IEntity entity)
     {
         if (_entities.TryGetValue(entity, out var coordiantes))
         {

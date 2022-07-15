@@ -26,7 +26,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
         // register entities
         {
-            IGridObject[] entities = FindObjectsOfType<GridObject>();
+            IEntity[] entities = FindObjectsOfType<Entity>();
             foreach (var entity in entities)
             {
                 Grid.Instance.RegisterEntity(entity);
