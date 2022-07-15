@@ -16,10 +16,22 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             references.name = nameof(References);
         }
 
+        gameObject.AddComponent<Grid>();
+
         // setup player controller
         {
             var playerController = Instantiate(PlayerControllerPrefab, transform);
             playerController.name = nameof(PlayerController);
+        }
+
+        // register entities
+        {
+            IGridObject[] entities = FindObjectsOfType<GridObject>();
+            foreach (var entity in entities)
+            {
+                Grid.Instance.RegisterEntity(entity);
+                Debug.Log("registered an entity");
+            }
         }
     }
 }
