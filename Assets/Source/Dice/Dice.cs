@@ -4,36 +4,29 @@ using UnityEngine;
 
 public class Dice : MonoBehaviour
 {
-    enum PlayerActionsEnum
-    {
-        NOP,
-        Move,
-        Attack
-    }    
-    
     const int NUM_SIDES = 6;
-    private PlayerActionsEnum[] actions;
+    private GameMode.PlayerActionsEnum[] actions;
 
     // Start is called before the first frame update
     void Start()
     {
-        actions = new PlayerActionsEnum[NUM_SIDES];
+        actions = new GameMode.PlayerActionsEnum[NUM_SIDES];
     }
 
     public void rollDice()
     {
-        PlayerActionsEnum action = actions[Mathf.FloorToInt(Random.Range(0.0f, NUM_SIDES))];
+        GameMode.PlayerActionsEnum action = actions[Mathf.FloorToInt(Random.Range(0.0f, NUM_SIDES))];
 
         switch(action) {
-            case PlayerActionsEnum.NOP:
+            case GameMode.PlayerActionsEnum.NOP:
                 Debug.Log("NOP Action");
                 break;
             
-            case PlayerActionsEnum.Move:
+            case GameMode.PlayerActionsEnum.Move:
                 Debug.Log("Move Action");
                 break;
 
-            case PlayerActionsEnum.Attack:
+            case GameMode.PlayerActionsEnum.Attack:
                 Debug.Log("Attack Action");
                 break;
         }

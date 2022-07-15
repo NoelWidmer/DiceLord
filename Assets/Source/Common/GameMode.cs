@@ -8,6 +8,13 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     public GameObject ReferencesPrefab;
     public GameObject PlayerControllerPrefab;
 
+    public enum PlayerActionsEnum
+    {
+        NOP,
+        Move,
+        Attack
+    }   
+
     protected override void OnAwake()
     {
         // setup references
