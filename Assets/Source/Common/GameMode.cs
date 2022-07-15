@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public interface IGameMode
@@ -13,7 +14,9 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         NOP,
         Move,
         Attack
-    }   
+    }
+
+    private IPlayerCharacter _playerCharacter;
 
     protected override void OnAwake()
     {
@@ -40,5 +43,24 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 Debug.Log("registered an entity");
             }
         }
+
+        _playerCharacter = FindObjectOfType<PlayerCharacter>();
+        StartNextTurn();
+    }
+
+    private void StartNextTurn()
+    {
+        // roll
+        // choose
+        // player act
+        // enemy act
+
+        StartCoroutine(DelayNextTurn());
+    }
+
+    private IEnumerator DelayNextTurn()
+    {
+        yield return new WaitForSeconds(3f);
+        StartNextTurn();
     }
 }
