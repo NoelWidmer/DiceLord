@@ -6,7 +6,7 @@
             "id": "c6d5937b-71d1-468b-a923-b333c02e0fab",
             "actions": [
                 {
-                    "name": "LogTestMessage",
+                    "name": "Roll",
                     "type": "Button",
                     "id": "f6e02a56-6dd9-450a-9e45-62ec3dda5300",
                     "expectedControlType": "Button",
@@ -23,7 +23,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LogTestMessage",
+                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -34,7 +34,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LogTestMessage",
+                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

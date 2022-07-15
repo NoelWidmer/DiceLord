@@ -6,7 +6,7 @@ public interface IPlayerController
 
 public interface IUnityInputSystemMessages
 {
-    void OnLogTestMessage(InputValue inputValue);
+    void OnRoll(InputValue inputValue);
 }
 
 public class PlayerController : Singleton<PlayerController, IPlayerController>, IPlayerController, IUnityInputSystemMessages
@@ -23,8 +23,8 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
         _playerInput.currentActionMap.Enable();
     }
 
-    public void OnLogTestMessage(InputValue inputValue)
+    public void OnRoll(InputValue inputValue)
     {
-        Spinner.Instance.ToggleSpinDirection();
+        
     }
 }
