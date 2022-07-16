@@ -53,8 +53,9 @@ public abstract class Entity : MonoBehaviour, IEntity
     public Transform Sword;
     public int Health;
 
-    private State _state = State.Idle;
-    private GridVector _newCoordiantes;
+    private State _state;
+
+    private GridVector _movingToCoordiantes;
     private float _remainingMoveDistance;
 
     private void Awake()
@@ -64,60 +65,69 @@ public abstract class Entity : MonoBehaviour, IEntity
         BecomeIdle();
     }
 
-    public void ReceiveDamage(int damage)
-    {
-        if (damage < 1)
-        {
-            return;
-        }
-
-        var newHealth = Health - damage;
-
-        if (newHealth < 1)
-        {
-            Health = 0;
-
-            Debug.Log($"{name} took {damage} damage and died.");
-
-            var clip = References.Instance.DeathScreamSounds.GetRandomItem();
-            PlayParallelSound(clip);
-
-            OnDied();
-
-            Grid.Instance.RemoveEntity(this);
-
-            StartCoroutine(DelayDestroy());
-
-            IEnumerator DelayDestroy()
-            {
-                yield return new WaitForSeconds(clip.length);
-                Destroy(gameObject);
-            }
-        }
-        else
-        {
-            Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
-            PlayParallelSound(References.Instance.TakeDamageSounds.GetRandomItem());
-            Health = newHealth;
-        }
-    }
-
-    protected abstract void OnDied();
-
-    public void ReceiveHealth(int health)
-    {
-        if (health < 0)
-        {
-            return;
-        }
-
-        Health += health;
-        Debug.Log($"{name} received {health} health and has {Health} health now.");
-    }
-
     private void SnapPositionToGrid(GridVector coordiantes)
     {
         transform.position = coordiantes.GetFieldCenterPosition();
+    }
+
+    private void BecomeIdle()
+    {
+        _state = State.Idle;
+
+        if (Sword)
+        {
+            Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+
+    public float Move()
+    {
+        EnsureState(State.Idle);
+
+        var newCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
+
+        var occupants = Grid.Instance
+            .GetEntites(newCoordinates)
+            .ToArray(); // must copy or iterator will throw
+
+        if (occupants.Length > 0)
+        {
+            var maxDuration = 0f;
+
+            foreach (var occupant in occupants)
+            {
+                if (occupant.CanRepell)
+                {
+                    var duration = occupant.Repell(this);
+                    maxDuration = Mathf.Max(maxDuration, duration);
+                }
+                else if (occupant.CanBeEntered)
+                {
+                    occupant.OnEntered(this);
+                    return DoMove();
+                }
+                else
+                {
+                    Debug.Log("move is blocked");
+                }
+            }
+
+            return maxDuration;
+        }
+        else
+        {
+            return DoMove();
+        }
+
+        float DoMove()
+        {
+            PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
+            _state = State.Moving;
+            _movingToCoordiantes = newCoordinates;
+            _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
+            enabled = true;
+            return _moveDuration;
+        }
     }
 
     public float Melee()
@@ -192,73 +202,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
     }
 
-    private List<AudioSource> _audioSources = new();
-
-    private void PlayParallelSound(AudioClip clip)
-    {
-        var availableSrc = _audioSources.FirstOrDefault(src => src.isPlaying == false);
-
-        if (availableSrc == null)
-        {
-            availableSrc = gameObject.AddComponent<AudioSource>();
-            _audioSources.Add(availableSrc);
-        }
-
-        availableSrc.clip = clip;
-        availableSrc.Play();
-    }
-
     public abstract bool CanBeEntered { get; }
-
-    public float Move()
-    {
-        EnsureState(State.Idle);
-
-        var newCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
-
-        var occupants = Grid.Instance
-            .GetEntites(newCoordinates)
-            .ToArray(); // must copy or iterator will throw
-
-        if (occupants.Length > 0)
-        {
-            var maxDuration = 0f;
-
-            foreach (var occupant in occupants)
-            {
-                if (occupant.CanRepell)
-                {
-                    var duration = occupant.Repell(this);
-                    maxDuration = Mathf.Max(maxDuration, duration);
-                }
-                else if (occupant.CanBeEntered)
-                {
-                    occupant.OnEntered(this);
-                    return DoMove();
-                }
-                else
-                {
-                    Debug.Log("move is blocked");
-                }
-            }
-
-            return maxDuration;
-        }
-        else
-        {
-            return DoMove();
-        }
-
-        float DoMove()
-        {
-            PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
-            _state = State.Moving;
-            _newCoordiantes = newCoordinates;
-            _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
-            enabled = true;
-            return _moveDuration;
-        }
-    }
 
     public abstract void OnEntered(IEntity entity);
 
@@ -298,13 +242,13 @@ public abstract class Entity : MonoBehaviour, IEntity
                 _remainingMoveDistance -= distanceThisFrame;
             }
 
-            var direction = (_newCoordiantes.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).normalized;
+            var direction = (_movingToCoordiantes.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).normalized;
             transform.position += direction * distanceThisFrame;
 
             if (_state != State.Moving)
             {
-                Grid.Instance.UpdateEntityCoordinates(this, _newCoordiantes);
-                SnapPositionToGrid(_newCoordiantes);
+                Grid.Instance.UpdateEntityCoordinates(this, _movingToCoordiantes);
+                SnapPositionToGrid(_movingToCoordiantes);
             }
         }
         else
@@ -319,14 +263,53 @@ public abstract class Entity : MonoBehaviour, IEntity
         Sword.gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    private void BecomeIdle()
+    public void ReceiveDamage(int damage)
     {
-        _state = State.Idle;
-
-        if (Sword)
+        if (damage < 1)
         {
-            Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            return;
         }
+
+        var newHealth = Health - damage;
+
+        if (newHealth < 1)
+        {
+            Debug.Log($"{name} took {damage} damage and died.");
+
+            var clip = References.Instance.DeathScreamSounds.GetRandomItem();
+            PlayParallelSound(clip);
+
+            Health = 0;
+            OnDied();
+
+            Grid.Instance.RemoveEntity(this);
+            StartCoroutine(DelayDestroy());
+
+            IEnumerator DelayDestroy()
+            {
+                yield return new WaitForSeconds(clip.length);
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
+            PlayParallelSound(References.Instance.TakeDamageSounds.GetRandomItem());
+            Health = newHealth;
+        }
+    }
+
+    protected abstract void OnDied();
+
+    public void ReceiveHealth(int health)
+    {
+        if (health < 0)
+        {
+            return;
+        }
+
+        Health += health;
+        Debug.Log($"{name} received {health} health and has {Health} health now.");
     }
 
     private void EnsureState(State state)
@@ -341,6 +324,24 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         yield return new WaitForSeconds(duration);
         BecomeIdle();
+    }
+
+    private List<AudioSource> _audioSources = new();
+
+    private void PlayParallelSound(AudioClip clip)
+    {
+        var availableSrc = _audioSources.FirstOrDefault(src => src.isPlaying == false);
+
+        if (availableSrc == null)
+        {
+            availableSrc = gameObject.AddComponent<AudioSource>();
+            _audioSources.Add(availableSrc);
+
+            availableSrc.spatialBlend = 1f;
+        }
+
+        availableSrc.clip = clip;
+        availableSrc.Play();
     }
 
     private void OnValidate()
