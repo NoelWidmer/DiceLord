@@ -3,22 +3,51 @@ using UnityEngine;
 
 public struct GridVector : IEquatable<GridVector>
 {
-    private static readonly Vector2 Half = new(.5f, .5f);
+    private const int _fieldPixelWidth = 42;
+    private const int _fieldPixelHeight = 21;
+    private const int _pixelsPerUnit = 32;
+
+    private const float _fieldHeight = (float)_fieldPixelWidth / _pixelsPerUnit;
+    private const float _fieldWidth = (float)_fieldPixelHeight / _pixelsPerUnit;
 
     public readonly int X;
     public readonly int Y;
 
     public Vector3 FieldCenterPosition
-        => Vector2 + Half;
-
-    public Vector2 Vector2
-        => new(X, Y);
+        => new Vector2(X * _fieldWidth *.5f, Y * _fieldHeight);
 
     public static GridVector From(Vector2 point)
     {
-        var x = Mathf.FloorToInt(point.x);
-        var y = Mathf.FloorToInt(point.y);
-        return new GridVector(x, y);
+        var x = Mathf.FloorToInt(point.x / _fieldWidth * .5f);
+
+        float adjustedPoint;
+        if (x % 2 == 1)
+        {
+            adjustedPoint = point.y - _fieldHeight * .5f;
+        }
+        else
+        {
+            adjustedPoint = point.y;
+        }
+
+        var y = Mathf.FloorToInt(adjustedPoint / _fieldHeight * .5f);
+
+        var closestMatch = new GridVector(x, y);
+        var distance = Vector2.Distance(closestMatch.FieldCenterPosition, point);
+
+        foreach (GridDirection direction in Enum.GetValues(typeof(GridDirection)))
+        {
+            var potentialMatch = closestMatch.GetAdjacent(direction);
+            var distance2 = Vector2.Distance(potentialMatch.FieldCenterPosition, point);
+
+            if (distance2 < distance)
+            {
+                closestMatch = potentialMatch;
+                distance = distance2;
+            }
+        }
+
+        return closestMatch;
     }
 
     public GridVector(int x, int y)

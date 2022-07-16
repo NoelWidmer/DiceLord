@@ -102,7 +102,9 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     private void SnapPositionToGrid()
     {
-        transform.position = GetCoordinatesFromPosition().FieldCenterPosition;
+        var coordinates = GetCoordinatesFromPosition();
+        transform.position = coordinates.FieldCenterPosition;
+        Debug.Log($"Snap: {coordinates} to {transform.position}");
     }
 
     public float Attack()
@@ -263,7 +265,8 @@ public abstract class Entity : MonoBehaviour, IEntity
                 _remainingMoveDistance -= distanceThisFrame;
             }
 
-            transform.position += Vector3.up * distanceThisFrame;
+            var direction = (Vector3.up + Vector3.right).normalized;
+            transform.position += direction * distanceThisFrame;
 
             if (_state != State.Moving)
             {
