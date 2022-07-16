@@ -1,7 +1,9 @@
 using UnityEngine;
 
 public interface IDice
-{ }
+{
+    public GameMode.PlayerAction[] RollDice(int n);
+}
 
 public class Dice : Singleton<Dice, IDice>, IDice
 {
