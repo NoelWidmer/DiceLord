@@ -6,7 +6,8 @@ using UnityEngine;
 
 public interface IEntity
 {
-    GridVector GetInitialCoordinates();
+    GridVector GetStartCoordinates();
+    GridVector Coordinates { get; }
 
     bool CanBeEntered { get; }
     void OnEntered(IEntity entity);
@@ -42,7 +43,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     public int X;
     public int Y;
 
-    public GridVector GetInitialCoordinates() => new(X, Y);
+    public GridVector GetStartCoordinates() => new(X, Y);
 
     public GridVector Coordinates => Grid.Instance.GetCoordiantes(this);
 
@@ -56,7 +57,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     private void Awake()
     {
         enabled = false;
-        SnapPositionToGrid();
+        SnapPositionToGrid(GetStartCoordinates());
         HideSword();
     }
 
@@ -111,10 +112,10 @@ public abstract class Entity : MonoBehaviour, IEntity
         Debug.Log($"{name} received {health} health and has {Health} health now.");
     }
 
-    private void SnapPositionToGrid()
+    private void SnapPositionToGrid(GridVector coordiantes)
     {
-        transform.position = Coordinates.GetFieldCenterPosition();
-        Debug.Log($"Snap: {name}'s {Coordinates} to {transform.position}");
+        transform.position = coordiantes.GetFieldCenterPosition();
+        Debug.Log($"Snap: {name}'s {coordiantes} to {transform.position}");
     }
 
     public float Attack()
@@ -231,8 +232,8 @@ public abstract class Entity : MonoBehaviour, IEntity
         {
             PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
             _state = State.Moving;
-            _newCoordiantes = Coordinates.GetAdjacent(GridDirection.NorthEast);
-            _remainingMoveDistance = 1f;
+            _newCoordiantes = newCoordinates;
+            _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
             enabled = true;
             return _moveDuration;
         }
@@ -250,7 +251,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         entity.ReceiveDamage(1);
 
         PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
-        ShowSword(Coordinates);
+        ShowSword(entity.Coordinates);
 
         StartCoroutine(DelayEndOffense(_repellDuration));
 
@@ -276,13 +277,13 @@ public abstract class Entity : MonoBehaviour, IEntity
                 _remainingMoveDistance -= distanceThisFrame;
             }
 
-            var direction = (Vector3.up + Vector3.right).normalized;
+            var direction = (_newCoordiantes.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).normalized;
             transform.position += direction * distanceThisFrame;
 
             if (_state != State.Moving)
             {
-                SnapPositionToGrid();
                 Grid.Instance.UpdateEntityCoordinates(this, _newCoordiantes);
+                SnapPositionToGrid(_newCoordiantes);
             }
         }
         else
@@ -322,6 +323,6 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     private void OnValidate()
     {
-        transform.position = GetInitialCoordinates().GetFieldCenterPosition();
+        transform.position = GetStartCoordinates().GetFieldCenterPosition();
     }
 }

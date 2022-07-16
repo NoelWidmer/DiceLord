@@ -28,10 +28,10 @@ public struct GridVector : IEquatable<GridVector>
 
     public GridVector GetAdjacent(GridDirection dir) => dir switch
     {
-        GridDirection.NorthEast => new GridVector(X, Y + 1),
-        GridDirection.SouthWest => new GridVector(X + 1, Y),
-        GridDirection.SouthEast => new GridVector(X, Y - 1),
-        GridDirection.NorthWest => new GridVector(X - 1, Y),
+        GridDirection.NorthEast => new GridVector(X + 1, Y),
+        GridDirection.SouthWest => new GridVector(X, Y - 1),
+        GridDirection.SouthEast => new GridVector(X - 1, Y),
+        GridDirection.NorthWest => new GridVector(X, Y + 1),
         _ => throw new NotImplementedException(),
     };
 
