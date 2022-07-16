@@ -8,6 +8,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 {
     public GameObject ReferencesPrefab;
     public GameObject PlayerControllerPrefab;
+    public GameObject DicePrefab;
 
     public enum PlayerAction
     {
@@ -17,7 +18,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     }
 
     private IPlayerCharacter _playerCharacter;
-    private Dice dice;
+    private Dice _dice;
 
     protected override void OnAwake()
     {
@@ -35,6 +36,12 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             playerController.name = nameof(PlayerController);
         }
 
+        // setup dice
+        {
+            var diceObject = Instantiate(DicePrefab, transform);
+            diceObject.name = nameof(Dice);
+        }
+
         // register entities
         {
             IEntity[] entities = FindObjectsOfType<Entity>();
@@ -46,6 +53,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         }
 
         _playerCharacter = FindObjectOfType<PlayerCharacter>();
+        _dice = FindObjectOfType<Dice>();
         StartNextTurn();
     }
 
@@ -72,7 +80,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     private void StartNextTurn()
     {
         // roll
-        PlayerAction[] actions = dice.RollDice();
+        PlayerAction[] actions = _dice.RollDice();
         // choose
         ProcessAction(actions[0]);
         // player act
