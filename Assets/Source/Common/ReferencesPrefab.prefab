@@ -45,11 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _swordAttackSounds:
-  - {fileID: 8300000, guid: 83119342a92016343975ffbfa8e6db02, type: 3}
-  - {fileID: 8300000, guid: fb42c8e90073c9e439a3609c04552e34, type: 3}
+  - {fileID: 8300000, guid: 8c5172e9f7edb0743ae620281aa8e4f0, type: 3}
+  - {fileID: 8300000, guid: 1c7119bb76da3bf419b3f4e544de534d, type: 3}
   _rangedSounds:
-  - {fileID: 8300000, guid: 5b5ea1cd34914b9438c81177f1b3ca4d, type: 3}
-  - {fileID: 8300000, guid: c01f522c9ce3c3e48af59ba0c86c1c44, type: 3}
+  - {fileID: 8300000, guid: 192d1e4e544eb6647bb845faa8609939, type: 3}
+  - {fileID: 8300000, guid: 5adbe9e79a7f9254d9ee981b8713d138, type: 3}
   _playerMoveSounds:
   - {fileID: 8300000, guid: 3ae286ac191759149b1a4aec93b8f47c, type: 3}
   - {fileID: 8300000, guid: b4fc6aad6fe17254eba30cfbb12904db, type: 3}
@@ -65,5 +65,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 20b92550de85a10448437bb2afe2f317, type: 3}
   - {fileID: 8300000, guid: 5eb658ae589b7044b9c636d72cf7a8dd, type: 3}
   - {fileID: 8300000, guid: 87b7ce84479799745b3ce294737d86f6, type: 3}
-  _directionalArrowHover: {fileID: 8300000, guid: 792911aa082039e4690cd16277a917b3, type: 3}
+  _directionalArrowHover: {fileID: 8300000, guid: 7cdd94b3a231f7c4296aa5da0cb34bd4, type: 3}
   _directionalArrowClick: {fileID: 8300000, guid: ef355b64d0e1ad34493611c2945d1380, type: 3}
