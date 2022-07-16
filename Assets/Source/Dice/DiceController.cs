@@ -36,7 +36,7 @@ public class DiceController : Singleton<DiceController, IDiceController>, IDiceC
         SlotsArea = transform.Find("SlotsArea").gameObject;
         for(int i = 0; i < 3; i++) //TODO!!!!!!!!!
         {
-            GameObject Slot = null;
+            //GameObject Slot = null;
         }
         
     }
