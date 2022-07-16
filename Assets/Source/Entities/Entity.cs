@@ -35,10 +35,13 @@ public abstract class Entity : MonoBehaviour, IEntity
         Ranged
     }
 
-    private readonly float _attackDuration = .5f;
-    private readonly float _rangedDuration = .75f;
+    private readonly float _meleeDuration = .5f;
     private readonly float _repellDuration = .5f;
     private readonly float _moveDuration = .75f;
+
+    private readonly float _rangedChargeDuration = .75f;
+    private readonly float _rangedPrepellDuration = .25f;
+    private readonly int _rangeDistance = 3;
 
     public int X;
     public int Y;
@@ -58,7 +61,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         enabled = false;
         SnapPositionToGrid(GetStartCoordinates());
-        HideSword();
+        BecomeIdle();
     }
 
     public void ReceiveDamage(int damage)
@@ -137,9 +140,9 @@ public abstract class Entity : MonoBehaviour, IEntity
         PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
         ShowSword(attackCoordinates);
 
-        StartCoroutine(DelayEndOffense(_attackDuration));
+        StartCoroutine(DelayEndOffense(_meleeDuration));
 
-        return _attackDuration;
+        return _meleeDuration;
     }
 
     public float Ranged()
@@ -148,26 +151,45 @@ public abstract class Entity : MonoBehaviour, IEntity
 
         _state = State.Ranged;
 
-        var attackCoordinates = Coordinates
-            .GetAdjacent(GridDirection.NorthEast)
-            .GetAdjacent(GridDirection.NorthEast)
-            .GetAdjacent(GridDirection.NorthEast);
-
-        var targets = Grid.Instance
-            .GetEntites(attackCoordinates)
-            .ToArray(); // must copy or iterator will throw
-
-        foreach (var target in targets)
-        {
-            target.ReceiveDamage(1);
-        }
+        var direction = GridDirection.NorthEast;
+        StartCoroutine(DelayEjectProjectile());
 
         PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
-        ShowSword(attackCoordinates);
 
-        StartCoroutine(DelayEndOffense(_rangedDuration));
+        return _rangedChargeDuration + _rangedPrepellDuration * _rangeDistance + 1;
 
-        return _rangedDuration;
+        IEnumerator DelayEjectProjectile()
+        {
+            yield return new WaitForSeconds(_rangedChargeDuration);
+            StartCoroutine(PrepellProjectileTo(Coordinates, _rangeDistance - 1));
+        }
+
+        IEnumerator PrepellProjectileTo(GridVector fromCoordinates, int remainingDistance)
+        {
+            yield return new WaitForSeconds(_rangedPrepellDuration);
+
+            var targetCoordinates = fromCoordinates.GetAdjacent(direction);
+
+            ShowSword(targetCoordinates);
+
+            var targets = Grid.Instance
+                .GetEntites(targetCoordinates)
+                .ToArray();
+
+            foreach (var target in targets)
+            {
+                target.ReceiveDamage(1);
+            }
+
+            if (remainingDistance > 0)
+            {
+                StartCoroutine(PrepellProjectileTo(targetCoordinates, remainingDistance - 1));
+            }
+            else
+            {
+                StartCoroutine(DelayEndOffense(_rangedPrepellDuration));
+            }
+        }
     }
 
     private List<AudioSource> _audioSources = new();
@@ -297,8 +319,10 @@ public abstract class Entity : MonoBehaviour, IEntity
         Sword.gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    private void HideSword()
+    private void BecomeIdle()
     {
+        _state = State.Idle;
+
         if (Sword)
         {
             Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
@@ -316,8 +340,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     private IEnumerator DelayEndOffense(float duration)
     {
         yield return new WaitForSeconds(duration);
-        _state = State.Idle;
-        HideSword();
+        BecomeIdle();
     }
 
     private void OnValidate()
