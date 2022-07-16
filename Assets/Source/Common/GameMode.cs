@@ -17,6 +17,15 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public int number_of_dice;
 
+    public GameObject SlotPrefab;
+
+    private GameObject _canvas;
+    private GameObject _tray;
+    private GameObject _slotsArea;
+
+    private IPlayerCharacter _playerCharacter;
+    private DiceController _dice;
+
     public enum PlayerAction
     {
         NOP,
@@ -27,9 +36,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         Dodge,
         Push
     }
-
-    private IPlayerCharacter _playerCharacter;
-    private DiceController _dice;
 
     protected override void OnAwake()
     {
@@ -65,7 +71,30 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             }
         }
 
+        // UI
+        InitCanvas();
+
         StartNextTurn();
+    }
+
+    private void InitCanvas()
+    {
+        // init canvas
+        _canvas = transform.Find("Canvas").gameObject;
+
+
+        // init tray
+        _tray = _canvas.transform.Find("Tray").gameObject;
+
+        // init slots
+        _slotsArea = _canvas.transform.Find("SlotsArea").gameObject;
+        for (int i = 0; i < number_of_dice; i++)
+        {
+            var slot = Instantiate(SlotPrefab, transform);
+            slot.name = "Slot " + i;
+            slot.transform.parent = _slotsArea.transform;
+            slot.transform.Translate(new(i * 1f, 0f));
+        }
     }
 
     private void Start()
