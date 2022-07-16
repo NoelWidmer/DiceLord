@@ -8,10 +8,13 @@ public interface IEntity
     GridVector GetCoordinatesFromPosition();
 
     bool CanBeEntered { get; }
+    void OnEntered(IEntity entity);
+
     float Move();
 
     float Attack();
     void ReceiveDamage(int damage);
+    void ReceiveHealth(int health);
 
     bool CanRepell { get; }
     float Repell(IEntity entity);
@@ -61,8 +64,13 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
     }
 
-    protected virtual void OnDied()
-    { }
+    protected abstract void OnDied();
+
+    public void ReceiveHealth(int health)
+    {
+        Health += health;
+        Debug.Log($"{name} received {health} health and has {Health} health now.");
+    }
 
     private void Awake()
     {
@@ -121,6 +129,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                 }
                 else if (occupant.CanBeEntered)
                 {
+                    occupant.OnEntered(this);
                     return DoMove();
                 }
                 else
@@ -144,6 +153,8 @@ public abstract class Entity : MonoBehaviour, IEntity
             return _moveDuration;
         }
     }
+
+    public abstract void OnEntered(IEntity entity);
 
     public abstract bool CanRepell { get; }
 
