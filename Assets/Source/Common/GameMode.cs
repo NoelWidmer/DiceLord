@@ -153,7 +153,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         // roll
         List<PlayerAction> rolls = _diceController.RollDice(number_of_dice);
         _canvasController.PopulateTray(rolls);
-
+        rolls = (List<PlayerAction>)rolls.Shuffled();
         // choose
         List<PlayerAction> actions = new();
         actions.AddRange(rolls); //TODO

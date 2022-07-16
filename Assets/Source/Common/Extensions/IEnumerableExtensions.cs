@@ -22,9 +22,9 @@ public static class IEnumerableExtensions
         return collection[index];
     }
 
-    public static IReadOnlyList<T> Shuffle<T>(this IReadOnlyList<T> collection)
+    public static IReadOnlyList<T> Shuffled<T>(this IReadOnlyList<T> collection)
     {
         IEnumerable<T> shuffled = collection.OrderBy(item => UnityEngine.Random.value);
-        return (IReadOnlyList<T>)shuffled;
+        return (IReadOnlyList<T>) shuffled;
     }
 }
