@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 10ead0cd11b89d34e9bb3bc2be6920f3
+guid: f1764295e8650f947ac168d69b74cd05
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -104,181 +104,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CHSpriteSheet_0
+      name: Dice_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b23244e75e140934daede6c4f503c69b
-      internalID: 1385435260
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CHSpriteSheet_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f5328a42035cc9e4ca25c5f6c97955b1
-      internalID: 798867251
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CHSpriteSheet_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e95f0a5062d423f4abf25dfbc90bf59b
-      internalID: -157082674
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CHSpriteSheet_3
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 128
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 16b5644ab4537b1449bbea90d3ecc67b
-      internalID: 1767015439
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CHSpriteSheet_4
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 128
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dfa09eaddaa814f4d8e6cba01aec52bd
-      internalID: 585704436
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CHSpriteSheet_5
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b9be0a55dd9be0f4999f38ebc7c39129
-      internalID: 1023805147
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CHSpriteSheet_6
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 31
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5de359697cc81fb4189e5025769ae44f
-      internalID: 770818164
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CHSpriteSheet_7
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 69aa7d0f4435a424880150f774f1ba59
-      internalID: -43542891
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CHSpriteSheet_8
-      rect:
-        serializedVersion: 2
-        x: 0
+        x: 50
         y: 0
         width: 32
-        height: 32
+        height: 81
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -286,20 +118,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0ea4da8eceaa4554a8de53535ec238fb
-      internalID: -1939525253
+      spriteID: b4244799f9d979b4bb76156d01bd338d
+      internalID: -1445489729
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CHSpriteSheet_9
+      name: Dice_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 86
         y: 0
         width: 32
-        height: 32
+        height: 81
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -307,20 +139,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b52860553f64b9143a579711e386bc37
-      internalID: 576822893
+      spriteID: b52904ee37531de4cadd92100c307900
+      internalID: 1506798928
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: CHSpriteSheet_10
+      name: Dice_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 126
         y: 0
         width: 32
-        height: 32
+        height: 81
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -328,8 +160,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc13b109944e3304998a516e461b889f
-      internalID: -1006236287
+      spriteID: 587be43d576530147abb98121a92b757
+      internalID: -227941114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dice_3
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 0
+        width: 32
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5c6a28de54f7ca4982e8be264bc8511
+      internalID: 1718375884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dice_4
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 0
+        width: 32
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a401b23a13b96754285b3041e2179fe5
+      internalID: 2066569983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dice_5
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 0
+        width: 32
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 504dbdc5e1cde0947b1dc55f1d80930f
+      internalID: -620632891
       vertices: []
       indices: 
       edges: []
@@ -345,17 +240,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      CHSpriteSheet_6: 770818164
-      CHSpriteSheet_0: 1385435260
-      CHSpriteSheet_9: 576822893
-      CHSpriteSheet_5: 1023805147
-      CHSpriteSheet_8: -1939525253
-      CHSpriteSheet_1: 798867251
-      CHSpriteSheet_7: -43542891
-      CHSpriteSheet_3: 1767015439
-      CHSpriteSheet_2: -157082674
-      CHSpriteSheet_10: -1006236287
-      CHSpriteSheet_4: 585704436
+      Dice_1: 1506798928
+      Dice_3: 1718375884
+      Dice_2: -227941114
+      Dice_0: -1445489729
+      Dice_4: 2066569983
+      Dice_5: -620632891
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
