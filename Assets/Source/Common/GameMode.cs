@@ -93,4 +93,9 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         yield return new WaitForSeconds(3f);
         StartNextTurn();
     }
+
+    public void OnPlayerCharacterDied()
+    {
+        Debug.Log("Game Over!");
+    }
 }
