@@ -16,7 +16,6 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     private GameObject _slotsArea;
     private List<GameObject> _slots;
 
-    // Start is called before the first frame update
     protected override void OnAwake()
     {
         // init canvas
@@ -28,6 +27,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
         // init slots
         _slotsArea = _canvas.transform.Find("SlotsArea").gameObject;
+        _slots = new();
         float areaWidth = _slotsArea.GetComponent<RectTransform>().rect.width;
         for (int i = 0; i < transform.GetComponentInParent<GameMode>().number_of_dice; i++) //TODO
         {
@@ -47,6 +47,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         {
             var actionIcon = Instantiate(ActionIconPrefab, transform);
             actionIcon.name = roll.ToString();
+            actionIcon.GetComponent<ActionIcon>().action = roll;
             actionIcon.transform.SetParent(_tray.transform);
             actionIcon.GetComponent<RectTransform>().localPosition = new(0f, 0f);
         }
@@ -65,6 +66,33 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         actionIcon.transform.SetParent(slot.transform);
         actionIcon.GetComponent<RectTransform>().localPosition = new(0f, 0f);
     }
+
+    public List<GameMode.PlayerAction> GetSelectedActions()
+    {
+        List<GameMode.PlayerAction> actions = new();
+
+        foreach(var slot in _slots)
+        {
+            if(slot.transform.childCount > 0)
+            {
+                actions.Add(slot.transform.GetChild(0).GetComponent<ActionIcon>().action);
+            }
+        }
+
+        return actions;
+    }
+
+    public void ClearSlots()
+    {
+        foreach(var slot in _slots)
+        {
+            List<GameObject> children = new();
+            foreach (Transform child in slot.transform) children.Add(child.gameObject);
+            children.ForEach(child => Destroy(child));
+        }
+    }
+
+    public GameObject GetTray() => _tray;
 
     // Update is called once per frame
     void Update()
