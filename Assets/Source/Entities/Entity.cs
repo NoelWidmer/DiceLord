@@ -311,7 +311,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             _animHandler.PlayOrStopDeath(true);
             Debug.Log($"{name} took {damage} damage and died.");
 
-            var clip = References.Instance.DeathScreamSounds.GetRandomItem();
+            var clip = DeathSounds.GetRandomItem();
             PlayParallelSound(clip);
 
             Health = 0;
@@ -330,10 +330,13 @@ public abstract class Entity : MonoBehaviour, IEntity
         {
             _animHandler.TakeDamage();
             Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
-            PlayParallelSound(References.Instance.TakeDamageSounds.GetRandomItem());
+            PlayParallelSound(TakeDamageSounds.GetRandomItem());
             Health = newHealth;
         }
     }
+
+    protected abstract AudioClip[] TakeDamageSounds { get; }
+    protected abstract AudioClip[] DeathSounds { get; }
 
     protected abstract void OnDied();
 

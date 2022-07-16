@@ -59,11 +59,37 @@ MonoBehaviour:
   - {fileID: 8300000, guid: dea285e84ad358a47abcb2f826a9e268, type: 3}
   - {fileID: 8300000, guid: f0ac9ee048d8a5143b5a9b278b210c4a, type: 3}
   _deathScreamSounds:
-  - {fileID: 8300000, guid: 977a678c3b63bf147ba042dce544a326, type: 3}
-  - {fileID: 8300000, guid: a3c22facb36c7804692462323eede6d7, type: 3}
-  - {fileID: 8300000, guid: fbbb855b01953114dbf0a14b0e0ac75b, type: 3}
   - {fileID: 8300000, guid: 20b92550de85a10448437bb2afe2f317, type: 3}
   - {fileID: 8300000, guid: 5eb658ae589b7044b9c636d72cf7a8dd, type: 3}
   - {fileID: 8300000, guid: 87b7ce84479799745b3ce294737d86f6, type: 3}
+  _cubeManTakeDamageSounds:
+  - {fileID: 8300000, guid: c410bb2c46d7d7c4ba03689dbd976cfb, type: 3}
+  - {fileID: 8300000, guid: c5cd891957439914b80095bc917e0aa6, type: 3}
+  - {fileID: 8300000, guid: 81e14ec18109f6441b11be78026d8a2f, type: 3}
+  _cubeManScreamSounds:
+  - {fileID: 8300000, guid: 00c6574fe69ada04ab6c3af966db4cd6, type: 3}
+  - {fileID: 8300000, guid: b561afe024d29c34da24933da6527e98, type: 3}
+  - {fileID: 8300000, guid: 91ed7ba314122be4588f99b9197d4f5a, type: 3}
+  _eyeTakeDamageSounds:
+  - {fileID: 8300000, guid: 4f196c27329e09a41afcfce814db90c6, type: 3}
+  - {fileID: 8300000, guid: c23bb5cb56741c14c9138a61b0a5deba, type: 3}
+  - {fileID: 8300000, guid: 5163b46bbfe8d704c8df4793dc5adc1a, type: 3}
+  _eyeScreamSounds:
+  - {fileID: 8300000, guid: 4f67fb092281a3e4d879743241ab1b70, type: 3}
+  - {fileID: 8300000, guid: 2a86930f4ebc0d945818b1f9e01c37da, type: 3}
+  _slimeDamageSounds:
+  - {fileID: 8300000, guid: 2ac71cf713679694e9ebe40dc75811d0, type: 3}
+  - {fileID: 8300000, guid: 5e29bd856bb15d346b8431222e9b6fd8, type: 3}
+  - {fileID: 8300000, guid: 196fe867116f73b4eb3761a8dc693794, type: 3}
+  _slimeScreamSounds:
+  - {fileID: 8300000, guid: bb4c384bdb611bc44aa00fe5142be3d5, type: 3}
+  - {fileID: 8300000, guid: 8bc64ab9b3429b24e9c4da7226af0e3b, type: 3}
+  _slimeSmallDamageSounds:
+  - {fileID: 8300000, guid: 34a05171003107a4e91001ccfc3a7ad3, type: 3}
+  - {fileID: 8300000, guid: 03543793c1d5dc943b26635ad37dcdb8, type: 3}
+  - {fileID: 8300000, guid: 100dbd1a1f1e6414d93bc6c7e996f52b, type: 3}
+  _slimeSmallScreamSounds:
+  - {fileID: 8300000, guid: 49ff581374593f949b96d1adcc4a2d49, type: 3}
+  - {fileID: 8300000, guid: 1e8396e37df34284581c45b061774bcb, type: 3}
   _directionalArrowHover: {fileID: 8300000, guid: 7cdd94b3a231f7c4296aa5da0cb34bd4, type: 3}
   _directionalArrowClick: {fileID: 8300000, guid: ef355b64d0e1ad34493611c2945d1380, type: 3}

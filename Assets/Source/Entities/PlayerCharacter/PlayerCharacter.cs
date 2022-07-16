@@ -14,6 +14,9 @@ public class PlayerCharacter : Entity, IPlayerCharacter
     public override bool CanBeEntered => false;
     public override bool CanRepell => true;
 
+    protected override AudioClip[] TakeDamageSounds => References.Instance.TakeDamageSounds;
+    protected override AudioClip[] DeathSounds => References.Instance.DeathScreamSounds;
+
     private List<Transform> _directionalArrows = new();
 
     protected override void Awake()
