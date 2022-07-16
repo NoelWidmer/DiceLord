@@ -1,43 +1,65 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public interface IEntity
 {
     GridVector GetCoordinatesFromPosition();
     float Move();
-    void Attack();
+    float Attack();
 }
 
 public class Entity : MonoBehaviour, IEntity
 {
+    private enum State
+    { 
+        Idle, 
+        Moving, 
+        Attacking
+    }
+
+    private readonly float _attackDuration = .5f;
+    private readonly float _moveDuration = .75f;
+
     public GridVector GetCoordinatesFromPosition() => GridVector.From(transform.position);
 
+    public Transform _sword;
+
+    private State _state = State.Idle;
+
+    private float _remainingMoveDistance;
+
     private void Awake()
+    {
+        enabled = false;
+        SnapPositionToGrid();
+        _sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    private void SnapPositionToGrid()
     {
         transform.position = GetCoordinatesFromPosition().FieldCenterPosition;
     }
 
-    public void Attack()
+    public float Attack()
     {
-        Debug.Log("Attack (from player character)");
+        _state = State.Attacking;
+        _sword.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        StartCoroutine(DelayEndAttack());
+        return _attackDuration;
     }
-
-    private bool _isMoving;
-    private float _remainingMoveDistance;
 
     public float Move()
     {
-        Debug.Log("Move (from player character)");
-        _isMoving = true;
+        _state = State.Moving;
         _remainingMoveDistance = 1f;
         enabled = true;
         return _moveDuration;
     }
 
-    private float _moveDuration = 2f;
-
     private void Update()
     {
-        if (_isMoving)
+        if (_state == State.Moving)
         {
             var distancePerSecond = 1f / _moveDuration;
             var distanceThisFrame = distancePerSecond * Time.deltaTime;
@@ -46,7 +68,7 @@ public class Entity : MonoBehaviour, IEntity
             {
                 distanceThisFrame = _remainingMoveDistance;
                 _remainingMoveDistance = 0f;
-                _isMoving = false;
+                _state = State.Idle;
                 enabled = false;
             }
             else
@@ -56,10 +78,22 @@ public class Entity : MonoBehaviour, IEntity
 
             transform.position += Vector3.up * distanceThisFrame;
 
-            if (_isMoving == false)
+            if (_state != State.Moving)
             {
+                SnapPositionToGrid();
                 Grid.Instance.UpdateEntityCoordinates(this, GetCoordinatesFromPosition());
             }
         }
+        else
+        {
+            throw new InvalidOperationException("Entity should not be updated when not moving.");
+        }
+    }
+
+    private IEnumerator DelayEndAttack()
+    {
+        yield return new WaitForSeconds(_attackDuration);
+        _state = State.Idle;
+        _sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 }
