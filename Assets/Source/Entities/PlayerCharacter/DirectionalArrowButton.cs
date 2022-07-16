@@ -4,6 +4,7 @@ public interface IDirectionalArrowButton
 {
     GridDirection Direction { get; }
     void OnCursorEnter();
+    void OnCursorExit();
     void OnClick();
 }
 
@@ -13,7 +14,12 @@ public class DirectionalArrowButton : MonoBehaviour, IDirectionalArrowButton
     private GridDirection _direction;
     public GridDirection Direction => _direction;
 
+    [SerializeField]
+    private Sprite _light;
+    private Sprite _regular;
+
     private AudioSource _src;
+    private SpriteRenderer _renderer;
 
     private void Start()
     {
@@ -25,16 +31,32 @@ public class DirectionalArrowButton : MonoBehaviour, IDirectionalArrowButton
             collider.isTrigger = true;
         }
 
-        // add audio source
+        _src = gameObject.AddComponent<AudioSource>();
+        
+        // sprites
         {
-            _src = gameObject.AddComponent<AudioSource>();
+            _renderer = GetComponent<SpriteRenderer>();
+            _regular = _renderer.sprite;
         }
     }
 
     public void OnCursorEnter()
     {
-        _src.clip = References.Instance.DirectionalArrowHover;
-        _src.Play();
+        // play sound
+        {
+            _src.clip = References.Instance.DirectionalArrowHover;
+            _src.Play();
+        }
+
+        // switch sprites
+        {
+            _renderer.sprite = _light;
+        }
+    }
+
+    public void OnCursorExit()
+    {
+        _renderer.sprite = _regular;
     }
 
     public void OnClick()

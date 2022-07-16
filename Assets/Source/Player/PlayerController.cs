@@ -79,7 +79,11 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
             }
         }
 
-        _hoveringButton = null;
+        if (_hoveringButton != null)
+        {
+            _hoveringButton.OnCursorExit();
+            _hoveringButton = null;
+        }
     }
 
     public void OnClick(InputValue inputValue)
