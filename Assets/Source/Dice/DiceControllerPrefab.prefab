@@ -220,4 +220,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tray: {fileID: 0}
-  Slots: {fileID: 0}
+  SlotsArea: {fileID: 0}
+  SlotPrefab: {fileID: 8229567146693369053, guid: b01f5bbf5d7796c4188fb06fc6c9348f, type: 3}

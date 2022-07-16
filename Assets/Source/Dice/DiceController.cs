@@ -12,6 +12,7 @@ public class DiceController : Singleton<DiceController, IDiceController>, IDiceC
 
     public GameObject Tray;
     public GameObject SlotsArea;
+    public GameObject SlotPrefab;
 
     private GameMode.PlayerAction[] _actions;
 
@@ -27,16 +28,19 @@ public class DiceController : Singleton<DiceController, IDiceController>, IDiceC
             GameMode.PlayerAction.Move
         };
 
-        GetComponentInChildren<Renderer>().material.mainTexture = DiceTextureGenerator.GetTexture();
+        //GetComponentInChildren<Renderer>().material.mainTexture = DiceTextureGenerator.GetTexture();
 
         // init tray
         Tray = transform.Find("Tray").gameObject;
 
         // init slots
         SlotsArea = transform.Find("SlotsArea").gameObject;
-        for(int i = 0; i < 3; i++) //TODO!!!!!!!!!
+        for(int i = 0; i < transform.GetComponentInParent<GameMode>().number_of_dice; i++) //TODO!!!!!!!!!
         {
-            //GameObject Slot = null;
+            var slot = Instantiate(SlotPrefab, transform);
+            slot.name = "Slot " + i;
+            slot.transform.parent = SlotsArea.transform;
+            slot.transform.Translate(new(i * 1f, 0f));
         }
         
     }
