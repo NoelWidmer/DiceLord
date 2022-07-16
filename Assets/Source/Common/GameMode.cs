@@ -2,7 +2,9 @@ using System.Collections;
 using UnityEngine;
 
 public interface IGameMode
-{ }
+{
+    void OnPlayerCharacterDied();
+}
 
 public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 {
@@ -48,7 +50,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             foreach (var entity in entities)
             {
                 Grid.Instance.RegisterEntity(entity);
-                Debug.Log("registered an entity");
             }
         }
 
@@ -66,12 +67,10 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 break;
 
             case PlayerAction.Move:
-                Debug.Log("Move");
                 _playerCharacter.Move();
                 break;
 
             case PlayerAction.Attack:
-                Debug.Log("Attack");
                 _playerCharacter.Attack();
                 break;
         }

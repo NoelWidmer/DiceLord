@@ -34,7 +34,6 @@ public class Entity : MonoBehaviour, IEntity
     private State _state = State.Idle;
     private float _remainingMoveDistance;
 
-
     public void ReceiveDamage(int damage)
     {
         var newHealth = Health - damage;
@@ -44,6 +43,8 @@ public class Entity : MonoBehaviour, IEntity
             Health = 0;
 
             Debug.Log($"{name} took {damage} damage and died.");
+
+            OnDied();
 
             Grid.Instance.RemoveEntity(this);
             Destroy(gameObject);
@@ -55,6 +56,8 @@ public class Entity : MonoBehaviour, IEntity
         }
     }
 
+    protected virtual void OnDied()
+    { }
 
     private void Awake()
     {
