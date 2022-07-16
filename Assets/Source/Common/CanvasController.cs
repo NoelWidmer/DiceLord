@@ -60,7 +60,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
             Rect actionRect = actionIcon.GetComponent<RectTransform>().rect;
             float xSpread = (_trayRect.width / 2) - (actionRect.width / 2);
             float ySpread = (_trayRect.height / 2) - (actionRect.height / 2);
-            actionIcon.GetComponent<RectTransform>().localPosition = new(Random.value * xSpread, Random.value * ySpread);
+            actionIcon.GetComponent<RectTransform>().localPosition = new(Random.Range(-xSpread, xSpread), Random.Range(-ySpread, ySpread));
         }
     }
 
