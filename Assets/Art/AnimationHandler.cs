@@ -19,6 +19,7 @@ public class AnimationHandler : MonoBehaviour
         mask = GetComponent<SpriteMask>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         mask.enabled = false;
+        Flash(2, 0.2F);
     }
 
     public void PlayOrStopMove(bool state)
