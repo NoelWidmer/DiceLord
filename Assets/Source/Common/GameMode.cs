@@ -23,8 +23,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     private IPlayerCharacter _playerCharacter;
     private DiceController _diceController;
     private CanvasController _canvasController;
-    
-    private float _timeBuffer = .3f;
 
     public enum PlayerAction
     {
