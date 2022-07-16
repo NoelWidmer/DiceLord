@@ -3,22 +3,21 @@ using UnityEngine;
 
 public struct GridVector : IEquatable<GridVector>
 {
-    private static readonly Vector2 Half = new(.5f, .5f);
+    private const int _fieldPixelWidth = 40;
+    private const int _fieldPixelHeight = 20;
+    private const int _pixelsPerUnit = 32;
+
+    private const float _fieldWidth = (float)_fieldPixelWidth / _pixelsPerUnit;
+    private const float _fieldHeight = (float)_fieldPixelHeight / _pixelsPerUnit;
 
     public readonly int X;
     public readonly int Y;
 
-    public Vector3 FieldCenterPosition
-        => Vector2 + Half;
-
-    public Vector2 Vector2
-        => new(X, Y);
-
-    public static GridVector From(Vector2 point)
+    public Vector3 GetFieldCenterPosition()
     {
-        var x = Mathf.FloorToInt(point.x);
-        var y = Mathf.FloorToInt(point.y);
-        return new GridVector(x, y);
+        var x = new Vector2(X * _fieldWidth * .5f, _fieldHeight * .5f * X);
+        var y = new Vector2(Y * _fieldWidth * -.5f, _fieldHeight * .5f * Y);
+        return x + y;
     }
 
     public GridVector(int x, int y)
@@ -29,10 +28,10 @@ public struct GridVector : IEquatable<GridVector>
 
     public GridVector GetAdjacent(GridDirection dir) => dir switch
     {
-        GridDirection.North => new GridVector(X, Y + 1),
-        GridDirection.East => new GridVector(X + 1, Y),
-        GridDirection.South => new GridVector(X, Y - 1),
-        GridDirection.West => new GridVector(X - 1, Y),
+        GridDirection.NorthEast => new GridVector(X + 1, Y),
+        GridDirection.SouthWest => new GridVector(X, Y - 1),
+        GridDirection.SouthEast => new GridVector(X - 1, Y),
+        GridDirection.NorthWest => new GridVector(X, Y + 1),
         _ => throw new NotImplementedException(),
     };
 
