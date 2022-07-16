@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -99,11 +100,28 @@ public abstract class Entity : MonoBehaviour, IEntity
             target.ReceiveDamage(1);
         }
 
+        PlayAttackSound(References.Instance.SwordAttackSounds.GetRandomItem());
         ShowSword(attackCoordinates);
 
         StartCoroutine(DelayEndOffense(_attackDuration));
 
         return _attackDuration;
+    }
+
+    private List<AudioSource> _audioSources = new();
+
+    private void PlayAttackSound(AudioClip clip)
+    {
+        var availableSrc = _audioSources.FirstOrDefault(src => src.isPlaying == false);
+
+        if (availableSrc == null)
+        {
+            availableSrc = gameObject.AddComponent<AudioSource>();
+            _audioSources.Add(availableSrc);
+        }
+
+        availableSrc.clip = clip;
+        availableSrc.Play();
     }
 
     public abstract bool CanBeEntered { get; }
