@@ -65,3 +65,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 20b92550de85a10448437bb2afe2f317, type: 3}
   - {fileID: 8300000, guid: 5eb658ae589b7044b9c636d72cf7a8dd, type: 3}
   - {fileID: 8300000, guid: 87b7ce84479799745b3ce294737d86f6, type: 3}
+  _directionalArrowHover: {fileID: 8300000, guid: 792911aa082039e4690cd16277a917b3, type: 3}
+  _directionalArrowClick: {fileID: 8300000, guid: ef355b64d0e1ad34493611c2945d1380, type: 3}

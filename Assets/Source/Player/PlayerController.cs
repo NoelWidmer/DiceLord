@@ -10,16 +10,18 @@ public interface IUnityInputSystemMessages
 {
     void OnRoll(InputValue inputValue);
     void OnMouse(InputValue inputValue);
+    void OnClick(InputValue inputValue);
 }
 
 public class PlayerController : Singleton<PlayerController, IPlayerController>, IPlayerController, IUnityInputSystemMessages
 {
-
     public InputActionAsset InputActionAsset;
     public GameObject PlayerCameraPrefab;
 
     private PlayerInput _playerInput;
     private IPlayerCamera _playerCamera;
+
+    private IPlayerCharacter _playerCharacter;
 
     protected override void OnAwake()
     {
@@ -40,6 +42,7 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
 
     public void Possess(IPlayerCharacter playerCahracter)
     {
+        _playerCharacter = playerCahracter;
         _playerCamera.TrackPlayer(playerCahracter);
     }
 
@@ -76,9 +79,15 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
             }
         }
 
+        _hoveringButton = null;
+    }
+
+    public void OnClick(InputValue inputValue)
+    {
         if (_hoveringButton != null)
         {
-            _hoveringButton = null;
+            _hoveringButton.OnClick();
+            _playerCharacter.RespondToDirectionalRequest(_hoveringButton.Direction);
         }
     }
 }

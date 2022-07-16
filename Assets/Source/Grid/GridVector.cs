@@ -13,7 +13,7 @@ public struct GridVector : IEquatable<GridVector>
     public readonly int X;
     public readonly int Y;
 
-    public Vector3 GetFieldCenterPosition()
+    public Vector2 GetFieldCenterPosition()
     {
         var x = new Vector2(X * _fieldWidth * .5f, _fieldHeight * .5f * X);
         var y = new Vector2(Y * _fieldWidth * -.5f, _fieldHeight * .5f * Y);
@@ -29,8 +29,8 @@ public struct GridVector : IEquatable<GridVector>
     public GridVector GetAdjacent(GridDirection dir) => dir switch
     {
         GridDirection.NorthEast => new GridVector(X + 1, Y),
-        GridDirection.SouthWest => new GridVector(X, Y - 1),
-        GridDirection.SouthEast => new GridVector(X - 1, Y),
+        GridDirection.SouthWest => new GridVector(X - 1, Y),
+        GridDirection.SouthEast => new GridVector(X, Y - 1),
         GridDirection.NorthWest => new GridVector(X, Y + 1),
         _ => throw new NotImplementedException(),
     };

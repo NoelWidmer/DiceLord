@@ -4,6 +4,7 @@ public interface IDirectionalArrowButton
 {
     GridDirection Direction { get; }
     void OnCursorEnter();
+    void OnClick();
 }
 
 public class DirectionalArrowButton : MonoBehaviour, IDirectionalArrowButton
@@ -27,12 +28,18 @@ public class DirectionalArrowButton : MonoBehaviour, IDirectionalArrowButton
         // add audio source
         {
             _src = gameObject.AddComponent<AudioSource>();
-            _src.clip = References.Instance.DeathScreamSounds.GetRandomItem();
         }
     }
 
     public void OnCursorEnter()
     {
+        _src.clip = References.Instance.DirectionalArrowHover;
+        _src.Play();
+    }
+
+    public void OnClick()
+    {
+        _src.clip = References.Instance.DirectionalArrowClick;
         _src.Play();
     }
 }
