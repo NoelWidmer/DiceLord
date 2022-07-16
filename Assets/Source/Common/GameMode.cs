@@ -74,7 +74,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         {
             var src = gameObject.AddComponent<AudioSource>();
             src.clip = AmbientTrack;
-            src.volume = .5f;
+            src.volume = .2f;
             src.loop = true;
             src.Play();
         }

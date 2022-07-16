@@ -267,7 +267,8 @@ public abstract class Entity : MonoBehaviour, IEntity
             }
 
             var direction = (_movingToCoordiantes.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).normalized;
-            transform.position += direction * distanceThisFrame;
+            var deltaMove = direction * distanceThisFrame;
+            transform.position += new Vector3(deltaMove.x, deltaMove.y, 0f);
 
             if (_state != State.Moving)
             {

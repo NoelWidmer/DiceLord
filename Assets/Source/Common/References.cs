@@ -7,6 +7,8 @@ public interface IReferences
     AudioClip[] PlayerMoveSounds { get; }
     AudioClip[] TakeDamageSounds { get; }
     AudioClip[] DeathScreamSounds { get; }
+    AudioClip DirectionalArrowHover { get; }
+    AudioClip DirectionalArrowClick { get; }
 }
 
 public class References : Singleton<References, IReferences>, IReferences
@@ -30,4 +32,12 @@ public class References : Singleton<References, IReferences>, IReferences
     [SerializeField]
     private AudioClip[] _deathScreamSounds;
     public AudioClip[] DeathScreamSounds => _deathScreamSounds;
+
+    [SerializeField]
+    private AudioClip _directionalArrowHover;
+    public AudioClip DirectionalArrowHover => _directionalArrowHover;
+
+    [SerializeField]
+    private AudioClip _directionalArrowClick;
+    public AudioClip DirectionalArrowClick => _directionalArrowClick;
 }

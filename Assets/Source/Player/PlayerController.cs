@@ -10,16 +10,18 @@ public interface IUnityInputSystemMessages
 {
     void OnRoll(InputValue inputValue);
     void OnMouse(InputValue inputValue);
+    void OnClick(InputValue inputValue);
 }
 
 public class PlayerController : Singleton<PlayerController, IPlayerController>, IPlayerController, IUnityInputSystemMessages
 {
-
     public InputActionAsset InputActionAsset;
     public GameObject PlayerCameraPrefab;
 
     private PlayerInput _playerInput;
     private IPlayerCamera _playerCamera;
+
+    private IPlayerCharacter _playerCharacter;
 
     protected override void OnAwake()
     {
@@ -40,15 +42,52 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
 
     public void Possess(IPlayerCharacter playerCahracter)
     {
+        _playerCharacter = playerCahracter;
         _playerCamera.TrackPlayer(playerCahracter);
     }
 
     public void OnRoll(InputValue inputValue)
     { }
 
+    private Vector2 _cursorWorldPosition;
+
+    private IDirectionalArrowButton _hoveringButton;
+
     public void OnMouse(InputValue inputValue)
     {
-        var position = inputValue.Get<Vector2>();
-        Debug.Log(position);
+        var cursorScreenPosition = inputValue.Get<Vector2>();
+        var cursorPosition3d = new Vector3(cursorScreenPosition.x, cursorScreenPosition.y, -_playerCamera.Camera.transform.position.z);
+        _cursorWorldPosition = _playerCamera.Camera.ScreenToWorldPoint(cursorPosition3d);
+
+        const float distance = .01f;
+        const float halfDistance = distance * .5f;
+
+        var origin = _cursorWorldPosition - Vector2.right * halfDistance;
+
+        var hit = Physics2D.Raycast(origin, Vector2.right, distance);
+        if (hit.collider != null)
+        {
+            if (hit.collider.TryGetComponent<IDirectionalArrowButton>(out var button))
+            {
+                if (ReferenceEquals(button, _hoveringButton) == false)
+                {
+                    _hoveringButton = button;
+                    button.OnCursorEnter();
+                }
+
+                return;
+            }
+        }
+
+        _hoveringButton = null;
+    }
+
+    public void OnClick(InputValue inputValue)
+    {
+        if (_hoveringButton != null)
+        {
+            _hoveringButton.OnClick();
+            _playerCharacter.RespondToDirectionalRequest(_hoveringButton.Direction);
+        }
     }
 }

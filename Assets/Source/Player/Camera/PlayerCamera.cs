@@ -2,16 +2,20 @@ using UnityEngine;
 
 public interface IPlayerCamera
 {
+    Camera Camera { get; }
     void TrackPlayer(IPlayerCharacter playerCharacter);
 }
 
 public class PlayerCamera : Singleton<PlayerCamera, IPlayerCamera>, IPlayerCamera
 {
+    public Camera Camera { get; private set; }
+
     private IPlayerCharacter _playerCharacter;
 
     protected override void OnAwake()
     {
         enabled = false;
+        Camera = GetComponent<Camera>();
     }
 
     public void TrackPlayer(IPlayerCharacter playerCharacter)

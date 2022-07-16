@@ -1,9 +1,10 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IPlayerCharacter : IEntity
 {
     Vector3 Position { get; }
+    void RespondToDirectionalRequest(GridDirection direction);
 }
 
 public class PlayerCharacter : Entity, IPlayerCharacter
@@ -13,7 +14,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
     public override bool CanBeEntered => false;
     public override bool CanRepell => true;
 
-    private Transform[] _directionalArrows;
+    private List<Transform> _directionalArrows = new();
 
     protected override void Awake()
     {
@@ -24,23 +25,37 @@ public class PlayerCharacter : Entity, IPlayerCharacter
         var neDirection = new GridVector(1, 0).GetFieldCenterPosition().normalized;
         var nwDirection = new GridVector(0, 1).GetFieldCenterPosition().normalized;
 
-        var arrowNE = transform.Find("Arrow NE");
-        arrowNE.transform.position = transform.position + .5f * distanceBetweenFields * neDirection;
-        arrowNE.transform.up = neDirection;
+        {
+            var arrowNE = transform.Find("Arrow NE");
+            _directionalArrows.Add(arrowNE);
 
-        var arrowSE = transform.Find("Arrow SE");
-        arrowSE.transform.position = transform.position + .5f * distanceBetweenFields * -nwDirection;
-        arrowSE.transform.up = -nwDirection;
+            var offset = .5f * distanceBetweenFields * neDirection;
+            arrowNE.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
+        }
 
-        var arrowSW = transform.Find("Arrow SW");
-        arrowSW.transform.position = transform.position + .5f * distanceBetweenFields * -neDirection;
-        arrowSW.transform.up = -neDirection;
+        {
+            var arrowSE = transform.Find("Arrow SE");
+            _directionalArrows.Add(arrowSE);
 
-        var arrowNW = transform.Find("Arrow NW");
-        arrowNW.transform.position = transform.position + .5f * distanceBetweenFields * nwDirection;
-        arrowNW.transform.up = nwDirection;
+            var offset = .5f * distanceBetweenFields * -nwDirection;
+            arrowSE.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
+        }
 
-        _directionalArrows = new[] { arrowNE, arrowSE, arrowSW, arrowNW };
+        {
+            var arrowSW = transform.Find("Arrow SW");
+            _directionalArrows.Add(arrowSW);
+
+            var offset = .5f * distanceBetweenFields * -neDirection;
+            arrowSW.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
+        }
+
+        {
+            var arrowNW = transform.Find("Arrow NW");
+            _directionalArrows.Add(arrowNW);
+
+            var offset = .5f * distanceBetweenFields * nwDirection;
+            arrowNW.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
+        }
 
         ShowArrows(false);
     }
@@ -56,14 +71,12 @@ public class PlayerCharacter : Entity, IPlayerCharacter
     protected override void OnDirectionalRequest()
     {
         ShowArrows(true);
-        StartCoroutine(DelayResponse());
+    }
 
-        IEnumerator DelayResponse()
-        {
-            yield return new WaitForSeconds(1f);
-            ShowArrows(false);
-            OnDirectionalResponse(GridDirection.NorthEast);
-        }
+    public void RespondToDirectionalRequest(GridDirection direction)
+    {
+        ShowArrows(false);
+        OnDirectionalResponse(direction);
     }
 
     public override void OnEntered(IEntity entity)
