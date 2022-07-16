@@ -88,7 +88,6 @@ GameObject:
   - component: {fileID: 6133156937838077767}
   - component: {fileID: 1248026370376700123}
   - component: {fileID: 2589836162450312418}
-  - component: {fileID: 3166480563566647799}
   - component: {fileID: 8638214326293117320}
   m_Layer: 0
   m_Name: ConfirmButton
@@ -155,18 +154,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &3166480563566647799
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 287307446597669006}
-  m_Enabled: 0
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &8638214326293117320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,8 +233,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -292.54, y: -148.5066}
-  m_SizeDelta: {x: 214.93, y: 78.9868}
+  m_AnchoredPosition: {x: -293.1339, y: -149.22871}
+  m_SizeDelta: {x: 216.1178, y: 80.4295}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1879902431430456558
 CanvasRenderer:
@@ -322,7 +309,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 54.927, y: -138}
+  m_AnchoredPosition: {x: 54.927002, y: -138}
   m_SizeDelta: {x: 480, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6516063488754217161
@@ -347,7 +334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -375,7 +362,6 @@ GameObject:
   - component: {fileID: 3031350753788107558}
   - component: {fileID: 1480182624218890598}
   - component: {fileID: 4132586883940759494}
-  - component: {fileID: 2448168826916213022}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -441,7 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
+  m_ReferencePixelsPerUnit: 64
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
@@ -468,18 +454,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!225 &2448168826916213022
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3561918666698660389}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &6458894775594740108
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,7 +562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
