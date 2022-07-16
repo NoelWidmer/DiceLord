@@ -9,7 +9,7 @@ public interface IEntity
     GridVector GetStartCoordinates();
     GridVector Coordinates { get; }
 
-    float Move();
+    void Move();
 
     float Melee();
     float Ranged();
@@ -30,6 +30,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         Idle,
         Moving,
+        MoveDirectionRequested,
         Melee,
         Repelling, 
         Ranged
@@ -80,53 +81,67 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
     }
 
-    public float Move()
+    protected abstract void OnDirectionalRequest();
+
+    public void Move()
     {
         EnsureState(State.Idle);
+        _state = State.MoveDirectionRequested;
+        OnDirectionalRequest();
+    }
 
-        var newCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
-
-        var occupants = Grid.Instance
-            .GetEntites(newCoordinates)
-            .ToArray(); // must copy or iterator will throw
-
-        if (occupants.Length > 0)
+    protected float OnDirectionalResponse(GridDirection direction)
+    {
+        if (_state == State.MoveDirectionRequested)
         {
-            var maxDuration = 0f;
+            var newCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
 
-            foreach (var occupant in occupants)
+            var occupants = Grid.Instance
+                .GetEntites(newCoordinates)
+                .ToArray(); // must copy or iterator will throw
+
+            if (occupants.Length > 0)
             {
-                if (occupant.CanRepell)
+                var maxDuration = 0f;
+
+                foreach (var occupant in occupants)
                 {
-                    var duration = occupant.Repell(this);
-                    maxDuration = Mathf.Max(maxDuration, duration);
+                    if (occupant.CanRepell)
+                    {
+                        var duration = occupant.Repell(this);
+                        maxDuration = Mathf.Max(maxDuration, duration);
+                    }
+                    else if (occupant.CanBeEntered)
+                    {
+                        occupant.OnEntered(this);
+                        return DoMove();
+                    }
+                    else
+                    {
+                        Debug.Log("move is blocked");
+                    }
                 }
-                else if (occupant.CanBeEntered)
-                {
-                    occupant.OnEntered(this);
-                    return DoMove();
-                }
-                else
-                {
-                    Debug.Log("move is blocked");
-                }
+
+                return maxDuration;
+            }
+            else
+            {
+                return DoMove();
             }
 
-            return maxDuration;
+            float DoMove()
+            {
+                PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
+                _state = State.Moving;
+                _movingToCoordiantes = newCoordinates;
+                _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
+                enabled = true;
+                return _moveDuration;
+            }
         }
         else
         {
-            return DoMove();
-        }
-
-        float DoMove()
-        {
-            PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
-            _state = State.Moving;
-            _movingToCoordiantes = newCoordinates;
-            _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
-            enabled = true;
-            return _moveDuration;
+            throw new NotImplementedException("this kind of directional input has not yet been implemented.");
         }
     }
 

@@ -9,6 +9,9 @@ public class HealthPotion : Entity
         entity.ReceiveHealth(1);
     }
 
+    protected override void OnDirectionalRequest()
+    { }
+
     protected override void OnDied()
     { }
 }

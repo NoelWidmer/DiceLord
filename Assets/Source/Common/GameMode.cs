@@ -74,7 +74,13 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         // UI
         InitCanvas();
 
-        StartNextTurn();
+        StartCoroutine(DelayFirstTurn());
+
+        IEnumerator DelayFirstTurn()
+        {
+            yield return new WaitForSeconds(1f);
+            StartNextTurn();
+        }
     }
 
     private void InitCanvas()
