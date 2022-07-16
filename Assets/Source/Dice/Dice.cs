@@ -10,22 +10,20 @@ public class Dice : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _actions = new GameMode.PlayerAction[NUM_SIDES];
-        _actions = 
-        [
-            PlayerAction.Move,
-            PlayerAction.Move,
-            PlayerAction.Attack,
-            PlayerAction.NOP,
-            PlayerAction.Attack,
-            PlayerAction.Move
-        ];
+        _actions = new GameMode.PlayerAction[NUM_SIDES] {
+            GameMode.PlayerAction.Move,
+            GameMode.PlayerAction.Move,
+            GameMode.PlayerAction.Attack,
+            GameMode.PlayerAction.NOP,
+            GameMode.PlayerAction.Attack,
+            GameMode.PlayerAction.Move
+        };
     }
 
     public GameMode.PlayerAction[] RollDice(int n = 1)
     {
-        GameMode.PlayerAction rolls = new GameMode.PlayerAction[n];
-        for(int i; i < n; i++)
+        GameMode.PlayerAction[] rolls = new GameMode.PlayerAction[n];
+        for(int i = 0; i < n; i++)
         {
             rolls[i] = _actions[Mathf.FloorToInt(Random.Range(0.0f, NUM_SIDES))];
         }
