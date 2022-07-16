@@ -46,25 +46,39 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
     public void OnRoll(InputValue inputValue)
     { }
 
-    private Vector3 _cursorWorldPosition;
+    private Vector2 _cursorWorldPosition;
+
+    private IDirectionalArrowButton _hoveringButton;
 
     public void OnMouse(InputValue inputValue)
     {
-        var cursorPosition = inputValue.Get<Vector2>();
-
-        var cameraPosition = _playerCamera.Camera.transform.position;
-        var cursorPosition3d = new Vector3(cursorPosition.x, cursorPosition.y, -cameraPosition.z);
+        var cursorScreenPosition = inputValue.Get<Vector2>();
+        var cursorPosition3d = new Vector3(cursorScreenPosition.x, cursorScreenPosition.y, -_playerCamera.Camera.transform.position.z);
         _cursorWorldPosition = _playerCamera.Camera.ScreenToWorldPoint(cursorPosition3d);
-        var direction = (_cursorWorldPosition - cameraPosition).normalized;
 
-        var hit = Physics2D.Raycast(cameraPosition, direction, float.MaxValue);
+        const float distance = .01f;
+        const float halfDistance = distance * .5f;
+
+        var origin = _cursorWorldPosition - Vector2.right * halfDistance;
+
+        var hit = Physics2D.Raycast(origin, Vector2.right, distance);
         if (hit.collider != null)
         {
-            Debug.Log("hit");
             if (hit.collider.TryGetComponent<IDirectionalArrowButton>(out var button))
             {
-                Debug.Log($"direction: {button.Direction}");
+                if (ReferenceEquals(button, _hoveringButton) == false)
+                {
+                    _hoveringButton = button;
+                    button.OnCursorEnter();
+                }
+
+                return;
             }
+        }
+
+        if (_hoveringButton != null)
+        {
+            _hoveringButton = null;
         }
     }
 }
