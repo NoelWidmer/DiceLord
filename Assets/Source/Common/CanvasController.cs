@@ -13,7 +13,9 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
     private GameObject _canvas;
     private GameObject _tray;
+    private Rect _trayRect;
     private GameObject _slotsArea;
+    private Rect _slotsAreaRect;
     private List<GameObject> _slots;
 
     protected override void OnAwake()
@@ -21,21 +23,22 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         // init canvas
         _canvas = transform.Find("Canvas").gameObject;
 
-
         // init tray
         _tray = _canvas.transform.Find("Tray").gameObject;
+        _trayRect = _tray.GetComponent<RectTransform>().rect;
 
         // init slots
         _slotsArea = _canvas.transform.Find("SlotsArea").gameObject;
+        _slotsAreaRect = _slotsArea.GetComponent<RectTransform>().rect;
+
         _slots = new();
-        float areaWidth = _slotsArea.GetComponent<RectTransform>().rect.width;
         for (int i = 0; i < transform.GetComponentInParent<GameMode>().number_of_dice; i++) //TODO
         {
             var slot = Instantiate(SlotPrefab, transform);
             slot.name = "Slot " + i;
             slot.transform.SetParent(_slotsArea.transform);
             float width = slot.GetComponent<RectTransform>().rect.width;
-            float offset = areaWidth / 2 - width / 2;
+            float offset = _slotsAreaRect.width / 2 - width / 2;
             slot.GetComponent<RectTransform>().localPosition = new(100f * i - offset, 0f);
             _slots.Add(slot);
         }
@@ -47,9 +50,13 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         {
             var actionIcon = Instantiate(ActionIconPrefab, transform);
             actionIcon.name = roll.ToString();
-            actionIcon.GetComponent<ActionIcon>().action = roll;
+            actionIcon.GetComponent<ActionIcon>().SetAction(roll);
             actionIcon.transform.SetParent(_tray.transform);
-            actionIcon.GetComponent<RectTransform>().localPosition = new(0f, 0f);
+
+            Rect actionRect = actionIcon.GetComponent<RectTransform>().rect;
+            float xSpread = (_trayRect.width / 2) - (actionRect.width / 2);
+            float ySpread = (_trayRect.height / 2) - (actionRect.height / 2);
+            actionIcon.GetComponent<RectTransform>().localPosition = new(Random.value * xSpread, Random.value * ySpread);
         }
     }
 
@@ -66,7 +73,6 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         GameObject slot = _slots[idx];
         actionIcon.transform.SetParent(slot.transform);
         actionIcon.GetComponent<RectTransform>().localPosition = new(0f, 0f);
-        Debug.Log("Added actionIcon " + actionIcon + "(" + actionIcon.GetComponent<ActionIcon>().action + ") to slot " + idx);
     }
 
     public List<GameMode.PlayerAction> GetSelectedActions()
@@ -75,20 +81,11 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
         foreach(var slot in _slots)
         {
-            Debug.Log(slot + " has " + slot.transform.childCount + " child(ren)");
             if(slot.transform.childCount > 0)
             {
                 GameObject child = slot.transform.GetChild(0).gameObject;
-                Debug.Log("Found child " + child);
-                actions.Add(slot.transform.GetChild(0).GetComponent<ActionIcon>().action);
+                actions.Add(slot.transform.GetChild(0).GetComponent<ActionIcon>().GetAction());
             }
-        }
-
-
-        Debug.Log("Returning selected actions:");
-        foreach (var action in actions)
-        {
-            Debug.Log(action);
         }
 
         return actions;

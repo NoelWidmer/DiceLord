@@ -174,7 +174,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             Transform tray = _canvasController.GetTray().transform;
             string name = rolls[i].ToString();
             GameObject actionIcon = tray.Find(name).gameObject;
-            Debug.Log("Adding action " + name + " (" + actionIcon + ") to slot " + i);
             _canvasController.AddToSlot(i, actionIcon);
         }
 
