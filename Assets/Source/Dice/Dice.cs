@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Dice : Singleton<Dice, TODO_INTERFACE>
+public interface IDice
+{ }
+
+public class Dice : Singleton<Dice, IDice>, IDice
 {
     const int NUM_SIDES = 6;
     private GameMode.PlayerAction[] _actions;
 
     // Start is called before the first frame update
-    void Awake()
+    protected override void OnAwake()
     {
         _actions = new GameMode.PlayerAction[NUM_SIDES] {
             GameMode.PlayerAction.Move,
