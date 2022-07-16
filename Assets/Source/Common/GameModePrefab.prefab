@@ -47,4 +47,4 @@ MonoBehaviour:
   ReferencesPrefab: {fileID: 1707252323449698615, guid: e0c12f5101e81114a867a836de2b7b93, type: 3}
   PlayerControllerPrefab: {fileID: 8342160545712426058, guid: 728ef938675e98648af64935b35bb240, type: 3}
   DiceControllerPrefab: {fileID: 7609912808743938612, guid: 593527db3fdf504428206e9fcef26cd4, type: 3}
-  number_of_dice: 3
+  number_of_dice: 1

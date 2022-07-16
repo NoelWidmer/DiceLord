@@ -9,6 +9,10 @@ public interface IDiceController
 public class DiceController : Singleton<DiceController, IDiceController>, IDiceController
 {
     const int NUM_SIDES = 6;
+
+    public GameObject Tray;
+    public GameObject SlotsArea;
+
     private GameMode.PlayerAction[] _actions;
 
     // Start is called before the first frame update
@@ -24,6 +28,17 @@ public class DiceController : Singleton<DiceController, IDiceController>, IDiceC
         };
 
         GetComponentInChildren<Renderer>().material.mainTexture = DiceTextureGenerator.GetTexture();
+
+        // init tray
+        Tray = transform.Find("Tray").gameObject;
+
+        // init slots
+        SlotsArea = transform.Find("SlotsArea").gameObject;
+        for(int i = 0; i < 3; i++) //TODO!!!!!!!!!
+        {
+            //GameObject Slot = null;
+        }
+        
     }
 
     public List<GameMode.PlayerAction> RollDice(int n = 1)
