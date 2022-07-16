@@ -17,6 +17,8 @@ public interface IEntity
     void ReceiveDamage(int damage);
     void ReceiveHealth(int health);
 
+    float Ranged();
+
     bool CanRepell { get; }
     float Repell(IEntity entity);
 }
@@ -24,14 +26,16 @@ public interface IEntity
 public abstract class Entity : MonoBehaviour, IEntity
 {
     private enum State
-    { 
-        Idle, 
-        Moving, 
-        Attacking, 
-        Repelling
+    {
+        Idle,
+        Moving,
+        Attacking,
+        Repelling, 
+        Ranged
     }
 
     private readonly float _attackDuration = .5f;
+    private readonly float _rangedDuration = .75f;
     private readonly float _repellDuration = .5f;
     private readonly float _moveDuration = .75f;
 
@@ -87,6 +91,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public float Attack()
     {
+        EnsureState(State.Idle);
+
         _state = State.Attacking;
 
         var attackCoordinates = GetCoordinatesFromPosition().GetAdjacent(GridDirection.North);
@@ -106,6 +112,34 @@ public abstract class Entity : MonoBehaviour, IEntity
         StartCoroutine(DelayEndOffense(_attackDuration));
 
         return _attackDuration;
+    }
+
+    public float Ranged()
+    {
+        EnsureState(State.Idle);
+
+        _state = State.Ranged;
+
+        var attackCoordinates = GetCoordinatesFromPosition()
+            .GetAdjacent(GridDirection.North)
+            .GetAdjacent(GridDirection.North)
+            .GetAdjacent(GridDirection.North);
+
+        var targets = Grid.Instance
+            .GetEntites(attackCoordinates)
+            .ToArray(); // must copy or iterator will throw
+
+        foreach (var target in targets)
+        {
+            target.ReceiveDamage(1);
+        }
+
+        PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
+        ShowSword(attackCoordinates);
+
+        StartCoroutine(DelayEndOffense(_rangedDuration));
+
+        return _rangedDuration;
     }
 
     private List<AudioSource> _audioSources = new();
@@ -128,6 +162,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public float Move()
     {
+        EnsureState(State.Idle);
+
         var newCoordinates = GetCoordinatesFromPosition().GetAdjacent(GridDirection.North);
 
         var occupants = Grid.Instance
@@ -179,6 +215,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public float Repell(IEntity entity)
     {
+        EnsureState(State.Idle);
+
         _state = State.Repelling;
         entity.ReceiveDamage(1);
 
@@ -234,6 +272,14 @@ public abstract class Entity : MonoBehaviour, IEntity
         if (Sword)
         {
             Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+
+    private void EnsureState(State state)
+    {
+        if (_state != state)
+        {
+            throw new InvalidOperationException($"Epected {name} to be in state {state} but was in state {_state}.");
         }
     }
 
