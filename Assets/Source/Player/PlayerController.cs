@@ -57,9 +57,10 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
         _cursorWorldPosition = _playerCamera.Camera.ScreenToWorldPoint(cursorPosition3d);
         var direction = (_cursorWorldPosition - cameraPosition).normalized;
 
-        var hit = Physics2D.Raycast(cameraPosition, direction);
+        var hit = Physics2D.Raycast(cameraPosition, direction, float.MaxValue);
         if (hit.collider != null)
         {
+            Debug.Log("hit");
             if (hit.collider.TryGetComponent<IDirectionalArrowButton>(out var button))
             {
                 Debug.Log($"direction: {button.Direction}");
