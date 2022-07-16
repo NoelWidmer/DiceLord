@@ -16,9 +16,9 @@ public class DiceController : Singleton<DiceController, IDiceController>, IDiceC
         _actions = new GameMode.PlayerAction[NUM_SIDES] {
             GameMode.PlayerAction.Move,
             GameMode.PlayerAction.Move,
-            GameMode.PlayerAction.Attack,
+            GameMode.PlayerAction.Melee,
             GameMode.PlayerAction.NOP,
-            GameMode.PlayerAction.Attack,
+            GameMode.PlayerAction.Melee,
             GameMode.PlayerAction.Move
         };
     }
