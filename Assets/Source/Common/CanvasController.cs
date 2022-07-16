@@ -55,16 +55,18 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
     public void ClearTray()
     {
-        List<GameObject> children = new();
-        foreach (Transform child in _tray.transform) children.Add(child.gameObject);
-        children.ForEach(child => Destroy(child));
+        while(_tray.transform.childCount > 0)
+        {
+            DestroyImmediate(_tray.transform.GetChild(0).gameObject);
+        }
     }
 
-    public void AddToSlot(int i, GameObject actionIcon)
+    public void AddToSlot(int idx, GameObject actionIcon)
     {
-        GameObject slot = _slots[i];
+        GameObject slot = _slots[idx];
         actionIcon.transform.SetParent(slot.transform);
         actionIcon.GetComponent<RectTransform>().localPosition = new(0f, 0f);
+        Debug.Log("Added actionIcon " + actionIcon + "(" + actionIcon.GetComponent<ActionIcon>().action + ") to slot " + idx);
     }
 
     public List<GameMode.PlayerAction> GetSelectedActions()
@@ -73,10 +75,20 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
         foreach(var slot in _slots)
         {
+            Debug.Log(slot + " has " + slot.transform.childCount + " child(ren)");
             if(slot.transform.childCount > 0)
             {
+                GameObject child = slot.transform.GetChild(0).gameObject;
+                Debug.Log("Found child " + child);
                 actions.Add(slot.transform.GetChild(0).GetComponent<ActionIcon>().action);
             }
+        }
+
+
+        Debug.Log("Returning selected actions:");
+        foreach (var action in actions)
+        {
+            Debug.Log(action);
         }
 
         return actions;
@@ -86,17 +98,12 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     {
         foreach(var slot in _slots)
         {
-            List<GameObject> children = new();
-            foreach (Transform child in slot.transform) children.Add(child.gameObject);
-            children.ForEach(child => Destroy(child));
+            while(slot.transform.childCount > 0)
+            {
+                DestroyImmediate(slot.transform.GetChild(0).gameObject);
+            }
         }
     }
 
     public GameObject GetTray() => _tray;
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
