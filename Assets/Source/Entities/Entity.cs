@@ -91,6 +91,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public float Attack()
     {
+        EnsureState(State.Idle);
+
         _state = State.Attacking;
 
         var attackCoordinates = GetCoordinatesFromPosition().GetAdjacent(GridDirection.North);
@@ -114,6 +116,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public float Ranged()
     {
+        EnsureState(State.Idle);
+
         _state = State.Ranged;
 
         var attackCoordinates = GetCoordinatesFromPosition()
@@ -158,6 +162,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public float Move()
     {
+        EnsureState(State.Idle);
+
         var newCoordinates = GetCoordinatesFromPosition().GetAdjacent(GridDirection.North);
 
         var occupants = Grid.Instance
@@ -209,6 +215,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public float Repell(IEntity entity)
     {
+        EnsureState(State.Idle);
+
         _state = State.Repelling;
         entity.ReceiveDamage(1);
 
@@ -264,6 +272,14 @@ public abstract class Entity : MonoBehaviour, IEntity
         if (Sword)
         {
             Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+
+    private void EnsureState(State state)
+    {
+        if (_state != state)
+        {
+            throw new InvalidOperationException($"Epected {name} to be in state {state} but was in state {_state}.");
         }
     }
 
