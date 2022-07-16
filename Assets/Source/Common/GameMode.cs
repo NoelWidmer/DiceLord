@@ -169,7 +169,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         List<PlayerAction> rolls = _diceController.RollDice(number_of_dice);
         _canvasController.PopulateTray(rolls);
         // choose
-        for(int i = 0; i < rolls.Count-1; i++) //TODO
+        for(int i = 0; i < rolls.Count-2; i++) //TODO
         {
             Transform tray = _canvasController.GetTray().transform;
             string name = rolls[i].ToString();
