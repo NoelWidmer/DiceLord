@@ -74,11 +74,20 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         PlayerController.Instance.Possess(_playerCharacter);
     }
 
-    private IEnumerator ProcessAction(PlayerAction action)
+    private IEnumerator ProcessActions(List<PlayerAction> actions, int idx)
     {
+        if(idx == number_of_dice)
+        {
+            StartNextTurn();
+            yield break;
+        }
+
+        var action = actions[idx];
+
         switch(action)
         {
             case PlayerAction.NOP:
+                yield return new WaitForSeconds(.5f);
                 Debug.Log("NOP");
                 break;
 
@@ -90,6 +99,9 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 yield return new WaitForSeconds(_playerCharacter.Attack() + .3f);
                 break;
         }
+        Debug.Log("Action Finished");
+
+        StartCoroutine(ProcessActions(actions, idx + 1));
     }
 
     private void StartNextTurn()
@@ -101,13 +113,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         List<PlayerAction> actions = new List<PlayerAction>();
         actions.AddRange(rolls); //TODO
         // player act
-        foreach(var action in actions)
-        {
-            StartCoroutine(ProcessAction(action));
-        }
+        StartCoroutine(ProcessActions(actions, 0));
         // enemy act
-
-        StartCoroutine(DelayNextTurn());
     }
 
     private IEnumerator DelayNextTurn()
