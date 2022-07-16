@@ -10,9 +10,8 @@ public interface IEntity
     GridVector Coordinates { get; }
 
     void Move();
-
-    float Melee();
-    float Ranged();
+    void Melee();
+    void Ranged();
 
     void ReceiveDamage(int damage);
     void ReceiveHealth(int health);
@@ -21,7 +20,8 @@ public interface IEntity
     void OnEntered(IEntity entity);
 
     bool CanRepell { get; }
-    float Repell(IEntity entity);
+    void Repell(IEntity entity);
+    void ForceBecomeIdle();
 }
 
 public abstract class Entity : MonoBehaviour, IEntity
@@ -29,11 +29,17 @@ public abstract class Entity : MonoBehaviour, IEntity
     private enum State
     {
         Idle,
+
         Moving,
         MoveDirectionRequested,
+
         Melee,
-        Repelling, 
-        Ranged
+        MeleeDirectionRequested,
+
+        Ranged,
+        RangedDirectionRequested,
+
+        Repelling,
     }
 
     private readonly float _meleeDuration = .5f;
@@ -87,15 +93,14 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         EnsureState(State.Idle);
         _state = State.MoveDirectionRequested;
-        OnDirectionalResponse(GridDirection.NorthEast);
-        //OnDirectionalRequest();
+        OnDirectionalRequest();
     }
 
-    protected float OnDirectionalResponse(GridDirection direction)
+    protected void OnDirectionalResponse(GridDirection direction)
     {
         if (_state == State.MoveDirectionRequested)
         {
-            var newCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
+            var newCoordinates = Coordinates.GetAdjacent(direction);
 
             var occupants = Grid.Instance
                 .GetEntites(newCoordinates)
@@ -103,41 +108,97 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             if (occupants.Length > 0)
             {
-                var maxDuration = 0f;
 
                 foreach (var occupant in occupants)
                 {
                     if (occupant.CanRepell)
                     {
-                        var duration = occupant.Repell(this);
-                        maxDuration = Mathf.Max(maxDuration, duration);
+                        occupant.Repell(this);
                     }
                     else if (occupant.CanBeEntered)
                     {
                         occupant.OnEntered(this);
-                        return DoMove();
+                        DoMove();
                     }
                     else
                     {
                         Debug.Log("move is blocked");
                     }
                 }
-
-                return maxDuration;
             }
             else
             {
-                return DoMove();
+                DoMove();
             }
 
-            float DoMove()
+            void DoMove()
             {
                 PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
                 _state = State.Moving;
                 _movingToCoordiantes = newCoordinates;
                 _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
                 enabled = true;
-                return _moveDuration;
+            }
+        }
+        else if (_state == State.MeleeDirectionRequested)
+        {
+            _state = State.Melee;
+
+            var attackCoordinates = Coordinates.GetAdjacent(direction);
+
+            var targets = Grid.Instance
+                .GetEntites(attackCoordinates)
+                .ToArray(); // must copy or iterator will throw
+
+            foreach (var target in targets)
+            {
+                target.ReceiveDamage(1);
+            }
+
+            PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
+            ShowSword(attackCoordinates);
+
+            StartCoroutine(DelayEndOffense(_meleeDuration));
+        }
+        else if (_state == State.RangedDirectionRequested)
+        {
+            _state = State.Ranged;
+
+            StartCoroutine(DelayEjectProjectile());
+
+            PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
+
+            IEnumerator DelayEjectProjectile()
+            {
+                yield return new WaitForSeconds(_rangedChargeDuration);
+                StartCoroutine(PrepellProjectileTo(Coordinates, _rangeDistance - 1));
+            }
+
+            IEnumerator PrepellProjectileTo(GridVector fromCoordinates, int remainingDistance)
+            {
+                yield return new WaitForSeconds(_rangedPrepellDuration);
+
+                var targetCoordinates = fromCoordinates.GetAdjacent(direction);
+
+                ShowSword(targetCoordinates);
+
+                var targets = Grid.Instance
+                    .GetEntites(targetCoordinates)
+                    .ToArray();
+
+                foreach (var target in targets)
+                {
+                    target.ReceiveDamage(1);
+                }
+
+                if (remainingDistance > 0)
+                {
+                    StartCoroutine(PrepellProjectileTo(targetCoordinates, remainingDistance - 1));
+                }
+                else
+                {
+                    StartCoroutine(DelayEndOffense(_rangedPrepellDuration));
+                }
             }
         }
         else
@@ -146,76 +207,18 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
     }
 
-    public float Melee()
+    public void Melee()
     {
         EnsureState(State.Idle);
-
-        _state = State.Melee;
-
-        var attackCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
-
-        var targets = Grid.Instance
-            .GetEntites(attackCoordinates)
-            .ToArray(); // must copy or iterator will throw
-
-        foreach (var target in targets)
-        {
-            target.ReceiveDamage(1);
-        }
-
-        PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
-        ShowSword(attackCoordinates);
-
-        StartCoroutine(DelayEndOffense(_meleeDuration));
-
-        return _meleeDuration;
+        _state = State.MeleeDirectionRequested;
+        OnDirectionalRequest();
     }
 
-    public float Ranged()
+    public void Ranged()
     {
         EnsureState(State.Idle);
-
-        _state = State.Ranged;
-
-        var direction = GridDirection.NorthEast;
-        StartCoroutine(DelayEjectProjectile());
-
-        PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
-
-        return _rangedChargeDuration + _rangedPrepellDuration * _rangeDistance + 1;
-
-        IEnumerator DelayEjectProjectile()
-        {
-            yield return new WaitForSeconds(_rangedChargeDuration);
-            StartCoroutine(PrepellProjectileTo(Coordinates, _rangeDistance - 1));
-        }
-
-        IEnumerator PrepellProjectileTo(GridVector fromCoordinates, int remainingDistance)
-        {
-            yield return new WaitForSeconds(_rangedPrepellDuration);
-
-            var targetCoordinates = fromCoordinates.GetAdjacent(direction);
-
-            ShowSword(targetCoordinates);
-
-            var targets = Grid.Instance
-                .GetEntites(targetCoordinates)
-                .ToArray();
-
-            foreach (var target in targets)
-            {
-                target.ReceiveDamage(1);
-            }
-
-            if (remainingDistance > 0)
-            {
-                StartCoroutine(PrepellProjectileTo(targetCoordinates, remainingDistance - 1));
-            }
-            else
-            {
-                StartCoroutine(DelayEndOffense(_rangedPrepellDuration));
-            }
-        }
+        _state = State.RangedDirectionRequested;
+        OnDirectionalRequest();        
     }
 
     public abstract bool CanBeEntered { get; }
@@ -224,7 +227,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public abstract bool CanRepell { get; }
 
-    public float Repell(IEntity entity)
+    public void Repell(IEntity entity)
     {
         EnsureState(State.Idle);
 
@@ -234,9 +237,14 @@ public abstract class Entity : MonoBehaviour, IEntity
         PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
         ShowSword(entity.Coordinates);
 
-        StartCoroutine(DelayEndOffense(_repellDuration));
+        entity.ForceBecomeIdle();
 
-        return _repellDuration;
+        StartCoroutine(DelayEndOffense(_repellDuration));
+    }
+    
+    public void ForceBecomeIdle()
+    {
+        BecomeIdle();
     }
 
     private void Update()
@@ -265,6 +273,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             {
                 Grid.Instance.UpdateEntityCoordinates(this, _movingToCoordiantes);
                 SnapPositionToGrid(_movingToCoordiantes);
+                GameMode.Instance.ProcessNextAction();
             }
         }
         else
@@ -340,6 +349,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         yield return new WaitForSeconds(duration);
         BecomeIdle();
+        GameMode.Instance.ProcessNextAction();
     }
 
     private List<AudioSource> _audioSources = new();

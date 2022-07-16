@@ -9,6 +9,7 @@ public interface IPlayerController
 public interface IUnityInputSystemMessages
 {
     void OnRoll(InputValue inputValue);
+    void OnMouse(InputValue inputValue);
 }
 
 public class PlayerController : Singleton<PlayerController, IPlayerController>, IPlayerController, IUnityInputSystemMessages
@@ -43,7 +44,11 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
     }
 
     public void OnRoll(InputValue inputValue)
+    { }
+
+    public void OnMouse(InputValue inputValue)
     {
-        
+        var position = inputValue.Get<Vector2>();
+        Debug.Log(position);
     }
 }

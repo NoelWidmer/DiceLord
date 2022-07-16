@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IGameMode
 {
     void OnPlayerCharacterDied();
+    void ProcessNextAction();
 }
 
 public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
@@ -15,6 +16,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     public GameObject CanvasControllerPrefab;
     public GameObject PlayerControllerPrefab;
     public GameObject DiceControllerPrefab;
+    public AudioClip AmbientTrack;
 
     public int number_of_dice;
 
@@ -68,6 +70,15 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             _diceController = diceController.GetComponent<DiceController>();
         }
 
+        // setup ambient track
+        {
+            var src = gameObject.AddComponent<AudioSource>();
+            src.clip = AmbientTrack;
+            src.volume = .5f;
+            src.loop = true;
+            src.Play();
+        }
+
         // register entities
         {
             IEntity[] entities = FindObjectsOfType<Entity>();
@@ -92,53 +103,58 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         PlayerController.Instance.Possess(_playerCharacter);
     }
 
-    private IEnumerator ProcessActions(List<PlayerAction> actions, int idx)
+    public void ProcessNextAction()
     {
-        if(idx == number_of_dice)
+        if (_playerActionIndex == number_of_dice)
         {
             // enemy act (TODO)
             _canvasController.ClearTray();
             StartNextTurn();
-            yield break;
         }
-
-        var action = actions[idx];
-
-        switch(action)
+        else
         {
-            case PlayerAction.NOP:
-                yield return new WaitForSeconds(.5f);
-                Debug.Log("NOP");
-                break;
+            var action = _playerActions[_playerActionIndex];
 
-            case PlayerAction.Move:
-                _playerCharacter.Move();
-                yield return new WaitForSeconds(1f + _timeBuffer);
-                break;
+            switch (action)
+            {
+                case PlayerAction.NOP:
+                    Debug.Log("NOP");
+                    StartCoroutine(Wait());
 
-            case PlayerAction.Melee:
-                yield return new WaitForSeconds(_playerCharacter.Melee() + _timeBuffer);
-                break;
+                    IEnumerator Wait()
+                    {
+                        yield return new WaitForSeconds(.5f);
+                        ProcessNextAction();
+                    }
+                    break;
 
-            case PlayerAction.Ranged:
-                yield return new WaitForSeconds(_playerCharacter.Ranged() + _timeBuffer);
-                break;
+                case PlayerAction.Move:
+                    _playerCharacter.Move();
+                    break;
 
-            case PlayerAction.AOE:
-                yield break;
+                case PlayerAction.Melee:
+                    _playerCharacter.Melee();
+                    break;
 
-            case PlayerAction.Dodge:
-                yield break;
+                case PlayerAction.Ranged:
+                    _playerCharacter.Ranged();
+                    break;
 
-            case PlayerAction.Push:
-                yield break;
+                case PlayerAction.AOE:
+                    break;
 
-            case PlayerAction.Heal:
-                yield break;
+                case PlayerAction.Dodge:
+                    break;
+
+                case PlayerAction.Push:
+                    break;
+
+                case PlayerAction.Heal:
+                    break;
+            }
+
+            _playerActionIndex += 1;
         }
-        Debug.Log("Action Finished");
-
-        StartCoroutine(ProcessActions(actions, idx + 1));
     }
 
     private void StartNextTurn()
@@ -152,8 +168,13 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         List<PlayerAction> actions = new();
         actions.AddRange(rolls); //TODO
         // player act
-        StartCoroutine(ProcessActions(actions, 0));
+        _playerActions = actions;
+        _playerActionIndex = 0;
+        ProcessNextAction();
     }
+
+    private List<PlayerAction> _playerActions;
+    private int _playerActionIndex;
 
     private IEnumerator DelayNextTurn()
     {

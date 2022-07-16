@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public interface IPlayerCharacter : IEntity
@@ -41,10 +42,10 @@ public class PlayerCharacter : Entity, IPlayerCharacter
 
         _directionalArrows = new[] { arrowNE, arrowSE, arrowSW, arrowNW };
 
-        ShowHideArrows(false);
+        ShowArrows(false);
     }
 
-    private void ShowHideArrows(bool show)
+    private void ShowArrows(bool show)
     {
         foreach (var arrow in _directionalArrows)
         {
@@ -54,7 +55,15 @@ public class PlayerCharacter : Entity, IPlayerCharacter
 
     protected override void OnDirectionalRequest()
     {
-        ShowHideArrows(true);
+        ShowArrows(true);
+        StartCoroutine(DelayResponse());
+
+        IEnumerator DelayResponse()
+        {
+            yield return new WaitForSeconds(1f);
+            ShowArrows(false);
+            OnDirectionalResponse(GridDirection.NorthEast);
+        }
     }
 
     public override void OnEntered(IEntity entity)
