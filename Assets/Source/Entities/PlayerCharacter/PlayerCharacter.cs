@@ -23,7 +23,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
         var distanceBetweenFields = Vector2.Distance(Vector2.zero, new GridVector(1, 0).GetFieldCenterPosition());
 
         var neDirection = new GridVector(1, 0).GetFieldCenterPosition().normalized;
-        var nwDirection = new GridVector(0, 1).GetFieldCenterPosition().normalized;
+        var nwDirection = new Vector2(-neDirection.x, neDirection.y);
 
         {
             var arrowNE = transform.Find("Arrow NE");
