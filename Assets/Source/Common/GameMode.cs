@@ -126,7 +126,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 break;
 
             case PlayerAction.Melee:
-                yield return new WaitForSeconds(_playerCharacter.Attack() + .3f);
+                yield return new WaitForSeconds(_playerCharacter.Melee() + .3f);
                 break;
         }
         Debug.Log("Action Finished");

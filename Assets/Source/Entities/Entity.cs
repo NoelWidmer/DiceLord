@@ -9,16 +9,16 @@ public interface IEntity
     GridVector GetStartCoordinates();
     GridVector Coordinates { get; }
 
-    bool CanBeEntered { get; }
-    void OnEntered(IEntity entity);
-
     float Move();
 
-    float Attack();
+    float Melee();
+    float Ranged();
+
     void ReceiveDamage(int damage);
     void ReceiveHealth(int health);
 
-    float Ranged();
+    bool CanBeEntered { get; }
+    void OnEntered(IEntity entity);
 
     bool CanRepell { get; }
     float Repell(IEntity entity);
@@ -30,7 +30,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         Idle,
         Moving,
-        Attacking,
+        Melee,
         Repelling, 
         Ranged
     }
@@ -115,14 +115,13 @@ public abstract class Entity : MonoBehaviour, IEntity
     private void SnapPositionToGrid(GridVector coordiantes)
     {
         transform.position = coordiantes.GetFieldCenterPosition();
-        Debug.Log($"Snap: {name}'s {coordiantes} to {transform.position}");
     }
 
-    public float Attack()
+    public float Melee()
     {
         EnsureState(State.Idle);
 
-        _state = State.Attacking;
+        _state = State.Melee;
 
         var attackCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
 
