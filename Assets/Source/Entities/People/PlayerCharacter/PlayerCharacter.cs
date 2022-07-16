@@ -75,6 +75,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
 
     public void RespondToDirectionalRequest(GridDirection direction)
     {
+        ShowArrows(false);
         OnDirectionalResponse(direction);
     }
 
