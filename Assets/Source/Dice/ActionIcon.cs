@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class ActionIcon : MonoBehaviour
+public class ActionIcon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     private GameMode.PlayerAction _action;
 
@@ -15,6 +16,9 @@ public class ActionIcon : MonoBehaviour
     public Sprite pushIcon;
     public Sprite healIcon;
     public Sprite nopIcon;
+
+    private bool _isDragging;
+    private Vector3 _initialScaling;
 
     public void SetAction(GameMode.PlayerAction action)
     {
@@ -60,4 +64,29 @@ public class ActionIcon : MonoBehaviour
     }
 
     public GameMode.PlayerAction GetAction() => _action;
+
+    private void Awake()
+    {
+        _initialScaling = gameObject.GetComponent<RectTransform>().localScale;
+    }
+
+    public void Drag(Vector2 position)
+    {
+        if(_isDragging)
+        {
+            transform.position = position;
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        _isDragging = true;
+        gameObject.GetComponent<RectTransform>().localScale = _initialScaling * .8f;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        _isDragging = false;
+        gameObject.GetComponent<RectTransform>().localScale = _initialScaling;
+    }
 }
