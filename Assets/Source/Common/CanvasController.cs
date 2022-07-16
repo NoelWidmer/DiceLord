@@ -14,6 +14,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     private GameObject _canvas;
     private GameObject _tray;
     private GameObject _slotsArea;
+    private List<GameObject> _slots;
 
     // Start is called before the first frame update
     protected override void OnAwake()
@@ -36,6 +37,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
             float width = slot.GetComponent<RectTransform>().rect.width;
             float offset = areaWidth / 2 - width / 2;
             slot.GetComponent<RectTransform>().localPosition = new(100f * i - offset, 0f);
+            _slots.Add(slot);
         }
     }
 
@@ -55,6 +57,13 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         List<GameObject> children = new();
         foreach (Transform child in _tray.transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
+    }
+
+    public void AddToSlot(int i, GameObject actionIcon)
+    {
+        GameObject slot = _slots[i];
+        actionIcon.transform.SetParent(slot.transform);
+        actionIcon.GetComponent<RectTransform>().localPosition = new(0f, 0f);
     }
 
     // Update is called once per frame
