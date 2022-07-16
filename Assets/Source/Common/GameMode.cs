@@ -113,6 +113,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             }
             // enemy act (TODO)
             _canvasController.ClearTray();
+            _canvasController.ClearSlots();
             StartNextTurn();
         }
         else
