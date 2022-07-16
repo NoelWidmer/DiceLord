@@ -12,19 +12,17 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     protected override DisableBehaviour DisableBehaviour => DisableBehaviour.DontDisable;
 
     public GameObject ReferencesPrefab;
+    public GameObject CanvasControllerPrefab;
     public GameObject PlayerControllerPrefab;
     public GameObject DiceControllerPrefab;
 
     public int number_of_dice;
 
-    public GameObject SlotPrefab;
-
-    private GameObject _canvas;
-    private GameObject _tray;
-    private GameObject _slotsArea;
-
     private IPlayerCharacter _playerCharacter;
-    private DiceController _dice;
+    private DiceController _diceController;
+    private CanvasController _canvasController;
+    
+    private float _timeBuffer = .3f;
 
     public enum PlayerAction
     {
@@ -34,7 +32,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         Ranged,
         AOE,
         Dodge,
-        Push
+        Push,
+        Heal
     }
 
     protected override void OnAwake()
@@ -45,6 +44,13 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         {
             var references = Instantiate(ReferencesPrefab, transform);
             references.name = nameof(References);
+        }
+
+        // setup canvas
+        {
+            var canvasController = Instantiate(CanvasControllerPrefab, transform);
+            canvasController.name = nameof(CanvasController);
+            _canvasController = canvasController.GetComponent<CanvasController>();
         }
 
         gameObject.AddComponent<Grid>();
@@ -59,7 +65,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         {
             var diceController = Instantiate(DiceControllerPrefab, transform);
             diceController.name = nameof(DiceController);
-            _dice = diceController.GetComponent<DiceController>();
+            _diceController = diceController.GetComponent<DiceController>();
         }
 
         // register entities
@@ -71,33 +77,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             }
         }
 
-        // UI
-        InitCanvas();
-
         StartNextTurn();
-    }
-
-    private void InitCanvas()
-    {
-        // init canvas
-        _canvas = transform.Find("Canvas").gameObject;
-
-
-        // init tray
-        _tray = _canvas.transform.Find("Tray").gameObject;
-
-        // init slots
-        _slotsArea = _canvas.transform.Find("SlotsArea").gameObject;
-        float areaWidth = _slotsArea.GetComponent<RectTransform>().rect.width;
-        for (int i = 0; i < number_of_dice; i++)
-        {
-            var slot = Instantiate(SlotPrefab, transform);
-            slot.name = "Slot " + i;
-            slot.transform.SetParent(_slotsArea.transform);
-            float width = slot.GetComponent<RectTransform>().rect.width;
-            float offset = areaWidth / 2 - width / 2;
-            slot.GetComponent<RectTransform>().localPosition = new(100f * i - offset, 0f);
-        }
     }
 
     private void Start()
@@ -111,6 +91,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         if(idx == number_of_dice)
         {
             // enemy act (TODO)
+            _canvasController.ClearTray();
             StartNextTurn();
             yield break;
         }
@@ -125,12 +106,28 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 break;
 
             case PlayerAction.Move:
-                yield return new WaitForSeconds(_playerCharacter.Move() + .3f);
+                yield return new WaitForSeconds(_playerCharacter.Move() + _timeBuffer);
                 break;
 
             case PlayerAction.Melee:
-                yield return new WaitForSeconds(_playerCharacter.Attack() + .3f);
+                yield return new WaitForSeconds(_playerCharacter.Attack() + _timeBuffer);
                 break;
+
+            case PlayerAction.Ranged:
+                yield return new WaitForSeconds(_playerCharacter.Ranged() + _timeBuffer);
+                break;
+
+            case PlayerAction.AOE:
+                yield break;
+
+            case PlayerAction.Dodge:
+                yield break;
+
+            case PlayerAction.Push:
+                yield break;
+
+            case PlayerAction.Heal:
+                yield break;
         }
         Debug.Log("Action Finished");
 
@@ -141,7 +138,9 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     {
         Debug.Log("Top of the round");
         // roll
-        List<PlayerAction> rolls = _dice.RollDice(number_of_dice);
+        List<PlayerAction> rolls = _diceController.RollDice(number_of_dice);
+        _canvasController.PopulateTray(rolls);
+
         // choose
         List<PlayerAction> actions = new();
         actions.AddRange(rolls); //TODO
