@@ -9,6 +9,7 @@ public interface IEntity
     float Move();
     float Attack();
     void ReceiveDamage(int damage);
+    float Repell(IEntity entity);
 }
 
 public class Entity : MonoBehaviour, IEntity
@@ -17,10 +18,12 @@ public class Entity : MonoBehaviour, IEntity
     { 
         Idle, 
         Moving, 
-        Attacking
+        Attacking, 
+        Repelling
     }
 
     private readonly float _attackDuration = .5f;
+    private readonly float _repellDuration = .5f;
     private readonly float _moveDuration = .75f;
 
     public GridVector GetCoordinatesFromPosition() => GridVector.From(transform.position);
@@ -57,7 +60,7 @@ public class Entity : MonoBehaviour, IEntity
     {
         enabled = false;
         SnapPositionToGrid();
-        Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        HideSword();
     }
 
     private void SnapPositionToGrid()
@@ -80,20 +83,52 @@ public class Entity : MonoBehaviour, IEntity
             target.ReceiveDamage(1);
         }
 
-        Sword.position = attackCoordinates.FieldCenterPosition;
-        Sword.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        ShowSword(attackCoordinates);
 
-        StartCoroutine(DelayEndAttack());
+        StartCoroutine(DelayEndOffense(_attackDuration));
 
         return _attackDuration;
     }
 
     public float Move()
     {
-        _state = State.Moving;
-        _remainingMoveDistance = 1f;
-        enabled = true;
-        return _moveDuration;
+        var newCoordinates = GetCoordinatesFromPosition().GetAdjacent(GridDirection.North);
+
+        var occupants = Grid.Instance
+            .GetEntites(newCoordinates)
+            .ToArray(); // must copy or iterator will throw
+
+        if (occupants.Length > 0)
+        {
+            var maxDuration = 0f;
+
+            foreach (var occupant in occupants)
+            {
+                var duration = occupant.Repell(this);
+                maxDuration = Mathf.Max(maxDuration, duration);
+            }
+
+            return maxDuration;
+        }
+        else
+        {
+            _state = State.Moving;
+            _remainingMoveDistance = 1f;
+            enabled = true;
+            return _moveDuration;
+        }
+    }
+
+    public float Repell(IEntity entity)
+    {
+        _state = State.Repelling;
+        entity.ReceiveDamage(1);
+
+        ShowSword(entity.GetCoordinatesFromPosition());
+
+        StartCoroutine(DelayEndOffense(_repellDuration));
+
+        return _repellDuration;
     }
 
     private void Update()
@@ -129,10 +164,21 @@ public class Entity : MonoBehaviour, IEntity
         }
     }
 
-    private IEnumerator DelayEndAttack()
+    private void ShowSword(GridVector coordinates)
     {
-        yield return new WaitForSeconds(_attackDuration);
-        _state = State.Idle;
+        Sword.position = coordinates.FieldCenterPosition;
+        Sword.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    private void HideSword()
+    {
         Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    private IEnumerator DelayEndOffense(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        _state = State.Idle;
+        HideSword();
     }
 }
