@@ -1,11 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public interface ICanvasController
 {
-
+    void OnMouseMoved(Vector2 position);
 }
+
 public class CanvasController : Singleton<CanvasController, ICanvasController>, ICanvasController
 {
     public GameObject SlotPrefab;
@@ -46,6 +46,13 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
             slot.GetComponent<RectTransform>().localPosition = new(offset + (i * spacing), 0f);
             _slots.Add(slot);
         }
+    }
+
+    private Vector2 _mousePosition;
+
+    public void OnMouseMoved(Vector2 position)
+    {
+        _mousePosition = position;
     }
 
     public void PopulateTray(List<GameMode.PlayerAction> rolls)

@@ -56,6 +56,9 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
     public void OnMouse(InputValue inputValue)
     {
         var cursorScreenPosition = inputValue.Get<Vector2>();
+
+        CanvasController.Instance.OnMouseMoved(cursorScreenPosition);
+
         var cursorPosition3d = new Vector3(cursorScreenPosition.x, cursorScreenPosition.y, -_playerCamera.Camera.transform.position.z);
         _cursorWorldPosition = _playerCamera.Camera.ScreenToWorldPoint(cursorPosition3d);
 
