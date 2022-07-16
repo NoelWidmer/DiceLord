@@ -16,6 +16,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     public GameObject CanvasControllerPrefab;
     public GameObject PlayerControllerPrefab;
     public GameObject DiceControllerPrefab;
+    public AudioClip AmbientTrack;
 
     public int number_of_dice;
 
@@ -67,6 +68,15 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             var diceController = Instantiate(DiceControllerPrefab, transform);
             diceController.name = nameof(DiceController);
             _diceController = diceController.GetComponent<DiceController>();
+        }
+
+        // setup ambient track
+        {
+            var src = gameObject.AddComponent<AudioSource>();
+            src.clip = AmbientTrack;
+            src.volume = .5f;
+            src.loop = true;
+            src.Play();
         }
 
         // register entities
