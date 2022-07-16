@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IGameMode
@@ -95,8 +96,10 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     {
         Debug.Log("Top of the round");
         // roll
-        PlayerAction[] actions = _dice.RollDice(number_of_dice);
+        PlayerAction[] rolls = _dice.RollDice(number_of_dice);
         // choose
+        List<PlayerAction> actions = new List<PlayerAction>();
+        actions.AddRange(rolls); //TODO
         // player act
         foreach(var action in actions)
         {
