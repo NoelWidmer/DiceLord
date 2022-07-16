@@ -6,6 +6,7 @@ public interface IReferences
     AudioClip[] RangedSounds { get; }
     AudioClip[] PlayerMoveSounds { get; }
     AudioClip[] TakeDamageSounds { get; }
+    AudioClip[] DeathScreamSounds { get; }
 }
 
 public class References : Singleton<References, IReferences>, IReferences
@@ -25,4 +26,8 @@ public class References : Singleton<References, IReferences>, IReferences
     [SerializeField]
     private AudioClip[] _takeDamageSounds;
     public AudioClip[] TakeDamageSounds => _takeDamageSounds;
+
+    [SerializeField]
+    private AudioClip[] _deathScreamSounds;
+    public AudioClip[] DeathScreamSounds => _deathScreamSounds;
 }
