@@ -47,6 +47,9 @@ MonoBehaviour:
   _swordAttackSounds:
   - {fileID: 8300000, guid: 83119342a92016343975ffbfa8e6db02, type: 3}
   - {fileID: 8300000, guid: fb42c8e90073c9e439a3609c04552e34, type: 3}
+  _rangedSounds:
+  - {fileID: 8300000, guid: 5b5ea1cd34914b9438c81177f1b3ca4d, type: 3}
+  - {fileID: 8300000, guid: c01f522c9ce3c3e48af59ba0c86c1c44, type: 3}
   _playerMoveSounds:
   - {fileID: 8300000, guid: 3ae286ac191759149b1a4aec93b8f47c, type: 3}
   - {fileID: 8300000, guid: b4fc6aad6fe17254eba30cfbb12904db, type: 3}
