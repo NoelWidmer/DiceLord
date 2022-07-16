@@ -65,11 +65,15 @@ public abstract class Entity : MonoBehaviour, IEntity
     private GridVector _movingToCoordiantes;
     private float _remainingMoveDistance;
 
+    private AnimationHandler _animHandler;
+
     protected virtual void Awake()
     {
         enabled = false;
         SnapPositionToGrid(GetStartCoordinates());
         BecomeIdle();
+
+        _animHandler = GetComponentInChildren<AnimationHandler>();
     }
 
     private void SnapPositionToGrid(GridVector coordiantes)
@@ -87,14 +91,28 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
     }
 
-    protected abstract void OnDirectionalRequest();
-
     public void Move()
     {
         EnsureState(State.Idle);
         _state = State.MoveDirectionRequested;
         OnDirectionalRequest();
     }
+
+    public void Melee()
+    {
+        EnsureState(State.Idle);
+        _state = State.MeleeDirectionRequested;
+        OnDirectionalRequest();
+    }
+
+    public void Ranged()
+    {
+        EnsureState(State.Idle);
+        _state = State.RangedDirectionRequested;
+        OnDirectionalRequest();
+    }
+
+    protected abstract void OnDirectionalRequest();
 
     protected void OnDirectionalResponse(GridDirection direction)
     {
@@ -133,6 +151,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             void DoMove()
             {
+                _animHandler.PlayOrStopMove(true);
                 PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
                 _state = State.Moving;
                 _movingToCoordiantes = newCoordinates;
@@ -142,6 +161,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
         else if (_state == State.MeleeDirectionRequested)
         {
+            _animHandler.PlayOrStopAttack(true);
             _state = State.Melee;
 
             var attackCoordinates = Coordinates.GetAdjacent(direction);
@@ -162,6 +182,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
         else if (_state == State.RangedDirectionRequested)
         {
+            _animHandler.PlayOrStopAttack(true);
             _state = State.Ranged;
 
             StartCoroutine(DelayEjectProjectile());
@@ -205,20 +226,6 @@ public abstract class Entity : MonoBehaviour, IEntity
         {
             throw new NotImplementedException("this kind of directional input has not yet been implemented.");
         }
-    }
-
-    public void Melee()
-    {
-        EnsureState(State.Idle);
-        _state = State.MeleeDirectionRequested;
-        OnDirectionalRequest();
-    }
-
-    public void Ranged()
-    {
-        EnsureState(State.Idle);
-        _state = State.RangedDirectionRequested;
-        OnDirectionalRequest();        
     }
 
     public abstract bool CanBeEntered { get; }
@@ -272,6 +279,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             if (_state != State.Moving)
             {
+                _animHandler.PlayOrStopMove(false);
                 Grid.Instance.UpdateEntityCoordinates(this, _movingToCoordiantes);
                 SnapPositionToGrid(_movingToCoordiantes);
                 GameMode.Instance.ProcessNextAction();
@@ -300,6 +308,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
         if (newHealth < 1)
         {
+            _animHandler.PlayOrStopDeath(true);
             Debug.Log($"{name} took {damage} damage and died.");
 
             var clip = References.Instance.DeathScreamSounds.GetRandomItem();
@@ -319,6 +328,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
         else
         {
+            _animHandler.TakeDamage();
             Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
             PlayParallelSound(References.Instance.TakeDamageSounds.GetRandomItem());
             Health = newHealth;
@@ -350,6 +360,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         yield return new WaitForSeconds(duration);
         BecomeIdle();
+        _animHandler.PlayOrStopAttack(false);
         GameMode.Instance.ProcessNextAction();
     }
 
