@@ -112,7 +112,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 break;
 
             case PlayerAction.Move:
-                yield return new WaitForSeconds(_playerCharacter.Move() + _timeBuffer);
+                _playerCharacter.Move();
+                yield return new WaitForSeconds(1f + _timeBuffer);
                 break;
 
             case PlayerAction.Melee:

@@ -87,7 +87,8 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         EnsureState(State.Idle);
         _state = State.MoveDirectionRequested;
-        OnDirectionalRequest();
+        OnDirectionalResponse(GridDirection.NorthEast);
+        //OnDirectionalRequest();
     }
 
     protected float OnDirectionalResponse(GridDirection direction)
