@@ -21,6 +21,8 @@ public class DiceController : Singleton<DiceController, IDiceController>, IDiceC
             GameMode.PlayerAction.Melee,
             GameMode.PlayerAction.Move
         };
+
+        GetComponentInChildren<Renderer>().material.mainTexture = DiceTextureGenerator.GetTexture();
     }
 
     public GameMode.PlayerAction[] RollDice(int n = 1)

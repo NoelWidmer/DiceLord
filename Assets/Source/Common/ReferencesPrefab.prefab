@@ -44,3 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0d2bcb7b3c00e46855a5e19ede0eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _swordAttackSounds:
+  - {fileID: 8300000, guid: 83119342a92016343975ffbfa8e6db02, type: 3}
+  - {fileID: 8300000, guid: fb42c8e90073c9e439a3609c04552e34, type: 3}
+  _playerMoveSounds:
+  - {fileID: 8300000, guid: 3ae286ac191759149b1a4aec93b8f47c, type: 3}
+  - {fileID: 8300000, guid: b4fc6aad6fe17254eba30cfbb12904db, type: 3}
+  - {fileID: 8300000, guid: 9013b672cfba3c34d97d789184351767, type: 3}
