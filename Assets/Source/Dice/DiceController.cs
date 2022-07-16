@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public interface IDice
+public interface IDiceController
 {
     public GameMode.PlayerAction[] RollDice(int n);
 }
 
-public class Dice : Singleton<Dice, IDice>, IDice
+public class DiceController : Singleton<DiceController, IDiceController>, IDiceController
 {
     const int NUM_SIDES = 6;
     private GameMode.PlayerAction[] _actions;

@@ -20,7 +20,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     }
 
     private IPlayerCharacter _playerCharacter;
-    private Dice _dice;
+    private DiceController _dice;
 
     protected override void OnAwake()
     {
@@ -40,8 +40,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
         // setup dice
         {
-            var diceObject = Instantiate(DicePrefab, transform);
-            diceObject.name = nameof(Dice);
+            var diceController = Instantiate(DicePrefab, transform);
+            diceController.name = nameof(DiceController);
         }
 
         // register entities
@@ -54,7 +54,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         }
 
         _playerCharacter = FindObjectOfType<PlayerCharacter>();
-        _dice = FindObjectOfType<Dice>();
+        _dice = FindObjectOfType<DiceController>();
         StartNextTurn();
     }
 
