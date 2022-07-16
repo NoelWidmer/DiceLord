@@ -40,10 +40,10 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
         }
     }
 
-    public void Possess(IPlayerCharacter playerCahracter)
+    public void Possess(IPlayerCharacter playerCharacter)
     {
-        _playerCharacter = playerCahracter;
-        _playerCamera.TrackPlayer(playerCahracter);
+        _playerCharacter = playerCharacter;
+        _playerCamera.TrackPlayer(playerCharacter);
     }
 
     public void OnRoll(InputValue inputValue)
