@@ -29,7 +29,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
             var arrowNE = transform.Find("Arrow NE");
             _directionalArrows.Add(arrowNE);
 
-            var offset = .5f * distanceBetweenFields * neDirection;
+            var offset = .75f * distanceBetweenFields * neDirection;
             arrowNE.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
         }
 
@@ -37,7 +37,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
             var arrowSE = transform.Find("Arrow SE");
             _directionalArrows.Add(arrowSE);
 
-            var offset = .5f * distanceBetweenFields * -nwDirection;
+            var offset = .75f * distanceBetweenFields * -nwDirection;
             arrowSE.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
         }
 
@@ -45,7 +45,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
             var arrowSW = transform.Find("Arrow SW");
             _directionalArrows.Add(arrowSW);
 
-            var offset = .5f * distanceBetweenFields * -neDirection;
+            var offset = .75f * distanceBetweenFields * -neDirection;
             arrowSW.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
         }
 
@@ -53,7 +53,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
             var arrowNW = transform.Find("Arrow NW");
             _directionalArrows.Add(arrowNW);
 
-            var offset = .5f * distanceBetweenFields * nwDirection;
+            var offset = .75f * distanceBetweenFields * nwDirection;
             arrowNW.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
         }
 
