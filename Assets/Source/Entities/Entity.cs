@@ -6,13 +6,18 @@ using UnityEngine;
 public interface IEntity
 {
     GridVector GetCoordinatesFromPosition();
+
+    bool CanBeEntered { get; }
     float Move();
+
     float Attack();
     void ReceiveDamage(int damage);
+
+    bool CanRepell { get; }
     float Repell(IEntity entity);
 }
 
-public class Entity : MonoBehaviour, IEntity
+public abstract class Entity : MonoBehaviour, IEntity
 {
     private enum State
     { 
@@ -93,6 +98,8 @@ public class Entity : MonoBehaviour, IEntity
         return _attackDuration;
     }
 
+    public abstract bool CanBeEntered { get; }
+
     public float Move()
     {
         var newCoordinates = GetCoordinatesFromPosition().GetAdjacent(GridDirection.North);
@@ -107,13 +114,29 @@ public class Entity : MonoBehaviour, IEntity
 
             foreach (var occupant in occupants)
             {
-                var duration = occupant.Repell(this);
-                maxDuration = Mathf.Max(maxDuration, duration);
+                if (occupant.CanRepell)
+                {
+                    var duration = occupant.Repell(this);
+                    maxDuration = Mathf.Max(maxDuration, duration);
+                }
+                else if (occupant.CanBeEntered)
+                {
+                    return DoMove();
+                }
+                else
+                {
+                    Debug.Log("move is blocked");
+                }
             }
 
             return maxDuration;
         }
         else
+        {
+            return DoMove();
+        }
+
+        float DoMove()
         {
             _state = State.Moving;
             _remainingMoveDistance = 1f;
@@ -121,6 +144,8 @@ public class Entity : MonoBehaviour, IEntity
             return _moveDuration;
         }
     }
+
+    public abstract bool CanRepell { get; }
 
     public float Repell(IEntity entity)
     {
@@ -175,7 +200,10 @@ public class Entity : MonoBehaviour, IEntity
 
     private void HideSword()
     {
-        Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        if (Sword)
+        {
+            Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
 
     private IEnumerator DelayEndOffense(float duration)

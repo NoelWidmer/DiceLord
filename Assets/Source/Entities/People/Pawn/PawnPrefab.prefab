@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7709351016906457387}
-  - component: {fileID: 7709351016906457428}
+  - component: {fileID: 122078820697363316}
   m_Layer: 0
   m_Name: PawnPrefab
   m_TagString: Untagged
@@ -193,7 +193,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7709351016906457386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -202,7 +202,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7709351016906457428
+--- !u!114 &122078820697363316
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7709351016906457386}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 233beaddc9a1e8a48ae717b56ad8598d, type: 3}
+  m_Script: {fileID: 11500000, guid: af43e9c632bd42749bf5221fcd4917b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Sword: {fileID: 3193661847173671192}
