@@ -1,7 +1,7 @@
 public enum GridDirection : byte
 {
-    North, 
-    East, 
-    South, 
-    West
+    NorthEast, 
+    SouthWest, 
+    SouthEast, 
+    NorthWest
 }

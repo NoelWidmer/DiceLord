@@ -19,7 +19,7 @@ public class Grid : Singleton<Grid, IGrid>, IGrid
 
     public void RegisterEntity(IEntity entity)
     {
-        var coordinates = entity.GetCoordinatesFromPosition();
+        var coordinates = entity.GetInitialCoordinates();
 
         if (_entities.TryAdd(entity, coordinates))
         {

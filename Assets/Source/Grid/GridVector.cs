@@ -3,51 +3,21 @@ using UnityEngine;
 
 public struct GridVector : IEquatable<GridVector>
 {
-    private const int _fieldPixelWidth = 42;
-    private const int _fieldPixelHeight = 21;
+    private const int _fieldPixelWidth = 40;
+    private const int _fieldPixelHeight = 20;
     private const int _pixelsPerUnit = 32;
 
-    private const float _fieldHeight = (float)_fieldPixelWidth / _pixelsPerUnit;
-    private const float _fieldWidth = (float)_fieldPixelHeight / _pixelsPerUnit;
+    private const float _fieldWidth = (float)_fieldPixelWidth / _pixelsPerUnit;
+    private const float _fieldHeight = (float)_fieldPixelHeight / _pixelsPerUnit;
 
     public readonly int X;
     public readonly int Y;
 
-    public Vector3 FieldCenterPosition
-        => new Vector2(X * _fieldWidth *.5f, Y * _fieldHeight);
-
-    public static GridVector From(Vector2 point)
+    public Vector3 GetFieldCenterPosition()
     {
-        var x = Mathf.FloorToInt(point.x / _fieldWidth * .5f);
-
-        float adjustedPoint;
-        if (x % 2 == 1)
-        {
-            adjustedPoint = point.y - _fieldHeight * .5f;
-        }
-        else
-        {
-            adjustedPoint = point.y;
-        }
-
-        var y = Mathf.FloorToInt(adjustedPoint / _fieldHeight * .5f);
-
-        var closestMatch = new GridVector(x, y);
-        var distance = Vector2.Distance(closestMatch.FieldCenterPosition, point);
-
-        foreach (GridDirection direction in Enum.GetValues(typeof(GridDirection)))
-        {
-            var potentialMatch = closestMatch.GetAdjacent(direction);
-            var distance2 = Vector2.Distance(potentialMatch.FieldCenterPosition, point);
-
-            if (distance2 < distance)
-            {
-                closestMatch = potentialMatch;
-                distance = distance2;
-            }
-        }
-
-        return closestMatch;
+        var x = new Vector2(X * _fieldWidth * .5f, _fieldHeight * .5f * X);
+        var y = new Vector2(Y * _fieldWidth * -.5f, _fieldHeight * .5f * Y);
+        return x + y;
     }
 
     public GridVector(int x, int y)
@@ -58,10 +28,10 @@ public struct GridVector : IEquatable<GridVector>
 
     public GridVector GetAdjacent(GridDirection dir) => dir switch
     {
-        GridDirection.North => new GridVector(X, Y + 1),
-        GridDirection.East => new GridVector(X + 1, Y),
-        GridDirection.South => new GridVector(X, Y - 1),
-        GridDirection.West => new GridVector(X - 1, Y),
+        GridDirection.NorthEast => new GridVector(X, Y + 1),
+        GridDirection.SouthWest => new GridVector(X + 1, Y),
+        GridDirection.SouthEast => new GridVector(X, Y - 1),
+        GridDirection.NorthWest => new GridVector(X - 1, Y),
         _ => throw new NotImplementedException(),
     };
 
