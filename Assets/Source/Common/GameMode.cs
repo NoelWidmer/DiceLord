@@ -9,7 +9,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     public GameObject ReferencesPrefab;
     public GameObject PlayerControllerPrefab;
 
-    public enum PlayerActionsEnum
+    public enum PlayerAction
     {
         NOP,
         Move,
@@ -17,6 +17,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     }
 
     private IPlayerCharacter _playerCharacter;
+    private Dice dice;
 
     protected override void OnAwake()
     {
@@ -48,10 +49,32 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         StartNextTurn();
     }
 
+    private void ProcessAction(PlayerAction action)
+    {
+        switch(action)
+        {
+            case PlayerAction.NOP:
+                Debug.Log("NOP");
+                break;
+
+            case PlayerAction.Move:
+                Debug.Log("Move");
+                _playerCharacter.Move();
+                break;
+
+            case PlayerAction.Attack:
+                Debug.Log("Attack");
+                _playerCharacter.Attack();
+                break;
+        }
+    }
+
     private void StartNextTurn()
     {
         // roll
+        PlayerAction[] actions = dice.RollDice();
         // choose
+        ProcessAction(actions[0]);
         // player act
         // enemy act
 

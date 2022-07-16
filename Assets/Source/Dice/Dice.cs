@@ -5,35 +5,33 @@ using UnityEngine;
 public class Dice : MonoBehaviour
 {
     const int NUM_SIDES = 6;
-    private GameMode.PlayerActionsEnum[] actions;
+    private GameMode.PlayerAction[] _actions;
 
     // Start is called before the first frame update
     void Start()
     {
-        actions = new GameMode.PlayerActionsEnum[NUM_SIDES];
+        _actions = new GameMode.PlayerAction[NUM_SIDES] {
+            GameMode.PlayerAction.Move,
+            GameMode.PlayerAction.Move,
+            GameMode.PlayerAction.Attack,
+            GameMode.PlayerAction.NOP,
+            GameMode.PlayerAction.Attack,
+            GameMode.PlayerAction.Move
+        };
     }
 
-    public void rollDice()
+    public GameMode.PlayerAction[] RollDice(int n = 1)
     {
-        GameMode.PlayerActionsEnum action = actions[Mathf.FloorToInt(Random.Range(0.0f, NUM_SIDES))];
-
-        switch(action) {
-            case GameMode.PlayerActionsEnum.NOP:
-                Debug.Log("NOP Action");
-                break;
-            
-            case GameMode.PlayerActionsEnum.Move:
-                Debug.Log("Move Action");
-                break;
-
-            case GameMode.PlayerActionsEnum.Attack:
-                Debug.Log("Attack Action");
-                break;
+        GameMode.PlayerAction[] rolls = new GameMode.PlayerAction[n];
+        for(int i = 0; i < n; i++)
+        {
+            rolls[i] = _actions[Mathf.FloorToInt(Random.Range(0.0f, NUM_SIDES))];
         }
+        return rolls;
     }
 
     // Setters and Getters
-    public int getNumSides()
+    public int GetNumSides()
     {
         return NUM_SIDES;
     }
