@@ -8,6 +8,8 @@ public interface IGameMode
 
 public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 {
+    protected override DisableBehaviour DisableBehaviour => DisableBehaviour.DontDisable;
+
     public GameObject ReferencesPrefab;
     public GameObject PlayerControllerPrefab;
     public GameObject DicePrefab;
@@ -24,6 +26,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     protected override void OnAwake()
     {
+        _playerCharacter = FindObjectOfType<PlayerCharacter>();
+
         // setup references
         {
             var references = Instantiate(ReferencesPrefab, transform);
@@ -42,6 +46,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         {
             var diceObject = Instantiate(DicePrefab, transform);
             diceObject.name = nameof(Dice);
+            _dice = diceObject.GetComponent<Dice>();
         }
 
         // register entities
@@ -53,9 +58,13 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             }
         }
 
-        _playerCharacter = FindObjectOfType<PlayerCharacter>();
-        _dice = FindObjectOfType<Dice>();
         StartNextTurn();
+    }
+
+    private void Start()
+    {
+        enabled = false;
+        PlayerController.Instance.Possess(_playerCharacter);
     }
 
     private void ProcessAction(PlayerAction action)

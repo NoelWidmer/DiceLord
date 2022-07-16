@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputActionAsset: {fileID: -944628639613478452, guid: 40a9709b0f9cb1a49900cbce334475f6, type: 3}
+  PlayerCameraPrefab: {fileID: 247068535300324918, guid: 7d294899c72405848a3bc0af16f5e7ca, type: 3}
