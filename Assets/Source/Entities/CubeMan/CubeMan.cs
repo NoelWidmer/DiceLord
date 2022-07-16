@@ -1,4 +1,4 @@
-public class NPC : Entity
+public class CubeMan : Entity
 {
     public override bool CanBeEntered => false;
     public override bool CanRepell => true;
