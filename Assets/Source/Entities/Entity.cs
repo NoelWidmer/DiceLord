@@ -21,6 +21,7 @@ public interface IEntity
 
     bool CanRepell { get; }
     void Repell(IEntity entity);
+    void ForceBecomeIdle();
 }
 
 public abstract class Entity : MonoBehaviour, IEntity
@@ -236,7 +237,14 @@ public abstract class Entity : MonoBehaviour, IEntity
         PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
         ShowSword(entity.Coordinates);
 
+        entity.ForceBecomeIdle();
+
         StartCoroutine(DelayEndOffense(_repellDuration));
+    }
+    
+    public void ForceBecomeIdle()
+    {
+        BecomeIdle();
     }
 
     private void Update()
