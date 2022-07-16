@@ -58,7 +58,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     private GridVector _movingToCoordiantes;
     private float _remainingMoveDistance;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         enabled = false;
         SnapPositionToGrid(GetStartCoordinates());
