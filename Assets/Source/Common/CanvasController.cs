@@ -17,6 +17,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     private GameObject _slotsArea;
     private Rect _slotsAreaRect;
     private List<GameObject> _slots;
+    private GameMode _gameMode;
 
     protected override void OnAwake()
     {
@@ -31,15 +32,18 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         _slotsArea = _canvas.transform.Find("SlotsArea").gameObject;
         _slotsAreaRect = _slotsArea.GetComponent<RectTransform>().rect;
 
+        _gameMode = transform.GetComponentInParent<GameMode>();
+
         _slots = new();
-        for (int i = 0; i < transform.GetComponentInParent<GameMode>().number_of_dice; i++) //TODO
+        for (int i = 0; i < _gameMode.number_of_dice; i++) //TODO
         {
             var slot = Instantiate(SlotPrefab, transform);
             slot.name = "Slot " + i;
             slot.transform.SetParent(_slotsArea.transform);
             float width = slot.GetComponent<RectTransform>().rect.width;
-            float offset = _slotsAreaRect.width / 2 - width / 2;
-            slot.GetComponent<RectTransform>().localPosition = new(100f * i - offset, 0f);
+            float spacing = (_slotsAreaRect.width + width) / (_gameMode.number_of_dice + 1);
+            float offset = -(_slotsAreaRect.width / 2) - (width / 2) + spacing;
+            slot.GetComponent<RectTransform>().localPosition = new(offset + (i * spacing), 0f);
             _slots.Add(slot);
         }
     }
