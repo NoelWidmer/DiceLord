@@ -65,6 +65,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         else
         {
             Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
+            PlayParallelSound(References.Instance.TakeDamageSounds.GetRandomItem());
             Health = newHealth;
         }
     }
