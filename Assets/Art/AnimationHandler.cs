@@ -19,16 +19,17 @@ public class AnimationHandler : MonoBehaviour
         mask = GetComponent<SpriteMask>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         mask.enabled = false;
-
-        TakeDamage();
     }
 
     public void PlayOrStopMove(bool state)
     {
         if (state)
-           myParticleSystem = Instantiate(particals[0]);
-        else
-           Destroy(myParticleSystem);
+        {
+            //myParticleSystem = Instantiate(particals[0]);
+            //myParticleSystem.transform.parent = transform;
+        }
+        //else
+            //Destroy(myParticleSystem);
     }
 
     public void PlayOrStopAttack(bool state)
