@@ -88,12 +88,15 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
         // init slots
         _slotsArea = _canvas.transform.Find("SlotsArea").gameObject;
+        float areaWidth = _slotsArea.GetComponent<RectTransform>().rect.width;
         for (int i = 0; i < number_of_dice; i++)
         {
             var slot = Instantiate(SlotPrefab, transform);
             slot.name = "Slot " + i;
-            slot.transform.parent = _slotsArea.transform;
-            slot.transform.Translate(new(i * 1f, 0f));
+            slot.transform.SetParent(_slotsArea.transform);
+            float width = slot.GetComponent<RectTransform>().rect.width;
+            float offset = areaWidth / 2 - width / 2;
+            slot.GetComponent<RectTransform>().localPosition = new(100f * i - offset, 0f);
         }
     }
 
