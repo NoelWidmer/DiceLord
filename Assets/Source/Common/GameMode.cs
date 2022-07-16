@@ -13,7 +13,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public GameObject ReferencesPrefab;
     public GameObject PlayerControllerPrefab;
-    public GameObject DicePrefab;
+    public GameObject DiceControllerPrefab;
 
     public int number_of_dice;
 
@@ -51,7 +51,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
         // setup dice
         {
-            var diceController = Instantiate(DicePrefab, transform);
+            var diceController = Instantiate(DiceControllerPrefab, transform);
             diceController.name = nameof(DiceController);
             _dice = diceController.GetComponent<DiceController>();
         }
@@ -78,6 +78,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     {
         if(idx == number_of_dice)
         {
+            // enemy act (TODO)
             StartNextTurn();
             yield break;
         }
@@ -114,7 +115,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         actions.AddRange(rolls); //TODO
         // player act
         StartCoroutine(ProcessActions(actions, 0));
-        // enemy act
     }
 
     private IEnumerator DelayNextTurn()

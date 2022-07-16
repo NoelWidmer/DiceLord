@@ -235,6 +235,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9126880827913645253, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
+      propertyPath: number_of_dice
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9126880827913645253, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
+      propertyPath: DiceControllerPrefab
+      value: 
+      objectReference: {fileID: 7609912808743938612, guid: 593527db3fdf504428206e9fcef26cd4, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
 --- !u!1001 &1593051236222920882
