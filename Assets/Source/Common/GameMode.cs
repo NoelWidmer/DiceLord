@@ -105,10 +105,15 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public void ProcessNextAction()
     {
-        if (_playerActionIndex == number_of_dice)
+        if (_playerActionIndex == _playerActions.Count)
         {
+            if(_playerActionIndex < number_of_dice)
+            {
+                // only move slot indicator, execute no action
+            }
             // enemy act (TODO)
             _canvasController.ClearTray();
+            _canvasController.ClearSlots();
             StartNextTurn();
         }
         else
@@ -163,10 +168,15 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         // roll
         List<PlayerAction> rolls = _diceController.RollDice(number_of_dice);
         _canvasController.PopulateTray(rolls);
-
         // choose
-        List<PlayerAction> actions = new();
-        actions.AddRange(rolls); //TODO
+        for(int i = 0; i < rolls.Count-1; i++) //TODO
+        {
+            Transform tray = _canvasController.GetTray().transform;
+            string name = rolls[i].ToString();
+            _canvasController.AddToSlot(i, tray.Find(name).gameObject);
+        }
+
+        List<PlayerAction> actions = _canvasController.GetSelectedActions();
         // player act
         _playerActions = actions;
         _playerActionIndex = 0;
