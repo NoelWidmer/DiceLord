@@ -49,6 +49,11 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public void ReceiveDamage(int damage)
     {
+        if (damage < 1)
+        {
+            return;
+        }
+
         var newHealth = Health - damage;
 
         if (newHealth < 1)
@@ -57,10 +62,20 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             Debug.Log($"{name} took {damage} damage and died.");
 
+            var clip = References.Instance.DeathScreamSounds.GetRandomItem();
+            PlayParallelSound(clip);
+
             OnDied();
 
             Grid.Instance.RemoveEntity(this);
-            Destroy(gameObject);
+
+            StartCoroutine(DelayDestroy());
+
+            IEnumerator DelayDestroy()
+            {
+                yield return new WaitForSeconds(clip.length);
+                Destroy(gameObject);
+            }
         }
         else
         {
