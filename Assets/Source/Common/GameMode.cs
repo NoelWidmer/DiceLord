@@ -115,8 +115,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         // player act
         StartCoroutine(ProcessActions(actions, 0));
         // enemy act
-
-        StartCoroutine(DelayNextTurn());
     }
 
     private IEnumerator DelayNextTurn()
