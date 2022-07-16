@@ -6,6 +6,9 @@ public class NPC : Entity
     public override void OnEntered(IEntity entity)
     { }
 
+    protected override void OnDirectionalRequest()
+    { }
+
     protected override void OnDied()
     { }
 }

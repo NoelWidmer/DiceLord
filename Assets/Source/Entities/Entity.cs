@@ -9,16 +9,16 @@ public interface IEntity
     GridVector GetStartCoordinates();
     GridVector Coordinates { get; }
 
-    bool CanBeEntered { get; }
-    void OnEntered(IEntity entity);
+    void Move();
 
-    float Move();
+    float Melee();
+    float Ranged();
 
-    float Attack();
     void ReceiveDamage(int damage);
     void ReceiveHealth(int health);
 
-    float Ranged();
+    bool CanBeEntered { get; }
+    void OnEntered(IEntity entity);
 
     bool CanRepell { get; }
     float Repell(IEntity entity);
@@ -30,15 +30,19 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         Idle,
         Moving,
-        Attacking,
+        MoveDirectionRequested,
+        Melee,
         Repelling, 
         Ranged
     }
 
-    private readonly float _attackDuration = .5f;
-    private readonly float _rangedDuration = .75f;
+    private readonly float _meleeDuration = .5f;
     private readonly float _repellDuration = .5f;
     private readonly float _moveDuration = .75f;
+
+    private readonly float _rangedChargeDuration = .75f;
+    private readonly float _rangedPrepellDuration = .25f;
+    private readonly int _rangeDistance = 3;
 
     public int X;
     public int Y;
@@ -50,79 +54,102 @@ public abstract class Entity : MonoBehaviour, IEntity
     public Transform Sword;
     public int Health;
 
-    private State _state = State.Idle;
-    private GridVector _newCoordiantes;
+    private State _state;
+
+    private GridVector _movingToCoordiantes;
     private float _remainingMoveDistance;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         enabled = false;
         SnapPositionToGrid(GetStartCoordinates());
-        HideSword();
-    }
-
-    public void ReceiveDamage(int damage)
-    {
-        if (damage < 1)
-        {
-            return;
-        }
-
-        var newHealth = Health - damage;
-
-        if (newHealth < 1)
-        {
-            Health = 0;
-
-            Debug.Log($"{name} took {damage} damage and died.");
-
-            var clip = References.Instance.DeathScreamSounds.GetRandomItem();
-            PlayParallelSound(clip);
-
-            OnDied();
-
-            Grid.Instance.RemoveEntity(this);
-
-            StartCoroutine(DelayDestroy());
-
-            IEnumerator DelayDestroy()
-            {
-                yield return new WaitForSeconds(clip.length);
-                Destroy(gameObject);
-            }
-        }
-        else
-        {
-            Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
-            PlayParallelSound(References.Instance.TakeDamageSounds.GetRandomItem());
-            Health = newHealth;
-        }
-    }
-
-    protected abstract void OnDied();
-
-    public void ReceiveHealth(int health)
-    {
-        if (health < 0)
-        {
-            return;
-        }
-
-        Health += health;
-        Debug.Log($"{name} received {health} health and has {Health} health now.");
+        BecomeIdle();
     }
 
     private void SnapPositionToGrid(GridVector coordiantes)
     {
         transform.position = coordiantes.GetFieldCenterPosition();
-        Debug.Log($"Snap: {name}'s {coordiantes} to {transform.position}");
     }
 
-    public float Attack()
+    private void BecomeIdle()
+    {
+        _state = State.Idle;
+
+        if (Sword)
+        {
+            Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+
+    protected abstract void OnDirectionalRequest();
+
+    public void Move()
+    {
+        EnsureState(State.Idle);
+        _state = State.MoveDirectionRequested;
+        OnDirectionalRequest();
+    }
+
+    protected float OnDirectionalResponse(GridDirection direction)
+    {
+        if (_state == State.MoveDirectionRequested)
+        {
+            var newCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
+
+            var occupants = Grid.Instance
+                .GetEntites(newCoordinates)
+                .ToArray(); // must copy or iterator will throw
+
+            if (occupants.Length > 0)
+            {
+                var maxDuration = 0f;
+
+                foreach (var occupant in occupants)
+                {
+                    if (occupant.CanRepell)
+                    {
+                        var duration = occupant.Repell(this);
+                        maxDuration = Mathf.Max(maxDuration, duration);
+                    }
+                    else if (occupant.CanBeEntered)
+                    {
+                        occupant.OnEntered(this);
+                        return DoMove();
+                    }
+                    else
+                    {
+                        Debug.Log("move is blocked");
+                    }
+                }
+
+                return maxDuration;
+            }
+            else
+            {
+                return DoMove();
+            }
+
+            float DoMove()
+            {
+                PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
+                _state = State.Moving;
+                _movingToCoordiantes = newCoordinates;
+                _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
+                enabled = true;
+                return _moveDuration;
+            }
+        }
+        else
+        {
+            throw new NotImplementedException("this kind of directional input has not yet been implemented.");
+        }
+    }
+
+    public float Melee()
     {
         EnsureState(State.Idle);
 
-        _state = State.Attacking;
+        _state = State.Melee;
 
         var attackCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
 
@@ -138,9 +165,9 @@ public abstract class Entity : MonoBehaviour, IEntity
         PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
         ShowSword(attackCoordinates);
 
-        StartCoroutine(DelayEndOffense(_attackDuration));
+        StartCoroutine(DelayEndOffense(_meleeDuration));
 
-        return _attackDuration;
+        return _meleeDuration;
     }
 
     public float Ranged()
@@ -149,95 +176,48 @@ public abstract class Entity : MonoBehaviour, IEntity
 
         _state = State.Ranged;
 
-        var attackCoordinates = Coordinates
-            .GetAdjacent(GridDirection.NorthEast)
-            .GetAdjacent(GridDirection.NorthEast)
-            .GetAdjacent(GridDirection.NorthEast);
-
-        var targets = Grid.Instance
-            .GetEntites(attackCoordinates)
-            .ToArray(); // must copy or iterator will throw
-
-        foreach (var target in targets)
-        {
-            target.ReceiveDamage(1);
-        }
+        var direction = GridDirection.NorthEast;
+        StartCoroutine(DelayEjectProjectile());
 
         PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
-        ShowSword(attackCoordinates);
 
-        StartCoroutine(DelayEndOffense(_rangedDuration));
+        return _rangedChargeDuration + _rangedPrepellDuration * _rangeDistance + 1;
 
-        return _rangedDuration;
-    }
-
-    private List<AudioSource> _audioSources = new();
-
-    private void PlayParallelSound(AudioClip clip)
-    {
-        var availableSrc = _audioSources.FirstOrDefault(src => src.isPlaying == false);
-
-        if (availableSrc == null)
+        IEnumerator DelayEjectProjectile()
         {
-            availableSrc = gameObject.AddComponent<AudioSource>();
-            _audioSources.Add(availableSrc);
+            yield return new WaitForSeconds(_rangedChargeDuration);
+            StartCoroutine(PrepellProjectileTo(Coordinates, _rangeDistance - 1));
         }
 
-        availableSrc.clip = clip;
-        availableSrc.Play();
+        IEnumerator PrepellProjectileTo(GridVector fromCoordinates, int remainingDistance)
+        {
+            yield return new WaitForSeconds(_rangedPrepellDuration);
+
+            var targetCoordinates = fromCoordinates.GetAdjacent(direction);
+
+            ShowSword(targetCoordinates);
+
+            var targets = Grid.Instance
+                .GetEntites(targetCoordinates)
+                .ToArray();
+
+            foreach (var target in targets)
+            {
+                target.ReceiveDamage(1);
+            }
+
+            if (remainingDistance > 0)
+            {
+                StartCoroutine(PrepellProjectileTo(targetCoordinates, remainingDistance - 1));
+            }
+            else
+            {
+                StartCoroutine(DelayEndOffense(_rangedPrepellDuration));
+            }
+        }
     }
 
     public abstract bool CanBeEntered { get; }
-
-    public float Move()
-    {
-        EnsureState(State.Idle);
-
-        var newCoordinates = Coordinates.GetAdjacent(GridDirection.NorthEast);
-
-        var occupants = Grid.Instance
-            .GetEntites(newCoordinates)
-            .ToArray(); // must copy or iterator will throw
-
-        if (occupants.Length > 0)
-        {
-            var maxDuration = 0f;
-
-            foreach (var occupant in occupants)
-            {
-                if (occupant.CanRepell)
-                {
-                    var duration = occupant.Repell(this);
-                    maxDuration = Mathf.Max(maxDuration, duration);
-                }
-                else if (occupant.CanBeEntered)
-                {
-                    occupant.OnEntered(this);
-                    return DoMove();
-                }
-                else
-                {
-                    Debug.Log("move is blocked");
-                }
-            }
-
-            return maxDuration;
-        }
-        else
-        {
-            return DoMove();
-        }
-
-        float DoMove()
-        {
-            PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
-            _state = State.Moving;
-            _newCoordiantes = newCoordinates;
-            _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
-            enabled = true;
-            return _moveDuration;
-        }
-    }
 
     public abstract void OnEntered(IEntity entity);
 
@@ -277,13 +257,13 @@ public abstract class Entity : MonoBehaviour, IEntity
                 _remainingMoveDistance -= distanceThisFrame;
             }
 
-            var direction = (_newCoordiantes.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).normalized;
+            var direction = (_movingToCoordiantes.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).normalized;
             transform.position += direction * distanceThisFrame;
 
             if (_state != State.Moving)
             {
-                Grid.Instance.UpdateEntityCoordinates(this, _newCoordiantes);
-                SnapPositionToGrid(_newCoordiantes);
+                Grid.Instance.UpdateEntityCoordinates(this, _movingToCoordiantes);
+                SnapPositionToGrid(_movingToCoordiantes);
             }
         }
         else
@@ -298,12 +278,53 @@ public abstract class Entity : MonoBehaviour, IEntity
         Sword.gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    private void HideSword()
+    public void ReceiveDamage(int damage)
     {
-        if (Sword)
+        if (damage < 1)
         {
-            Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            return;
         }
+
+        var newHealth = Health - damage;
+
+        if (newHealth < 1)
+        {
+            Debug.Log($"{name} took {damage} damage and died.");
+
+            var clip = References.Instance.DeathScreamSounds.GetRandomItem();
+            PlayParallelSound(clip);
+
+            Health = 0;
+            OnDied();
+
+            Grid.Instance.RemoveEntity(this);
+            StartCoroutine(DelayDestroy());
+
+            IEnumerator DelayDestroy()
+            {
+                yield return new WaitForSeconds(clip.length);
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
+            PlayParallelSound(References.Instance.TakeDamageSounds.GetRandomItem());
+            Health = newHealth;
+        }
+    }
+
+    protected abstract void OnDied();
+
+    public void ReceiveHealth(int health)
+    {
+        if (health < 0)
+        {
+            return;
+        }
+
+        Health += health;
+        Debug.Log($"{name} received {health} health and has {Health} health now.");
     }
 
     private void EnsureState(State state)
@@ -317,8 +338,25 @@ public abstract class Entity : MonoBehaviour, IEntity
     private IEnumerator DelayEndOffense(float duration)
     {
         yield return new WaitForSeconds(duration);
-        _state = State.Idle;
-        HideSword();
+        BecomeIdle();
+    }
+
+    private List<AudioSource> _audioSources = new();
+
+    private void PlayParallelSound(AudioClip clip)
+    {
+        var availableSrc = _audioSources.FirstOrDefault(src => src.isPlaying == false);
+
+        if (availableSrc == null)
+        {
+            availableSrc = gameObject.AddComponent<AudioSource>();
+            _audioSources.Add(availableSrc);
+
+            availableSrc.spatialBlend = 1f;
+        }
+
+        availableSrc.clip = clip;
+        availableSrc.Play();
     }
 
     private void OnValidate()

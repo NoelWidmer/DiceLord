@@ -77,7 +77,13 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             }
         }
 
-        StartNextTurn();
+        StartCoroutine(DelayFirstTurn());
+
+        IEnumerator DelayFirstTurn()
+        {
+            yield return new WaitForSeconds(1f);
+            StartNextTurn();
+        }
     }
 
     private void Start()
@@ -110,7 +116,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 break;
 
             case PlayerAction.Melee:
-                yield return new WaitForSeconds(_playerCharacter.Attack() + _timeBuffer);
+                yield return new WaitForSeconds(_playerCharacter.Melee() + _timeBuffer);
                 break;
 
             case PlayerAction.Ranged:
