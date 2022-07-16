@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 7709351016906457387}
   - component: {fileID: 7709351016906457428}
   m_Layer: 0
-  m_Name: EntityPrefab
+  m_Name: PawnPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,4 +214,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233beaddc9a1e8a48ae717b56ad8598d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sword: {fileID: 3193661847173671192}
+  Sword: {fileID: 3193661847173671192}
+  Health: 1

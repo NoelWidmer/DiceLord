@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7709351016906457386, guid: c899a7e2407e70645a930543295c5697, type: 3}
       propertyPath: m_Name
-      value: Entity2
+      value: Pawn 2
       objectReference: {fileID: 0}
     - target: {fileID: 7709351016906457387, guid: c899a7e2407e70645a930543295c5697, type: 3}
       propertyPath: m_RootOrder
@@ -303,7 +303,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7709351016906457386, guid: c899a7e2407e70645a930543295c5697, type: 3}
       propertyPath: m_Name
-      value: Entity1
+      value: Pawn 1
       objectReference: {fileID: 0}
     - target: {fileID: 7709351016906457387, guid: c899a7e2407e70645a930543295c5697, type: 3}
       propertyPath: m_RootOrder
@@ -311,11 +311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7709351016906457387, guid: c899a7e2407e70645a930543295c5697, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.33
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 7709351016906457387, guid: c899a7e2407e70645a930543295c5697, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.35
+      value: 3.62
       objectReference: {fileID: 0}
     - target: {fileID: 7709351016906457387, guid: c899a7e2407e70645a930543295c5697, type: 3}
       propertyPath: m_LocalPosition.z

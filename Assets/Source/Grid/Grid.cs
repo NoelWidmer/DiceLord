@@ -8,6 +8,7 @@ public interface IGrid
     IReadOnlyCollection<IEntity> GetEntites(GridVector coordinates);
     GridVector GetCoordiantes(IEntity entity);
     void UpdateEntityCoordinates(IEntity entity, GridVector newCoordinates);
+    bool RemoveEntity(IEntity entity);
 }
 
 public class Grid : Singleton<Grid, IGrid>, IGrid
@@ -38,7 +39,7 @@ public class Grid : Singleton<Grid, IGrid>, IGrid
 
     public void UpdateEntityCoordinates(IEntity entity, GridVector newCoordinates)
     {
-        if (RemoveEntityFromCell(entity))
+        if (RemoveEntity(entity))
         {
             AddEntityToCell(entity, newCoordinates);
             _entities[entity] = newCoordinates;
@@ -67,7 +68,7 @@ public class Grid : Singleton<Grid, IGrid>, IGrid
         }
     }
 
-    private bool RemoveEntityFromCell(IEntity entity)
+    public bool RemoveEntity(IEntity entity)
     {
         if (_entities.TryGetValue(entity, out var coordiantes))
         {

@@ -214,4 +214,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0b05995d723b34db53b68943e9f2d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sword: {fileID: 2025411713178996131}
+  Sword: {fileID: 2025411713178996131}
+  Health: 5

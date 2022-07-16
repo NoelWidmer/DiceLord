@@ -29,7 +29,7 @@ public struct GridVector : IEquatable<GridVector>
 
     public GridVector GetAdjacent(GridDirection dir) => dir switch
     {
-        GridDirection.North => new GridVector(1, Y + 1),
+        GridDirection.North => new GridVector(X, Y + 1),
         GridDirection.East => new GridVector(X + 1, Y),
         GridDirection.South => new GridVector(X, Y - 1),
         GridDirection.West => new GridVector(X - 1, Y),
