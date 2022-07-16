@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dice : MonoBehaviour
+public class Dice : Singleton<Dice, TODO_INTERFACE>
 {
     const int NUM_SIDES = 6;
     private GameMode.PlayerAction[] _actions;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _actions = new GameMode.PlayerAction[NUM_SIDES] {
             GameMode.PlayerAction.Move,
