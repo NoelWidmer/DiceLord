@@ -108,9 +108,9 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     {
         Debug.Log("Top of the round");
         // roll
-        PlayerAction[] rolls = _dice.RollDice(number_of_dice);
+        List<PlayerAction> rolls = _dice.RollDice(number_of_dice);
         // choose
-        List<PlayerAction> actions = new List<PlayerAction>();
+        List<PlayerAction> actions = new();
         actions.AddRange(rolls); //TODO
         // player act
         StartCoroutine(ProcessActions(actions, 0));

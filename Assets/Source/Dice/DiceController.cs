@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IDiceController
 {
-    public GameMode.PlayerAction[] RollDice(int n);
+    public List<GameMode.PlayerAction> RollDice(int n);
 }
 
 public class DiceController : Singleton<DiceController, IDiceController>, IDiceController
@@ -25,12 +26,12 @@ public class DiceController : Singleton<DiceController, IDiceController>, IDiceC
         GetComponentInChildren<Renderer>().material.mainTexture = DiceTextureGenerator.GetTexture();
     }
 
-    public GameMode.PlayerAction[] RollDice(int n = 1)
+    public List<GameMode.PlayerAction> RollDice(int n = 1)
     {
-        GameMode.PlayerAction[] rolls = new GameMode.PlayerAction[n];
+        List<GameMode.PlayerAction> rolls = new();
         for(int i = 0; i < n; i++)
         {
-            rolls[i] = _actions[Mathf.FloorToInt(Random.Range(0.0f, NUM_SIDES))];
+            rolls.Add(_actions.GetRandomItem());
         }
         return rolls;
     }
