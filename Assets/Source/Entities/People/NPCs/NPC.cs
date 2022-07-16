@@ -1,4 +1,4 @@
-public class Pawn : Entity
+public class NPC : Entity
 {
     public override bool CanBeEntered => false;
     public override bool CanRepell => true;
