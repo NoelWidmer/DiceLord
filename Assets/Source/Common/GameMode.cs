@@ -14,11 +14,17 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     public GameObject PlayerControllerPrefab;
     public GameObject DicePrefab;
 
+    public int number_of_dice;
+
     public enum PlayerAction
     {
         NOP,
         Move,
-        Attack
+        Melee,
+        Ranged,
+        AOE,
+        Dodge,
+        Push
     }
 
     private IPlayerCharacter _playerCharacter;
@@ -67,7 +73,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         PlayerController.Instance.Possess(_playerCharacter);
     }
 
-    private void ProcessAction(PlayerAction action)
+    private IEnumerator ProcessAction(PlayerAction action)
     {
         switch(action)
         {
@@ -76,22 +82,26 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 break;
 
             case PlayerAction.Move:
-                _playerCharacter.Move();
+                yield return new WaitForSeconds(_playerCharacter.Move() + .3f);
                 break;
 
-            case PlayerAction.Attack:
-                _playerCharacter.Attack();
+            case PlayerAction.Melee:
+                yield return new WaitForSeconds(_playerCharacter.Attack() + .3f);
                 break;
         }
     }
 
     private void StartNextTurn()
     {
+        Debug.Log("Top of the round");
         // roll
-        PlayerAction[] actions = _dice.RollDice();
+        PlayerAction[] actions = _dice.RollDice(number_of_dice);
         // choose
-        ProcessAction(actions[0]);
         // player act
+        foreach(var action in actions)
+        {
+            StartCoroutine(ProcessAction(action));
+        }
         // enemy act
 
         StartCoroutine(DelayNextTurn());
