@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 406453290194425873}
   - component: {fileID: 7628347384775249817}
+  - component: {fileID: 3659934621180577168}
   m_Layer: 0
   m_Name: Arrow NW
   m_TagString: Untagged
@@ -84,6 +85,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3659934621180577168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786164730848282629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4b7f6f30b64794e89af50ba0d00320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Direction: 3
 --- !u!1 &2384209330804921284
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5990690428188888896}
   - component: {fileID: 7310653306842870539}
+  - component: {fileID: 2743065680863469573}
   m_Layer: 0
   m_Name: Arrow NE
   m_TagString: Untagged
@@ -252,6 +267,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2743065680863469573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3239010778853693312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4b7f6f30b64794e89af50ba0d00320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Direction: 0
 --- !u!1 &3950461130114751073
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,6 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5237518287465903009}
   - component: {fileID: 9182300774550216464}
+  - component: {fileID: 811557907308205163}
   m_Layer: 0
   m_Name: Arrow SW
   m_TagString: Untagged
@@ -483,6 +512,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &811557907308205163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6747789240936476509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4b7f6f30b64794e89af50ba0d00320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Direction: 2
 --- !u!1 &7705493546997723652
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,6 +535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7876646542990456082}
   - component: {fileID: 7022098687662801589}
+  - component: {fileID: 6619705418531362279}
   m_Layer: 0
   m_Name: Arrow SE
   m_TagString: Untagged
@@ -567,3 +610,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6619705418531362279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7705493546997723652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4b7f6f30b64794e89af50ba0d00320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Direction: 1

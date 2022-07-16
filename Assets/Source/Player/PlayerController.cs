@@ -46,9 +46,24 @@ public class PlayerController : Singleton<PlayerController, IPlayerController>, 
     public void OnRoll(InputValue inputValue)
     { }
 
+    private Vector3 _cursorWorldPosition;
+
     public void OnMouse(InputValue inputValue)
     {
-        var position = inputValue.Get<Vector2>();
-        Debug.Log(position);
+        var cursorPosition = inputValue.Get<Vector2>();
+
+        var cameraPosition = _playerCamera.Camera.transform.position;
+        var cursorPosition3d = new Vector3(cursorPosition.x, cursorPosition.y, -cameraPosition.z);
+        _cursorWorldPosition = _playerCamera.Camera.ScreenToWorldPoint(cursorPosition3d);
+        var direction = (_cursorWorldPosition - cameraPosition).normalized;
+
+        var hit = Physics2D.Raycast(cameraPosition, direction);
+        if (hit.collider != null)
+        {
+            if (hit.collider.TryGetComponent<IDirectionalArrowButton>(out var button))
+            {
+                Debug.Log($"direction: {button.Direction}");
+            }
+        }
     }
 }
