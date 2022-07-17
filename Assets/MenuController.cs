@@ -5,7 +5,7 @@ public class MenuController : MonoBehaviour
 {
     public void ExitGame()
     {
-        Debug.Log("exit");
+        Application.Quit();
     }
 
     public void StartGame()

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public interface IGameMode
 {
-    void OnEntityDied(IEntity entity);
+    void OnEntityDied(IEntity entity, float deathDuration);
     void ProcessNextAction();
 }
 
@@ -80,8 +80,14 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         }
 
         // setup ambient track
+        if (AmbientController.Instance == null)
         {
-            var src = gameObject.AddComponent<AudioSource>();
+            var ambientObj = new GameObject("Ambient Track");
+            ambientObj.AddComponent<AmbientController>();
+
+            DontDestroyOnLoad(ambientObj);
+
+            var src = ambientObj.AddComponent<AudioSource>();
             src.clip = AmbientTrack;
             src.volume = .2f;
             src.loop = true;
@@ -113,7 +119,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         }
     }
     
-    public void OnEntityDied(IEntity entity)
+    public void OnEntityDied(IEntity entity, float deathDuration)
     {
         Grid.Instance.RemoveEntity(entity);
 
@@ -121,11 +127,21 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         {
             _enemies.Remove(enemy);
             _queuedEnemies.Remove(enemy);
+
+            if (_enemies.Count == 0)
+            {
+                StartCoroutine(DelaySceneLoad(gameObject.scene.buildIndex + 1));
+            }
         }
         else if (entity is PlayerCharacter)
         {
-            Debug.Log("Game Over!");
-            SceneManager.LoadScene(0);
+            StartCoroutine(DelaySceneLoad(0));
+        }
+
+        IEnumerator DelaySceneLoad(int sceneIndex)
+        {
+            yield return new WaitForSeconds(deathDuration);
+            SceneManager.LoadScene(sceneIndex);
         }
     }
 

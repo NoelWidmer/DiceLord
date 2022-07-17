@@ -338,7 +338,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             Health = 0;
 
-            GameMode.Instance.OnEntityDied(this);
+            GameMode.Instance.OnEntityDied(this, clip.length);
 
             StartCoroutine(DelayDestroy());
 
@@ -346,7 +346,6 @@ public abstract class Entity : MonoBehaviour, IEntity
             {
                 yield return new WaitForSeconds(clip.length);
                 Destroy(gameObject);
-                SceneManager.LoadScene(gameObject.scene.buildIndex + 1);
             }
         }
         else
