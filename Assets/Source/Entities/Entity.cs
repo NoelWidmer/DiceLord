@@ -56,7 +56,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     private readonly float _aoeDuration = .65f;
 
-    protected virtual int RangeDistance => 3;
+    protected virtual int RangeDistance => 2;
 
     public int X;
     public int Y;
@@ -134,6 +134,25 @@ public abstract class Entity : MonoBehaviour, IEntity
         OnDirectionalRequest();
     }
 
+    private GameObject SpawnSplash(GridVector coordinates)
+    {
+        var splash = Instantiate(References.Instance.AttackVisualizerPrefab);
+        splash.transform.position = coordinates.GetFieldCenterPosition();
+        StartCoroutine(EnsureDestroySplash());
+
+        IEnumerator EnsureDestroySplash()
+        {
+            yield return new WaitForSeconds(2);
+
+            if (splash != null)
+            {
+                Destroy(splash);
+            }
+        }
+
+        return splash;
+    }
+
     public void AoE()
     {
         EnsureState(State.Idle);
@@ -149,13 +168,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         {
             var attackCoordinates = Coordinates.GetAdjacent(direction);
 
-            // splashes
-            {
-                var splash = Instantiate(References.Instance.AttackVisualizerPrefab);
-                splash.transform.position = attackCoordinates.GetFieldCenterPosition();
-
-                splashes.Add(splash);
-            }
+            splashes.Add(SpawnSplash(attackCoordinates));
 
             targets.AddRange(Grid.Instance
                 .GetEntites(attackCoordinates).ToArray()); // must copy or iterator will throw
@@ -253,8 +266,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                 this.PlayParallelSound(ref _audioSources, item, true);
             }
 
-            var splash = Instantiate(References.Instance.AttackVisualizerPrefab);
-            splash.transform.position = attackCoordinates.GetFieldCenterPosition();
+            var splash = SpawnSplash(attackCoordinates);
 
             StartCoroutine(DelayEndOffense(_meleeDuration, new[] { splash }));
         }
@@ -346,8 +358,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
         entity.ForceBecomeIdle();
 
-        var splash = Instantiate(References.Instance.AttackVisualizerPrefab);
-        splash.transform.position = entity.Coordinates.GetFieldCenterPosition();
+        var splash = SpawnSplash(entity.Coordinates);
 
         StartCoroutine(DelayEndOffense(_repellDuration, new[] { splash }));
     }
