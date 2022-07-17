@@ -346,7 +346,6 @@ GameObject:
   m_Component:
   - component: {fileID: 552701233}
   - component: {fileID: 552701232}
-  - component: {fileID: 552701231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -354,14 +353,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &552701231
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 552701230}
-  m_Enabled: 1
 --- !u!20 &552701232
 Camera:
   m_ObjectHideFlags: 0
@@ -432,6 +423,7 @@ GameObject:
   - component: {fileID: 611995706}
   - component: {fileID: 611995705}
   - component: {fileID: 611995704}
+  - component: {fileID: 611995707}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -554,6 +546,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611995702}
   m_CullTransparentMesh: 1
+--- !u!114 &611995707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611995702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 724ecb482d75a1b49bbf32d649871a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HoverSound: {fileID: 8300000, guid: de8b8a3e5ef078e43974e84a5ee1e54c, type: 3}
 --- !u!1 &894201984
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,6 +609,7 @@ GameObject:
   - component: {fileID: 968701304}
   - component: {fileID: 968701303}
   - component: {fileID: 968701302}
+  - component: {fileID: 968701305}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -726,6 +732,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968701300}
   m_CullTransparentMesh: 1
+--- !u!114 &968701305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968701300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 724ecb482d75a1b49bbf32d649871a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HoverSound: {fileID: 8300000, guid: de8b8a3e5ef078e43974e84a5ee1e54c, type: 3}
 --- !u!1 &1432555383
 GameObject:
   m_ObjectHideFlags: 0
