@@ -219,10 +219,19 @@ public abstract class Entity : MonoBehaviour, IEntity
                 {
                     if (_remainingMoveDistance == 0)
                     {
-                        projectile.OnLastFieldHit();
+                        projectile.OnPartiallyPiercedEntity();
+                    }
+                    else
+                    {
+                        projectile.OnPiercedEntity();
                     }
 
                     target.ReceiveDamage(1);
+                }
+
+                if (targets.Length == 0)
+                {
+                    projectile.OnStuckInEnvironment();
                 }
 
                 if (remainingDistance > 0)

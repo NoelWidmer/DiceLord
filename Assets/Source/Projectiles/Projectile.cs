@@ -7,7 +7,9 @@ public interface IProjectile
 {
     void Charge(int distance, float durationPerField, GridDirection direction);
     void Launch();
-    void OnLastFieldHit();
+    void OnPartiallyPiercedEntity();
+    void OnPiercedEntity();
+    void OnStuckInEnvironment();
 }
 
 public class Projectile : MonoBehaviour, IProjectile
@@ -68,7 +70,29 @@ public class Projectile : MonoBehaviour, IProjectile
 
     private List<AudioSource> _sources = new();
 
-    public void OnLastFieldHit()
+    public void OnPartiallyPiercedEntity()
+    {
+        PlayImpactSound();
+        Break();
+    }
+    
+    public void OnPiercedEntity()
+    {
+        PlayImpactSound();
+    }
+    
+    public void OnStuckInEnvironment()
+    {
+        PlayImpactSound();
+        Break();
+    }
+
+    private void PlayImpactSound()
+    {
+        this.PlayParallelSound(ref _sources, References.Instance.BowImpactSounds.GetRandomItem());
+    }
+
+    private void Break()
     {
         _renderer.sprite = _direction switch
         {
@@ -78,8 +102,6 @@ public class Projectile : MonoBehaviour, IProjectile
             GridDirection.NorthWest => NwSpriteBroken,
             _ => throw new NotImplementedException(),
         };
-
-        this.PlayParallelSound(ref _sources, References.Instance.BowImpactSounds.GetRandomItem());
     }
 
     private void Update()
