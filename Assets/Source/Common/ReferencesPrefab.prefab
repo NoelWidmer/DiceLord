@@ -73,9 +73,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0337d10ddbe584a42a06395b63330fde, type: 3}
   - {fileID: 8300000, guid: 885fecea75597c842be015ef2ccc085e, type: 3}
   _cubeManScreamSounds:
-  - {fileID: 8300000, guid: 00c6574fe69ada04ab6c3af966db4cd6, type: 3}
-  - {fileID: 8300000, guid: b561afe024d29c34da24933da6527e98, type: 3}
-  - {fileID: 8300000, guid: 91ed7ba314122be4588f99b9197d4f5a, type: 3}
+  - {fileID: 8300000, guid: dcf3922c65e94c14d85283f88c179310, type: 3}
+  - {fileID: 8300000, guid: e521d11104bbf8340acae5723265ea8e, type: 3}
   _eyeTakeDamageSounds:
   - {fileID: 8300000, guid: 4f196c27329e09a41afcfce814db90c6, type: 3}
   - {fileID: 8300000, guid: c23bb5cb56741c14c9138a61b0a5deba, type: 3}
@@ -97,5 +96,5 @@ MonoBehaviour:
   _slimeSmallScreamSounds:
   - {fileID: 8300000, guid: 49ff581374593f949b96d1adcc4a2d49, type: 3}
   - {fileID: 8300000, guid: 1e8396e37df34284581c45b061774bcb, type: 3}
-  _directionalArrowHover: {fileID: 8300000, guid: 7cdd94b3a231f7c4296aa5da0cb34bd4, type: 3}
+  _directionalArrowHover: {fileID: 8300000, guid: c5c958fc0820f624eba6e9150ad2f57f, type: 3}
   _directionalArrowClick: {fileID: 8300000, guid: ef355b64d0e1ad34493611c2945d1380, type: 3}
