@@ -229,12 +229,6 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
     public void SetHealthIndicator(int n)
     {
-        Debug.Log(_healthIndicator);
-        Component[] components = _healthIndicator.GetComponents(typeof(Component));
-        foreach(var comp in components)
-        {
-            Debug.Log(comp);
-        }
         _healthIndicator.GetComponent<TextMeshProUGUI>().text = n.ToString();
     }
 }

@@ -191,7 +191,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     private void StartNextTurn()
     {
-        Debug.Log("Top of the round");
         TurnState = TurnState.Roll;
         _canvasController.EnableRollButton(true);
     }
@@ -286,7 +285,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             switch (action)
             {
                 case PlayerAction.NOP:
-                    Debug.Log("NOP");
+                    Debug.LogWarning("NOP");
                     StartCoroutine(Wait());
 
                     IEnumerator Wait()
