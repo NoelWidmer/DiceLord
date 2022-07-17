@@ -172,7 +172,6 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             if (occupants.Length > 0)
             {
-
                 foreach (var occupant in occupants)
                 {
                     if (occupant.CanRepell)
@@ -186,7 +185,8 @@ public abstract class Entity : MonoBehaviour, IEntity
                     }
                     else
                     {
-                        this.PlayParallelSound(ref _audioSources, References.Instance.DirectionalArrowHover, true);
+                        _state = State.Idle;
+                        this.PlayParallelSound(ref _audioSources, References.Instance.MoveBlockedSound, true);
                         _animHandler?.PlayOrStopMove(false);
                         GameMode.Instance.ProcessNextAction();
                     }

@@ -98,3 +98,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1e8396e37df34284581c45b061774bcb, type: 3}
   _directionalArrowHover: {fileID: 8300000, guid: c5c958fc0820f624eba6e9150ad2f57f, type: 3}
   _directionalArrowClick: {fileID: 8300000, guid: ef355b64d0e1ad34493611c2945d1380, type: 3}
+  _moveBlockedSound: {fileID: 8300000, guid: 1fe2171618dfc2f4491f033c3d89aa46, type: 3}

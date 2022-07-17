@@ -26,6 +26,9 @@ public interface IReferences
 
     AudioClip DirectionalArrowHover { get; }
     AudioClip DirectionalArrowClick { get; }
+
+
+    AudioClip MoveBlockedSound { get; }
 }
 
 public class References : Singleton<References, IReferences>, IReferences
@@ -107,4 +110,8 @@ public class References : Singleton<References, IReferences>, IReferences
     [SerializeField]
     private AudioClip _directionalArrowClick;
     public AudioClip DirectionalArrowClick => _directionalArrowClick;
+
+    [SerializeField]
+    private AudioClip _moveBlockedSound;
+    public AudioClip MoveBlockedSound => _moveBlockedSound;
 }
