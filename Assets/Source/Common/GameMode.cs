@@ -104,7 +104,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
         IEnumerator DelayFirstTurn()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.25f);
             StartNextTurn();
         }
     }
@@ -137,7 +137,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public void OnRollDice()
     {
-        Debug.Log("OnRollDice");
         if(_turnState != TurnState.Roll)
         {
             throw new InvalidOperationException("We're not in the Roll state, but you tried to roll");
@@ -177,6 +176,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public void ProcessNextAction()
     {
+        Debug.Log("process");
+
         if (_playerActionIndex >= _playerActions.Count)
         {
             if (_enemyActionsStarted == false)
@@ -197,23 +198,14 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             }
 
             var nextEnemy = _queuedEnemies.FirstOrDefault();
-            _queuedEnemies.Remove(nextEnemy);
 
             if (nextEnemy != null)
             {
-                if (!nextEnemy)
-                {
-                    ProcessNextAction();
-                }
-                else
-                {
-                    Debug.Log($"{nextEnemy} act");
-                    nextEnemy.EnemyAct(_playerCharacter.Coordinates);
-                }
+                _queuedEnemies.Remove(nextEnemy);
+                nextEnemy.EnemyAct(_playerCharacter.Coordinates);
             }
             else
             {
-                Debug.Log("StartNextTurn");
                 StartNextTurn();
             }
         }
@@ -261,12 +253,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
             _playerActionIndex += 1;
         }
-    }
-
-    private IEnumerator DelayNextTurn()
-    {
-        yield return new WaitForSeconds(3f);
-        StartNextTurn();
     }
 
     public void OnPlayerCharacterDied()
