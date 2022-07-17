@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   X: 0
   Y: 0
+  ProjectilePrefab: {fileID: 0}
   Sword: {fileID: 5532655250683897442}
   Health: 0
 --- !u!1 &3075180037623502318
@@ -284,7 +285,7 @@ Animator:
   m_GameObject: {fileID: 3075180038729986426}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0d362db78460dca46a1da2208ad55062, type: 2}
+  m_Controller: {fileID: 9100000, guid: a2a35df975409b84bbcd65176d50e2a8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
