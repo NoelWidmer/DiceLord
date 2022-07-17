@@ -89,14 +89,14 @@ public abstract class Entity : MonoBehaviour, IEntity
     private void BecomeIdle()
     {
         _state = State.Idle;
-        _animHandler.setPlayerWeapon(0);
+        _animHandler?.setPlayerWeapon(0);
     }
 
     public void Move()
     {
         EnsureState(State.Idle);
         _state = State.MoveDirectionRequested;
-        _animHandler.setPlayerWeapon(0);
+        _animHandler?.setPlayerWeapon(0);
         OnDirectionalRequest();
     }
 
@@ -104,14 +104,14 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         EnsureState(State.Idle);
         _state = State.MeleeDirectionRequested;
-        _animHandler.setPlayerWeapon(1);
+        _animHandler?.setPlayerWeapon(1);
         OnDirectionalRequest();
     }
 
     public void Ranged()
     {
         EnsureState(State.Idle);
-        _animHandler.setPlayerWeapon(2);
+        _animHandler?.setPlayerWeapon(2);
         _state = State.RangedDirectionRequested;
         OnDirectionalRequest();
     }
@@ -144,7 +144,9 @@ public abstract class Entity : MonoBehaviour, IEntity
                     }
                     else
                     {
-                        Debug.Log("move is blocked");
+                        this.PlayParallelSound(ref _audioSources, References.Instance.DirectionalArrowHover);
+                        _animHandler?.PlayOrStopMove(false);
+                        GameMode.Instance.ProcessNextAction();
                     }
                 }
             }
@@ -155,7 +157,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             void DoMove()
             {
-                _animHandler.PlayOrStopMove(true);
+                _animHandler?.PlayOrStopMove(true);
                 this.PlayParallelSound(ref _audioSources, References.Instance.PlayerMoveSounds.GetRandomItem());
                 _state = State.Moving;
                 _movingToCoordiantes = newCoordinates;
@@ -165,7 +167,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
         else if (_state == State.MeleeDirectionRequested)
         {
-            _animHandler.PlayOrStopAttack(true);
+            _animHandler?.PlayOrStopAttack(true);
             _state = State.Melee;
 
             var attackCoordinates = Coordinates.GetAdjacent(direction);
@@ -185,7 +187,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
         else if (_state == State.RangedDirectionRequested)
         {
-            _animHandler.PlayOrStopAttack(true);
+            _animHandler?.PlayOrStopAttack(true);
             _state = State.Ranged;
 
             // spawn projectile
@@ -301,7 +303,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             if (_state != State.Moving)
             {
-                _animHandler.PlayOrStopMove(false);
+                _animHandler?.PlayOrStopMove(false);
                 Grid.Instance.UpdateEntityCoordinates(this, _movingToCoordiantes);
                 SnapPositionToGrid(_movingToCoordiantes);
                 GameMode.Instance.ProcessNextAction();
@@ -324,7 +326,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
         if (newHealth < 1)
         {
-            _animHandler.PlayOrStopDeath(true);
+            _animHandler?.PlayOrStopDeath(true);
             Debug.Log($"{name} took {damage} damage and died.");
 
             var clip = DeathSounds.GetRandomItem();
@@ -344,7 +346,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
         else
         {
-            _animHandler.TakeDamage();
+            _animHandler?.TakeDamage();
             Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
             this.PlayParallelSound(ref _audioSources, TakeDamageSounds.GetRandomItem());
             Health = newHealth;
@@ -379,7 +381,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         yield return new WaitForSeconds(duration);
         BecomeIdle();
-        _animHandler.PlayOrStopAttack(false);
+        _animHandler?.PlayOrStopAttack(false);
         GameMode.Instance.ProcessNextAction();
     }
 
