@@ -460,3 +460,19 @@ MonoBehaviour:
   Y: 0
   ProjectilePrefab: {fileID: 0}
   Health: 1
+  TakeDamageSounds:
+  - {fileID: 8300000, guid: 1779a92dfb670cf44802094d8632da17, type: 3}
+  - {fileID: 8300000, guid: 0337d10ddbe584a42a06395b63330fde, type: 3}
+  - {fileID: 8300000, guid: 885fecea75597c842be015ef2ccc085e, type: 3}
+  DeathSounds:
+  - {fileID: 8300000, guid: e521d11104bbf8340acae5723265ea8e, type: 3}
+  - {fileID: 8300000, guid: dcf3922c65e94c14d85283f88c179310, type: 3}
+  MeleeSounds:
+  - {fileID: 8300000, guid: 434e2a2ba3e97cd43928c0a732e47c61, type: 3}
+  - {fileID: 8300000, guid: 91b593618f357b344b0fbc8e15248a18, type: 3}
+  RangedSounds: []
+  AoESounds: []
+  MoveSounds:
+  - {fileID: 8300000, guid: d448fdcc2c56fd4479248559cb3a6f91, type: 3}
+  - {fileID: 8300000, guid: eba72fb6d3eb1d1419705587765d7e02, type: 3}
+  - {fileID: 8300000, guid: a2e18639e39af9749bc9ea18d8a6681d, type: 3}

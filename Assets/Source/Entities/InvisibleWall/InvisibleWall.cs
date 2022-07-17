@@ -5,9 +5,6 @@ public class InvisibleWall : Entity
     public override bool CanBeEntered => false;
     public override bool CanRepell => false;
 
-    protected override AudioClip[] TakeDamageSounds => References.Instance.TakeDamageSounds;
-    protected override AudioClip[] DeathSounds => References.Instance.DeathScreamSounds;
-
     protected override void Start()
     {
         base.Start();

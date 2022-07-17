@@ -28,6 +28,9 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     private GameObject _rollButton;
     private GameMode _gameMode;
 
+    public AudioClip ConfirmSound;
+    public AudioClip DropSound;
+
     /*********************************
      * Init
      *********************************/
@@ -86,8 +89,11 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         _confirmButton.GetComponent<Button>().interactable = enabled;
     }
 
+    private List<AudioSource> _sources = new();
+
     public void OnConfirmButton()
     {
+        this.PlayParallelSound(ref _sources, ConfirmSound, false);
         _gameMode.OnConfirmSelection();
     }
 
@@ -119,6 +125,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
             if(slotBounds.Contains(localMouse))
             {
                 AddToSlot(slot, actionIcon);
+                this.PlayParallelSound(ref _sources, DropSound, false);
                 return;
             }
         }

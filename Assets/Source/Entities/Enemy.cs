@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Enemy : Entity
@@ -8,10 +7,6 @@ public abstract class Enemy : Entity
     public override bool CanBeEntered => false;
 
     public override bool CanRepell => true;
-
-    protected override AudioClip[] TakeDamageSounds => throw new System.NotImplementedException();
-
-    protected override AudioClip[] DeathSounds => throw new System.NotImplementedException();
 
     protected abstract void Attack();
 

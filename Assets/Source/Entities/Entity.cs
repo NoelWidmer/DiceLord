@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public interface IEntity
 {
@@ -70,6 +69,14 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public GameObject ProjectilePrefab;
     public int Health;
+
+    [Header("Sounds")]
+    public AudioClip[] TakeDamageSounds;
+    public AudioClip[] DeathSounds;
+    public AudioClip[] MeleeSounds;
+    public AudioClip[] RangedSounds;
+    public AudioClip[] AoESounds;
+    public AudioClip[] MoveSounds;
 
     int IEntity.Health => Health;
 
@@ -141,12 +148,12 @@ public abstract class Entity : MonoBehaviour, IEntity
                 .GetEntites(attackCoordinates).ToArray()); // must copy or iterator will throw
         }
 
-        this.PlayParallelSound(ref _audioSources, References.Instance.AoEAttackSounds.GetRandomItem(), true);
-
         foreach (var target in targets)
         {
             target.ReceiveDamage(1);
         }
+
+        this.PlayParallelSound(ref _audioSources, AoESounds.GetRandomItem(), true);
 
         StartCoroutine(DelayEndOffense(_aoeDuration));
     }
@@ -193,7 +200,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             void DoMove()
             {
                 _animHandler?.PlayOrStopMove(true);
-                this.PlayParallelSound(ref _audioSources, References.Instance.PlayerMoveSounds.GetRandomItem(), true);
+                this.PlayParallelSound(ref _audioSources, MoveSounds.GetRandomItem(), true);
                 _state = State.Moving;
                 _movingToCoordiantes = newCoordinates;
                 _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
@@ -216,7 +223,8 @@ public abstract class Entity : MonoBehaviour, IEntity
                 target.ReceiveDamage(1);
             }
 
-            this.PlayParallelSound(ref _audioSources, References.Instance.SwordAttackSounds.GetRandomItem(), true);
+
+            this.PlayParallelSound(ref _audioSources, MeleeSounds.GetRandomItem(), true);
 
             StartCoroutine(DelayEndOffense(_meleeDuration));
         }
@@ -301,7 +309,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         _state = State.Repelling;
         entity.ReceiveDamage(1);
 
-        this.PlayParallelSound(ref _audioSources, References.Instance.SwordAttackSounds.GetRandomItem(), true);
+        this.PlayParallelSound(ref _audioSources, MeleeSounds.GetRandomItem(), true);
 
         entity.ForceBecomeIdle();
 
@@ -387,9 +395,6 @@ public abstract class Entity : MonoBehaviour, IEntity
             Health = newHealth;
         }
     }
-
-    protected abstract AudioClip[] TakeDamageSounds { get; }
-    protected abstract AudioClip[] DeathSounds { get; }
 
     public void ReceiveHealth(int health)
     {

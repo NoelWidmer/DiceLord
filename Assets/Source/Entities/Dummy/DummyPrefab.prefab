@@ -460,3 +460,12 @@ MonoBehaviour:
   Y: 0
   ProjectilePrefab: {fileID: 0}
   Health: 0
+  TakeDamageSounds:
+  - {fileID: 8300000, guid: 34a05171003107a4e91001ccfc3a7ad3, type: 3}
+  DeathSounds:
+  - {fileID: 8300000, guid: 49ff581374593f949b96d1adcc4a2d49, type: 3}
+  MeleeSounds: []
+  RangedSounds: []
+  AoESounds: []
+  MoveSounds:
+  - {fileID: 8300000, guid: d448fdcc2c56fd4479248559cb3a6f91, type: 3}
