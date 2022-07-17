@@ -210,7 +210,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public void OnConfirmSelection()
     {
-        Debug.Log("OnConfirmSelection");
         if (TurnState != TurnState.Choose)
         {
             throw new InvalidOperationException("We're not in the Choose state, but you tried to confirm");

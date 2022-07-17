@@ -544,6 +544,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: CHSpriteSheet_21
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53deb203e7d290042b825cc9a9cf8515
+      internalID: 1351821159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHSpriteSheet_22
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2697665079e2fe4fa957a84a56d13b0
+      internalID: 2030222614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -562,6 +604,7 @@ TextureImporter:
       CHSpriteSheet_5: 1023805147
       CHSpriteSheet_15: -459620824
       CHSpriteSheet_20: -246220600
+      CHSpriteSheet_21: 1351821159
       CHSpriteSheet_17: 1877029
       CHSpriteSheet_8: -1939525253
       CHSpriteSheet_1: 798867251
@@ -573,6 +616,7 @@ TextureImporter:
       CHSpriteSheet_3: 1767015439
       CHSpriteSheet_2: -157082674
       CHSpriteSheet_13: 2145232669
+      CHSpriteSheet_22: 2030222614
       CHSpriteSheet_10: -1006236287
       CHSpriteSheet_16: 379248190
       CHSpriteSheet_4: 585704436
