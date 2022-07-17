@@ -253,9 +253,9 @@ MonoBehaviour:
   ProjectilePrefab: {fileID: 5657636885037299001, guid: 0259cf5fbb6385e40bb330b00fbfe022, type: 3}
   Health: 5
   TakeDamageSounds:
-  - {fileID: 8300000, guid: b18d1bf901efe1547a3e9885321ee753, type: 3}
-  - {fileID: 8300000, guid: dea285e84ad358a47abcb2f826a9e268, type: 3}
-  - {fileID: 8300000, guid: f0ac9ee048d8a5143b5a9b278b210c4a, type: 3}
+  - {fileID: 8300000, guid: 1fa238d1a602d3a4e99efb9878b13751, type: 3}
+  - {fileID: 8300000, guid: dec9978f0a973bb4e86473c898313194, type: 3}
+  - {fileID: 8300000, guid: 7541b1730387c2041a6a18cf6535829a, type: 3}
   DeathSounds:
   - {fileID: 8300000, guid: 977a678c3b63bf147ba042dce544a326, type: 3}
   - {fileID: 8300000, guid: a3c22facb36c7804692462323eede6d7, type: 3}

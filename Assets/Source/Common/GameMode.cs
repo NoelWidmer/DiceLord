@@ -5,8 +5,17 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum TurnState
+{
+    Roll,
+    Choose,
+    PlayerAct,
+    EnemyAct
+}
+
 public interface IGameMode
 {
+    TurnState TurnState { get; }
     void OnEntityDied(IEntity entity, float deathDuration);
     void ProcessNextAction();
 }
@@ -111,7 +120,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             foreach (var entity in entities)
             {
                 Grid.Instance.RegisterEntity(entity);
-                if(entity.GetType().IsSubclassOf(typeof(Enemy)))
+                if (entity.GetType().IsSubclassOf(typeof(Enemy)))
                 {
                     _enemies.Add((Enemy)entity);
                 }
@@ -128,7 +137,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             StartNextTurn();
         }
     }
-    
+
     public void OnEntityDied(IEntity entity, float deathDuration)
     {
         Grid.Instance.RemoveEntity(entity);
@@ -164,26 +173,19 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     /*********************************
      * Turn State Machine
      *********************************/
-    private enum TurnState
-    {
-        Roll,
-        Choose,
-        PlayerAct,
-        EnemyAct
-    }
 
-    private TurnState _turnState;
+    public TurnState TurnState { get; private set; }
 
     private void StartNextTurn()
     {
         Debug.Log("Top of the round");
-        _turnState = TurnState.Roll;
+        TurnState = TurnState.Roll;
         _canvasController.EnableRollButton(true);
     }
 
     public void OnRollDice()
     {
-        if(_turnState != TurnState.Roll)
+        if(TurnState != TurnState.Roll)
         {
             throw new InvalidOperationException("We're not in the Roll state, but you tried to roll");
         }
@@ -192,14 +194,14 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         List<PlayerAction> rolls = _diceController.RollDice(number_of_dice);
         _canvasController.PopulateTray(rolls);
 
-        _turnState = TurnState.Choose;
+        TurnState = TurnState.Choose;
         _canvasController.EnableConfirmButton(true);
     }
 
     public void OnConfirmSelection()
     {
         Debug.Log("OnConfirmSelection");
-        if (_turnState != TurnState.Choose)
+        if (TurnState != TurnState.Choose)
         {
             throw new InvalidOperationException("We're not in the Choose state, but you tried to confirm");
         }
@@ -211,7 +213,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         _queuedEnemies = _enemies.ToList(); // make copy
         _enemyActionsStarted = false;
 
-        _turnState = TurnState.PlayerAct;
+        TurnState = TurnState.PlayerAct;
         ProcessNextAction();
     }
 
@@ -238,7 +240,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 _canvasController.ClearSlots();
 
                 // enemy act
-                _turnState = TurnState.EnemyAct;
+                TurnState = TurnState.EnemyAct;
             }
 
             var nextEnemy = _queuedEnemies.FirstOrDefault();

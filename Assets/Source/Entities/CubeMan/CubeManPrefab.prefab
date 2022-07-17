@@ -470,8 +470,12 @@ MonoBehaviour:
   MeleeSounds:
   - {fileID: 8300000, guid: 434e2a2ba3e97cd43928c0a732e47c61, type: 3}
   - {fileID: 8300000, guid: 91b593618f357b344b0fbc8e15248a18, type: 3}
-  RangedSounds: []
-  AoESounds: []
+  RangedSounds:
+  - {fileID: 8300000, guid: f09b4c5efeeb3c84a94530fd4fb8d005, type: 3}
+  - {fileID: 8300000, guid: 5adbe9e79a7f9254d9ee981b8713d138, type: 3}
+  AoESounds:
+  - {fileID: 8300000, guid: 8c5172e9f7edb0743ae620281aa8e4f0, type: 3}
+  - {fileID: 8300000, guid: 1c7119bb76da3bf419b3f4e544de534d, type: 3}
   MoveSounds:
   - {fileID: 8300000, guid: d448fdcc2c56fd4479248559cb3a6f91, type: 3}
   - {fileID: 8300000, guid: eba72fb6d3eb1d1419705587765d7e02, type: 3}
