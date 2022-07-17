@@ -12,7 +12,7 @@ public interface IEntity
     GridVector GetStartCoordinates();
     GridVector Coordinates { get; }
 
-    void Move();
+    void Move(bool resumeWithNextAction);
     void Melee();
     void Ranged();
 
@@ -107,9 +107,12 @@ public abstract class Entity : MonoBehaviour, IEntity
         _animHandler?.setPlayerWeapon(0);
     }
 
-    public void Move()
+    private bool _resumeWithNextAction;
+
+    public void Move(bool resumeWithNextAction)
     {
         EnsureState(State.Idle);
+        _resumeWithNextAction = resumeWithNextAction;
         _state = State.MoveDirectionRequested;
         _animHandler?.setPlayerWeapon(0);
         OnDirectionalRequest();
@@ -191,7 +194,11 @@ public abstract class Entity : MonoBehaviour, IEntity
                         _state = State.Idle;
                         this.PlayParallelSound(ref _audioSources, References.Instance.MoveBlockedSound, true);
                         _animHandler?.PlayOrStopMove(false);
-                        GameMode.Instance.ProcessNextAction();
+
+                        if (_resumeWithNextAction)
+                        {
+                            GameMode.Instance.ProcessNextAction();
+                        }
                     }
                 }
             }
@@ -362,7 +369,11 @@ public abstract class Entity : MonoBehaviour, IEntity
                 _animHandler?.PlayOrStopMove(false);
                 Grid.Instance.UpdateEntityCoordinates(this, _movingToCoordiantes);
                 SnapPositionToGrid(_movingToCoordiantes);
-                GameMode.Instance.ProcessNextAction();
+
+                if (_resumeWithNextAction)
+                {
+                    GameMode.Instance.ProcessNextAction();
+                }
             }
         }
         else
