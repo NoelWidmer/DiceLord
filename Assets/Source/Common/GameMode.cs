@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public interface IGameMode
@@ -162,37 +163,59 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         _playerActions = _canvasController.GetSelectedActions();
         _playerActionIndex = 0;
 
+        _queuedEnemies = _enemies.ToList(); // make copy
+        _enemyActionsStarted = false;
+
         _turnState = TurnState.PlayerAct;
         ProcessNextAction();
     }
 
+    private bool _enemyActionsStarted;
+    private List<Enemy> _queuedEnemies;
     private List<PlayerAction> _playerActions;
     private int _playerActionIndex;
 
     public void ProcessNextAction()
     {
-        if (_playerActionIndex == _playerActions.Count)
+        if (_playerActionIndex >= _playerActions.Count)
         {
-            if (_playerActionIndex < number_of_dice)
+            if (_enemyActionsStarted == false)
             {
-                // only move slot indicator, execute no action (polish)
-            }
-            _canvasController.ClearTray();
-            _canvasController.ClearSlots();
+                // here are the things we only want to do once
+                _enemyActionsStarted = true;
 
-            // enemy act
-            _turnState = TurnState.EnemyAct;
-            GridVector playerPosition = _playerCharacter.Coordinates;
-            foreach(Enemy enemy in _enemies)
+                if (_playerActionIndex < number_of_dice)
+                {
+                    // only move slot indicator, execute no action (polish)
+                }
+
+                _canvasController.ClearTray();
+                _canvasController.ClearSlots();
+
+                // enemy act
+                _turnState = TurnState.EnemyAct;
+            }
+
+            var nextEnemy = _queuedEnemies.FirstOrDefault();
+            _queuedEnemies.Remove(nextEnemy);
+
+            if (nextEnemy != null)
             {
-                if (!enemy) { _enemies.Remove(enemy); continue; }
-
-                Debug.Log($"{enemy} act");
-                enemy.EnemyAct(playerPosition);
+                if (!nextEnemy)
+                {
+                    ProcessNextAction();
+                }
+                else
+                {
+                    Debug.Log($"{nextEnemy} act");
+                    nextEnemy.EnemyAct(_playerCharacter.Coordinates);
+                }
             }
-
-            Debug.Log("StartNextTurn");
-            StartNextTurn();
+            else
+            {
+                Debug.Log("StartNextTurn");
+                StartNextTurn();
+            }
         }
         else
         {
