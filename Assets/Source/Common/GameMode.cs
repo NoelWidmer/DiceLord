@@ -136,6 +136,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public void OnRollDice()
     {
+        Debug.Log("OnRollDice");
         if(_turnState != TurnState.Roll)
         {
             throw new InvalidOperationException("We're not in the Roll state, but you tried to roll");
@@ -151,7 +152,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public void OnConfirmSelection()
     {
-        if(_turnState != TurnState.Choose)
+        Debug.Log("OnConfirmSelection");
+        if (_turnState != TurnState.Choose)
         {
             throw new InvalidOperationException("We're not in the Choose state, but you tried to confirm");
         }
@@ -183,11 +185,13 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             GridVector playerPosition = _playerCharacter.Coordinates;
             foreach(Enemy enemy in _enemies)
             {
-                if (!enemy) { _enemies.Remove(enemy); }
+                if (!enemy) { _enemies.Remove(enemy); continue; }
 
+                Debug.Log($"{enemy} act");
                 enemy.EnemyAct(playerPosition);
             }
 
+            Debug.Log("StartNextTurn");
             StartNextTurn();
         }
         else

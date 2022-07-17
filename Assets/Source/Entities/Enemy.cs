@@ -18,18 +18,25 @@ public abstract class Enemy : Entity
     protected override void OnDirectionalRequest()
     {
         GridDirection direction;
+        GridVector playerDir = _playerPosition - Coordinates;
 
         // TODO: Move around corners, don't run into walls!
 
-        GridVector playerDir = _playerPosition - Coordinates;
-        if(Mathf.Abs(playerDir.X) <= Mathf.Abs(playerDir.Y))
+        GridVector targetDir = playerDir;
+        if (targetDir.X == 0)                                       { DirY(targetDir.Y); }
+        else if(targetDir.Y == 0)                                   { DirX(targetDir.X); }
+        else if(Mathf.Abs(targetDir.X) <= Mathf.Abs(targetDir.Y))   { DirX(targetDir.X); }
+        else /* if Y < X */                                         { DirY(targetDir.Y); }
+
+        void DirX(int x)
         {
-            if(playerDir.X > 0) { direction = GridDirection.NorthEast; }
+            if (x > 0) { direction = GridDirection.NorthEast; }
             else { direction = GridDirection.SouthWest; }
         }
-        else
+
+        void DirY(int y)
         {
-            if(playerDir.Y > 0) { direction = GridDirection.NorthWest; }
+            if (y > 0) { direction = GridDirection.NorthWest; }
             else { direction = GridDirection.SouthEast; }
         }
 
