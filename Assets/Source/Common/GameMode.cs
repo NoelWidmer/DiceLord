@@ -176,8 +176,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
     public void ProcessNextAction()
     {
-        Debug.Log("process");
-
         if (_playerActionIndex >= _playerActions.Count)
         {
             if (_enemyActionsStarted == false)
@@ -202,10 +200,20 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             if (nextEnemy != null)
             {
                 _queuedEnemies.Remove(nextEnemy);
-                nextEnemy.EnemyAct(_playerCharacter.Coordinates);
+
+                if (nextEnemy.Health > 0)
+                {
+                    nextEnemy.EnemyAct(_playerCharacter.Coordinates);
+                }
+                else
+                {
+                    ProcessNextAction();
+                }
             }
             else
             {
+                // we might start a new round too early if the killed enemy (in the current round) has dissapeard but we are still processing action.
+                // depends on how long our rounds take.
                 StartNextTurn();
             }
         }

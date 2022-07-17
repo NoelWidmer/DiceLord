@@ -6,6 +6,7 @@ using UnityEngine;
 
 public interface IEntity
 {
+    int Health { get; }
     Transform Transform { get; }
 
     GridVector GetStartCoordinates();
@@ -64,6 +65,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public GameObject ProjectilePrefab;
     public int Health;
+
+    int IEntity.Health => Health;
 
     private State _state;
 
