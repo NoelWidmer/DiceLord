@@ -206,7 +206,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                 StartCoroutine(DelayProjectileHit(Coordinates, RangeDistance - 1, projectile));
             }
 
-            IEnumerator DelayProjectileHit(GridVector fromCoordinates, int remainingDistance, IProjectile projectile)
+            IEnumerator DelayProjectileHit(GridVector fromCoordinates, int remainingProjectileDistance, IProjectile projectile)
             {
                 yield return new WaitForSeconds(_rangedPrepellDuration);
 
@@ -218,7 +218,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
                 foreach (var target in targets)
                 {
-                    if (_remainingMoveDistance == 0)
+                    if (remainingProjectileDistance == 0)
                     {
                         projectile.OnPartiallyPiercedEntity();
                     }
@@ -230,14 +230,14 @@ public abstract class Entity : MonoBehaviour, IEntity
                     target.ReceiveDamage(1);
                 }
 
-                if (targets.Length == 0)
+                if (remainingProjectileDistance == 0 && targets.Length == 0)
                 {
                     projectile.OnStuckInEnvironment();
                 }
 
-                if (remainingDistance > 0)
+                if (remainingProjectileDistance > 0)
                 {
-                    StartCoroutine(DelayProjectileHit(targetCoordinates, remainingDistance - 1, projectile));
+                    StartCoroutine(DelayProjectileHit(targetCoordinates, remainingProjectileDistance - 1, projectile));
                 }
                 else
                 {
