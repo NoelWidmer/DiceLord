@@ -49,7 +49,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     private readonly float _meleeDuration = .5f;
     private readonly float _repellDuration = .5f;
-    private readonly float _moveDuration = .75f;
+    private readonly float _moveDuration = .3f;
 
     private readonly float _rangedChargeDuration = .75f;
     private readonly float _rangedPrepellDuration = .15f;
