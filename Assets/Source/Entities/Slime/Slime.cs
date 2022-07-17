@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Slime : Enemy
 {
+    protected override int RangeDistance => 1;
     public override bool CanBeEntered => false;
     public override bool CanRepell => true;
 
@@ -14,5 +15,5 @@ public class Slime : Enemy
     protected override void OnDied()
     { }
 
-    protected override void Attack() { Melee(); }
+    protected override void Attack() { AoE(); }
 }
