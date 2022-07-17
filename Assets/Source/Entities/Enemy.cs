@@ -44,7 +44,6 @@ public abstract class Enemy : Entity
 
         // if player not in enemy range
         GridVector playerDir = _playerPosition - Coordinates;
-        Debug.Log($"Vector between player and enemy {gameObject} is {playerDir}");
         if (!((playerDir.X == 0 && Mathf.Abs(playerDir.Y) <= RangeDistance)
             || (playerDir.Y == 0 && Mathf.Abs(playerDir.X) <= RangeDistance)))
         {
@@ -54,7 +53,6 @@ public abstract class Enemy : Entity
         }
         else
         {
-            Debug.Log($"Player is in range of {gameObject} ({RangeDistance})");
             StartCoroutine(DelayAttack(.1f));
         }
 
