@@ -48,7 +48,7 @@ public abstract class Enemy : Entity
         if (!((playerDir.X == 0 && Mathf.Abs(playerDir.Y) <= RangeDistance)
             || (playerDir.Y == 0 && Mathf.Abs(playerDir.X) <= RangeDistance)))
         {
-            Move();
+            Move(false);
             StartCoroutine(DelayAttack(2f));
 
         }

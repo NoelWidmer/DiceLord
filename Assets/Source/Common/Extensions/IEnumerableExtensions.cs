@@ -1,15 +1,14 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public static class IEnumerableExtensions
 {
-    public static T GetRandomItem<T>(this IReadOnlyList<T> collection)
+    public static bool TryGetRandomItem<T>(this IReadOnlyList<T> collection, out T item)
     {
         if (collection.Count == 0)
         {
-            throw new NotSupportedException("Cannot get random item if collection is empty.");
+            item = default;
+            return false;
         }
 
         var index = Mathf.FloorToInt(UnityEngine.Random.value * collection.Count);
@@ -19,6 +18,7 @@ public static class IEnumerableExtensions
             index -= 1;
         }
 
-        return collection[index];
+        item = collection[index];
+        return true;
     }
 }

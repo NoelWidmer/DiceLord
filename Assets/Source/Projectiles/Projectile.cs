@@ -63,7 +63,10 @@ public class Projectile : MonoBehaviour, IProjectile
             _ => throw new NotImplementedException(),
         });
 
-        this.PlayParallelSound(ref _sources, References.Instance.BowChargeSounds.GetRandomItem(), true);
+        if (References.Instance.BowChargeSounds.TryGetRandomItem(out var item))
+        {
+            this.PlayParallelSound(ref _sources, item, true);
+        }
     }
 
     public void Launch() => enabled = true;
@@ -89,7 +92,10 @@ public class Projectile : MonoBehaviour, IProjectile
 
     private void PlayImpactSound()
     {
-        this.PlayParallelSound(ref _sources, References.Instance.BowImpactSounds.GetRandomItem(), true);
+        if (References.Instance.BowImpactSounds.TryGetRandomItem(out var item))
+        {
+            this.PlayParallelSound(ref _sources, item, true);
+        }
     }
 
     private void Break()

@@ -253,10 +253,12 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 TurnState = TurnState.EnemyAct;
             }
 
-            var nextEnemy = _queuedEnemies.FirstOrDefault();
+            _queuedEnemies.RemoveAll(e => e == null);
 
-            if (nextEnemy != null)
+            if (_queuedEnemies.Count > 0)
             {
+                var nextEnemy = _queuedEnemies.First();
+
                 _queuedEnemies.Remove(nextEnemy);
 
                 if (nextEnemy.Health > 0)
@@ -293,7 +295,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                     break;
 
                 case PlayerAction.Move:
-                    _playerCharacter.Move();
+                    _playerCharacter.Move(true);
                     break;
 
                 case PlayerAction.Melee:
