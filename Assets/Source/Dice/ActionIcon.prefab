@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5963959743340079045}
   - component: {fileID: 6200282465791505939}
   - component: {fileID: 8010627151797685324}
-  - component: {fileID: -169050688825633231}
   m_Layer: 0
   m_Name: ActionIcon
   m_TagString: Untagged
@@ -98,15 +97,3 @@ MonoBehaviour:
   pushIcon: {fileID: 1205688164, guid: 93ea35a0579c0164dae48190aef49de7, type: 3}
   healIcon: {fileID: -613331356, guid: 93ea35a0579c0164dae48190aef49de7, type: 3}
   nopIcon: {fileID: 21300000, guid: 20b29d35f6f16f94eae6d453f887c9b2, type: 3}
---- !u!225 &-169050688825633231
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223491560733359859}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0

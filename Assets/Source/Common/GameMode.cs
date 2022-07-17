@@ -36,6 +36,9 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         Heal
     }
 
+    /*********************************
+     * Init
+     *********************************/
     protected override void OnAwake()
     {
         _playerCharacter = FindObjectOfType<PlayerCharacter>();
@@ -101,17 +104,74 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         PlayerController.Instance.Possess(_playerCharacter);
     }
 
+    /*********************************
+     * Turn State Machine
+     *********************************/
+    private enum TurnState
+    {
+        Roll,
+        Choose,
+        PlayerAct,
+        EnemyAct
+    }
+
+    private TurnState _turnState;
+
+    private void StartNextTurn()
+    {
+        Debug.Log("Top of the round");
+        _turnState = TurnState.Roll;
+        _canvasController.EnableRollButton();
+    }
+
+    public void OnRollDice()
+    {
+        if(_turnState != TurnState.Roll)
+        {
+            Debug.Log("We're not in the Roll state, but you tried to roll");
+            return;
+        }
+
+        _canvasController.DisableRollButton();
+        List<PlayerAction> rolls = _diceController.RollDice(number_of_dice);
+        _canvasController.PopulateTray(rolls);
+
+        _turnState = TurnState.Choose;
+        _canvasController.EnableConfirmButton();
+    }
+
+    public void OnConfirmSelection()
+    {
+        if(_turnState != TurnState.Choose)
+        {
+            Debug.Log("We're not in the Choose state, but you tried to confirm");
+            return;
+        }
+
+        _canvasController.DisableConfirmButton();
+        _playerActions = _canvasController.GetSelectedActions();
+        _playerActionIndex = 0;
+
+        _turnState = TurnState.PlayerAct;
+        ProcessNextAction();
+    }
+
+    private List<PlayerAction> _playerActions;
+    private int _playerActionIndex;
+
     public void ProcessNextAction()
     {
         if (_playerActionIndex == _playerActions.Count)
         {
-            if(_playerActionIndex < number_of_dice)
+            if (_playerActionIndex < number_of_dice)
             {
                 // only move slot indicator, execute no action
             }
             // enemy act (TODO)
             _canvasController.ClearTray();
             _canvasController.ClearSlots();
+
+            _turnState = TurnState.EnemyAct;
             StartNextTurn();
         }
         else
@@ -159,31 +219,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             _playerActionIndex += 1;
         }
     }
-
-    private void StartNextTurn()
-    {
-        Debug.Log("Top of the round");
-        // roll
-        List<PlayerAction> rolls = _diceController.RollDice(number_of_dice);
-        _canvasController.PopulateTray(rolls);
-        // choose
-        for(int i = 0; i < rolls.Count-2; i++) //TODO
-        {
-            Transform tray = _canvasController.GetTray().transform;
-            string name = rolls[i].ToString();
-            GameObject actionIcon = tray.Find(name).gameObject;
-            _canvasController.AddToSlot(i, actionIcon);
-        }
-
-        List<PlayerAction> actions = _canvasController.GetSelectedActions();
-        // player act
-        _playerActions = actions;
-        _playerActionIndex = 0;
-        ProcessNextAction();
-    }
-
-    private List<PlayerAction> _playerActions;
-    private int _playerActionIndex;
 
     private IEnumerator DelayNextTurn()
     {
