@@ -6,14 +6,22 @@ public interface IProjectile
 {
     void Charge(int distance, float durationPerField, GridDirection direction);
     void Launch();
+    void Hit();
 }
 
 public class Projectile : MonoBehaviour, IProjectile
 {
     public Sprite NeSprite;
+    public Sprite NeSpriteBroken;
+
     public Sprite SeSprite;
+    public Sprite SeSpriteBroken;
+
     public Sprite SwSprite;
+    public Sprite SwSpriteBroken;
+
     public Sprite NwSprite;
+    public Sprite NwSpriteBroken;
 
     private SpriteRenderer _renderer;
 
@@ -25,14 +33,14 @@ public class Projectile : MonoBehaviour, IProjectile
 
     private float _remainingDistance;
     private float _speed;
-    private Vector2 _direction;
+    private GridDirection _direction;
 
     public void Charge(int distance, float durationPerField, GridDirection direction)
     {
         _remainingDistance = distance * GridVector.DistanceBetweenFields;
         var duration = durationPerField * distance;
         _speed = distance / duration;
-        _direction = direction.GetVector();
+        _direction = direction;
 
         _renderer.sprite = direction switch
         {
@@ -42,8 +50,6 @@ public class Projectile : MonoBehaviour, IProjectile
             GridDirection.NorthWest => NwSprite,
             _ => throw new NotImplementedException(),
         };
-
-
 
         transform.rotation = Quaternion.Euler(0f, 0f, direction switch
         {
@@ -57,9 +63,21 @@ public class Projectile : MonoBehaviour, IProjectile
 
     public void Launch() => enabled = true;
 
+    public void Hit()
+    {
+        _renderer.sprite = _direction switch
+        {
+            GridDirection.NorthEast => NeSpriteBroken,
+            GridDirection.SouthEast => SeSpriteBroken,
+            GridDirection.SouthWest => SwSpriteBroken,
+            GridDirection.NorthWest => NwSpriteBroken,
+            _ => throw new NotImplementedException(),
+        };
+    }
+
     private void Update()
     {
-        var delta = _direction * _speed * Time.deltaTime;
+        var delta = _speed * Time.deltaTime * _direction.GetVector();
         _remainingDistance -= delta.magnitude;
 
         if (_remainingDistance > 0)
