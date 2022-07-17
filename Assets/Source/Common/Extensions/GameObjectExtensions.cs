@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class MonoBehaviourExtensions
 {
-    public static void PlayParallelSound(this MonoBehaviour behaviour, ref List<AudioSource> sources, AudioClip clip)
+    public static void PlayParallelSound(this MonoBehaviour behaviour, ref List<AudioSource> sources, AudioClip clip, bool spatial)
     {
         var availableSrc = sources.FirstOrDefault(src => src.isPlaying == false);
 
@@ -13,7 +13,7 @@ public static class MonoBehaviourExtensions
             availableSrc = behaviour.gameObject.AddComponent<AudioSource>();
             sources.Add(availableSrc);
 
-            availableSrc.spatialBlend = 1f;
+            availableSrc.spatialBlend = spatial ? 1f : 0f;
         }
 
         availableSrc.clip = clip;
