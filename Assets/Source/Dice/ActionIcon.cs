@@ -65,11 +65,6 @@ public class ActionIcon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public GameMode.PlayerAction GetAction() => _action;
 
-    private void Awake()
-    {
-        _initialScaling = transform.GetComponent<RectTransform>().localScale * .77f;
-    }
-
     public void Update()
     {
         if(_isDragging)
@@ -81,6 +76,7 @@ public class ActionIcon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        _initialScaling = transform.GetComponent<RectTransform>().localScale;
         _isDragging = true;
         transform.GetComponent<RectTransform>().localScale = _initialScaling * .9f;
     }
