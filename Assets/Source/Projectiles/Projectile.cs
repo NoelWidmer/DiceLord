@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IProjectile
 {
     void Charge(int distance, float durationPerField, GridDirection direction);
     void Launch();
-    void Hit();
+    void OnLastFieldHit();
 }
 
 public class Projectile : MonoBehaviour, IProjectile
@@ -59,11 +60,15 @@ public class Projectile : MonoBehaviour, IProjectile
             GridDirection.NorthWest => 16f,
             _ => throw new NotImplementedException(),
         });
+
+        this.PlayParallelSound(ref _sources, References.Instance.BowChargeSounds.GetRandomItem());
     }
 
     public void Launch() => enabled = true;
 
-    public void Hit()
+    private List<AudioSource> _sources = new();
+
+    public void OnLastFieldHit()
     {
         _renderer.sprite = _direction switch
         {
@@ -73,6 +78,8 @@ public class Projectile : MonoBehaviour, IProjectile
             GridDirection.NorthWest => NwSpriteBroken,
             _ => throw new NotImplementedException(),
         };
+
+        this.PlayParallelSound(ref _sources, References.Instance.BowImpactSounds.GetRandomItem());
     }
 
     private void Update()

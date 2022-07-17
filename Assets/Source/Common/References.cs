@@ -3,7 +3,9 @@ using UnityEngine;
 public interface IReferences
 {
     AudioClip[] SwordAttackSounds { get; }
-    AudioClip[] RangedSounds { get; }
+
+    AudioClip[] BowChargeSounds { get; }
+    AudioClip[] BowImpactSounds { get; }
 
     AudioClip[] PlayerMoveSounds { get; }
 
@@ -33,9 +35,14 @@ public class References : Singleton<References, IReferences>, IReferences
     private AudioClip[] _swordAttackSounds;
     public AudioClip[] SwordAttackSounds => _swordAttackSounds;
 
+    [Header("Bow")]
     [SerializeField]
-    private AudioClip[] _rangedSounds;
-    public AudioClip[] RangedSounds => _rangedSounds;
+    private AudioClip[] _bowChargeSounds;
+    public AudioClip[] BowChargeSounds => _bowChargeSounds;
+
+    [SerializeField]
+    private AudioClip[] _bowImpactSounds;
+    public AudioClip[] BowImpactSounds => _bowImpactSounds;
 
     [Header("Move")]
     [SerializeField]

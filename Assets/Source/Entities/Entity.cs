@@ -155,7 +155,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             void DoMove()
             {
                 _animHandler.PlayOrStopMove(true);
-                PlayParallelSound(References.Instance.PlayerMoveSounds.GetRandomItem());
+                this.PlayParallelSound(ref _audioSources, References.Instance.PlayerMoveSounds.GetRandomItem());
                 _state = State.Moving;
                 _movingToCoordiantes = newCoordinates;
                 _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
@@ -178,7 +178,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                 target.ReceiveDamage(1);
             }
 
-            PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
+            this.PlayParallelSound(ref _audioSources, References.Instance.SwordAttackSounds.GetRandomItem());
 
             StartCoroutine(DelayEndOffense(_meleeDuration));
         }
@@ -196,7 +196,6 @@ public abstract class Entity : MonoBehaviour, IEntity
                 projectile.Charge(RangeDistance, _rangedPrepellDuration, direction);
             }
             
-            PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
             StartCoroutine(DelayEjectProjectile(projectile));
 
             IEnumerator DelayEjectProjectile(IProjectile projectile)
@@ -218,7 +217,11 @@ public abstract class Entity : MonoBehaviour, IEntity
 
                 foreach (var target in targets)
                 {
-                    projectile.Hit();
+                    if (_remainingMoveDistance == 0)
+                    {
+                        projectile.OnLastFieldHit();
+                    }
+
                     target.ReceiveDamage(1);
                 }
 
@@ -251,7 +254,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         _state = State.Repelling;
         entity.ReceiveDamage(1);
 
-        PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
+        this.PlayParallelSound(ref _audioSources, References.Instance.SwordAttackSounds.GetRandomItem());
 
         entity.ForceBecomeIdle();
 
@@ -315,7 +318,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             Debug.Log($"{name} took {damage} damage and died.");
 
             var clip = DeathSounds.GetRandomItem();
-            PlayParallelSound(clip);
+            this.PlayParallelSound(ref _audioSources, clip);
 
             Health = 0;
             OnDied();
@@ -333,7 +336,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         {
             _animHandler.TakeDamage();
             Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
-            PlayParallelSound(TakeDamageSounds.GetRandomItem());
+            this.PlayParallelSound(ref _audioSources, TakeDamageSounds.GetRandomItem());
             Health = newHealth;
         }
     }
@@ -371,22 +374,6 @@ public abstract class Entity : MonoBehaviour, IEntity
     }
 
     private List<AudioSource> _audioSources = new();
-
-    private void PlayParallelSound(AudioClip clip)
-    {
-        var availableSrc = _audioSources.FirstOrDefault(src => src.isPlaying == false);
-
-        if (availableSrc == null)
-        {
-            availableSrc = gameObject.AddComponent<AudioSource>();
-            _audioSources.Add(availableSrc);
-
-            availableSrc.spatialBlend = 1f;
-        }
-
-        availableSrc.clip = clip;
-        availableSrc.Play();
-    }
 
     private void OnValidate()
     {
