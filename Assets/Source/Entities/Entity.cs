@@ -62,7 +62,6 @@ public abstract class Entity : MonoBehaviour, IEntity
     public GridVector Coordinates => Grid.Instance.GetCoordiantes(this);
 
     public GameObject ProjectilePrefab;
-    public Transform Sword;
     public int Health;
 
     private State _state;
@@ -90,11 +89,6 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         _state = State.Idle;
         _animHandler.setPlayerWeapon(0);
-
-        if (Sword)
-        {
-            Sword.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        }
     }
 
     public void Move()
@@ -185,7 +179,6 @@ public abstract class Entity : MonoBehaviour, IEntity
             }
 
             PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
-            ShowSword(attackCoordinates);
 
             StartCoroutine(DelayEndOffense(_meleeDuration));
         }
@@ -218,8 +211,6 @@ public abstract class Entity : MonoBehaviour, IEntity
                 yield return new WaitForSeconds(_rangedPrepellDuration);
 
                 var targetCoordinates = fromCoordinates.GetAdjacent(direction);
-
-                ShowSword(targetCoordinates);
 
                 var targets = Grid.Instance
                     .GetEntites(targetCoordinates)
@@ -261,7 +252,6 @@ public abstract class Entity : MonoBehaviour, IEntity
         entity.ReceiveDamage(1);
 
         PlayParallelSound(References.Instance.SwordAttackSounds.GetRandomItem());
-        ShowSword(entity.Coordinates);
 
         entity.ForceBecomeIdle();
 
@@ -308,12 +298,6 @@ public abstract class Entity : MonoBehaviour, IEntity
         {
             throw new InvalidOperationException("Entity should not be updated when not moving.");
         }
-    }
-
-    private void ShowSword(GridVector coordinates)
-    {
-        Sword.position = coordinates.GetFieldCenterPosition();
-        Sword.gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
     public void ReceiveDamage(int damage)
