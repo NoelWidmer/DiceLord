@@ -19,9 +19,9 @@ public class PlayerCharacter : Entity, IPlayerCharacter
 
     private List<Transform> _directionalArrows = new();
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
 
         {
             var arrowNE = transform.Find("Arrow NE");

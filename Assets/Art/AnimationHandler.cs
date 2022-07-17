@@ -13,7 +13,7 @@ public class AnimationHandler : MonoBehaviour
     SpriteMask mask;
     SpriteRenderer spriteRenderer;
 
-    void Start()
+    void Awake()
     {
         myAnimator = GetComponent<Animator>();
         mask = GetComponent<SpriteMask>();

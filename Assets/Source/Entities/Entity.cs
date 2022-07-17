@@ -72,13 +72,13 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     private AnimationHandler _animHandler;
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         enabled = false;
+        _animHandler = GetComponentInChildren<AnimationHandler>();
+
         SnapPositionToGrid(GetStartCoordinates());
         BecomeIdle();
-
-        _animHandler = GetComponentInChildren<AnimationHandler>();
     }
 
     private void SnapPositionToGrid(GridVector coordiantes)
@@ -89,6 +89,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     private void BecomeIdle()
     {
         _state = State.Idle;
+        _animHandler.setPlayerWeapon(0);
 
         if (Sword)
         {
@@ -100,6 +101,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         EnsureState(State.Idle);
         _state = State.MoveDirectionRequested;
+        _animHandler.setPlayerWeapon(0);
         OnDirectionalRequest();
     }
 
@@ -107,12 +109,14 @@ public abstract class Entity : MonoBehaviour, IEntity
     {
         EnsureState(State.Idle);
         _state = State.MeleeDirectionRequested;
+        _animHandler.setPlayerWeapon(1);
         OnDirectionalRequest();
     }
 
     public void Ranged()
     {
         EnsureState(State.Idle);
+        _animHandler.setPlayerWeapon(2);
         _state = State.RangedDirectionRequested;
         OnDirectionalRequest();
     }
