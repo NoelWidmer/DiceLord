@@ -141,12 +141,12 @@ public abstract class Entity : MonoBehaviour, IEntity
                 .GetEntites(attackCoordinates).ToArray()); // must copy or iterator will throw
         }
 
+        this.PlayParallelSound(ref _audioSources, References.Instance.AoEAttackSounds.GetRandomItem(), true);
+
         foreach (var target in targets)
         {
             target.ReceiveDamage(1);
         }
-
-        this.PlayParallelSound(ref _audioSources, References.Instance.AoEAttackSounds.GetRandomItem(), true);
 
         StartCoroutine(DelayEndOffense(_aoeDuration));
     }

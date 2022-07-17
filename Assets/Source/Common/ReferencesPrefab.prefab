@@ -54,8 +54,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9cf3897d010ec8a4f8b8be336cd2bb09, type: 3}
   - {fileID: 8300000, guid: ef453603212e30a40a390d146b0d284e, type: 3}
   _aoeAttackSounds:
-  - {fileID: 8300000, guid: 7346028b48691bb4c86ce619a99ea090, type: 3}
-  - {fileID: 8300000, guid: 04d2337c9661ca341b7df254e7544d39, type: 3}
+  - {fileID: 8300000, guid: 997460488a8b4ef47b655e878ed7c5ec, type: 3}
+  - {fileID: 8300000, guid: b377cac335038b746bdbbca446bd1116, type: 3}
   _playerMoveSounds:
   - {fileID: 8300000, guid: 3ae286ac191759149b1a4aec93b8f47c, type: 3}
   - {fileID: 8300000, guid: b4fc6aad6fe17254eba30cfbb12904db, type: 3}
