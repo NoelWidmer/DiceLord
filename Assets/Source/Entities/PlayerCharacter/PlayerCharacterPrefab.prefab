@@ -261,12 +261,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a3c22facb36c7804692462323eede6d7, type: 3}
   - {fileID: 8300000, guid: fbbb855b01953114dbf0a14b0e0ac75b, type: 3}
   MeleeSounds:
-  - {fileID: 8300000, guid: 83119342a92016343975ffbfa8e6db02, type: 3}
-  - {fileID: 8300000, guid: fb42c8e90073c9e439a3609c04552e34, type: 3}
+  - {fileID: 8300000, guid: 8c5172e9f7edb0743ae620281aa8e4f0, type: 3}
+  - {fileID: 8300000, guid: 1c7119bb76da3bf419b3f4e544de534d, type: 3}
   RangedSounds:
   - {fileID: 8300000, guid: 5b5ea1cd34914b9438c81177f1b3ca4d, type: 3}
   - {fileID: 8300000, guid: c01f522c9ce3c3e48af59ba0c86c1c44, type: 3}
-  AoESounds: []
+  AoESounds:
+  - {fileID: 8300000, guid: 04d2337c9661ca341b7df254e7544d39, type: 3}
+  - {fileID: 8300000, guid: 7346028b48691bb4c86ce619a99ea090, type: 3}
   MoveSounds:
   - {fileID: 8300000, guid: 3ae286ac191759149b1a4aec93b8f47c, type: 3}
   - {fileID: 8300000, guid: b4fc6aad6fe17254eba30cfbb12904db, type: 3}
