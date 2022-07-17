@@ -17,7 +17,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.1
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -268,7 +268,7 @@ AnimationClip:
     - time: 1
       value: {fileID: -227941114, guid: f1764295e8650f947ac168d69b74cd05, type: 3}
     - time: 1.1666666
-      value: {fileID: -1445489729, guid: f1764295e8650f947ac168d69b74cd05, type: 3}
+      value: {fileID: -227941114, guid: f1764295e8650f947ac168d69b74cd05, type: 3}
     attribute: m_Sprite
     path: 
     classID: 114
@@ -295,7 +295,7 @@ AnimationClip:
     - {fileID: 2066569983, guid: f1764295e8650f947ac168d69b74cd05, type: 3}
     - {fileID: -620632891, guid: f1764295e8650f947ac168d69b74cd05, type: 3}
     - {fileID: -227941114, guid: f1764295e8650f947ac168d69b74cd05, type: 3}
-    - {fileID: -1445489729, guid: f1764295e8650f947ac168d69b74cd05, type: 3}
+    - {fileID: -227941114, guid: f1764295e8650f947ac168d69b74cd05, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -415,7 +415,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.1
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -556,11 +556,11 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.1
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -607,7 +607,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.1
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
