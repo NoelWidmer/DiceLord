@@ -65,28 +65,27 @@ public class ActionIcon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public GameMode.PlayerAction GetAction() => _action;
 
-    private void Awake()
-    {
-        _initialScaling = gameObject.GetComponent<RectTransform>().localScale;
-    }
-
-    public void Drag(Vector2 position)
+    public void Update()
     {
         if(_isDragging)
         {
+            Vector2 position = transform.GetComponentInParent<CanvasController>().GetMousePosition();
             transform.position = position;
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        _initialScaling = transform.GetComponent<RectTransform>().localScale;
         _isDragging = true;
-        gameObject.GetComponent<RectTransform>().localScale = _initialScaling * .8f;
+        transform.GetComponent<RectTransform>().localScale = _initialScaling * .9f;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         _isDragging = false;
-        gameObject.GetComponent<RectTransform>().localScale = _initialScaling;
+        transform.GetComponent<RectTransform>().localScale = _initialScaling;
+
+        transform.GetComponentInParent<CanvasController>().Drop(this.gameObject);
     }
 }

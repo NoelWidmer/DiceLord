@@ -50,25 +50,60 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
     private Vector2 _mousePosition;
 
+    public Vector2 GetMousePosition() => _mousePosition;
+
     public void OnMouseMoved(Vector2 position)
     {
         _mousePosition = position;
+    }
+
+    public void Drop(GameObject actionIcon)
+    {
+        Vector3 localMouse;
+        foreach (var slot in _slots)
+        {
+            Rect slotRect = slot.transform.GetComponent<RectTransform>().rect;
+            localMouse = slot.transform.GetComponent<RectTransform>().InverseTransformPoint(_mousePosition);
+            Debug.Log(slot);
+            Debug.Log(slotRect.position);
+            Debug.Log(localMouse);
+
+            Bounds slotBounds = new(new(0f,0f,0f), slotRect.size * 1.2f);
+            if(slotBounds.Contains(localMouse))
+            {
+                AddToSlot(slot, actionIcon);
+                return;
+            }
+        }
+
+        Rect actionIconRect = actionIcon.transform.GetComponent<RectTransform>().rect;
+        localMouse = _tray.transform.GetComponent<RectTransform>().InverseTransformPoint(_mousePosition);
+        Bounds trayBounds = new(new(0f, 0f, 0f), _trayRect.size-actionIconRect.size);
+        if(trayBounds.Contains(localMouse))
+        {
+            return;
+        }
+        PlaceInTray(actionIcon);
     }
 
     public void PopulateTray(List<GameMode.PlayerAction> rolls)
     { 
         foreach(var roll in rolls)
         {
-            var actionIcon = Instantiate(ActionIconPrefab, transform);
+            GameObject actionIcon = Instantiate(ActionIconPrefab, transform);
             actionIcon.name = roll.ToString();
             actionIcon.GetComponent<ActionIcon>().SetAction(roll);
-            actionIcon.transform.SetParent(_tray.transform);
-
-            Rect actionRect = actionIcon.GetComponent<RectTransform>().rect;
-            float xSpread = (_trayRect.width / 2) - (actionRect.width / 2);
-            float ySpread = (_trayRect.height / 2) - (actionRect.height / 2);
-            actionIcon.GetComponent<RectTransform>().localPosition = new(Random.Range(-xSpread, xSpread), Random.Range(-ySpread, ySpread));
+            PlaceInTray(actionIcon);
         }
+    }
+
+    public void PlaceInTray(GameObject actionIcon)
+    {
+        actionIcon.transform.SetParent(_tray.transform);
+        Rect actionRect = actionIcon.GetComponent<RectTransform>().rect;
+        float xSpread = (_trayRect.width / 2) - (actionRect.width / 3);
+        float ySpread = (_trayRect.height / 2) - (actionRect.height / 3);
+        actionIcon.GetComponent<RectTransform>().localPosition = new(Random.Range(-xSpread, xSpread), Random.Range(-ySpread, ySpread));
     }
 
     public void ClearTray()
@@ -82,8 +117,23 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     public void AddToSlot(int idx, GameObject actionIcon)
     {
         GameObject slot = _slots[idx];
+        AddToSlot(slot, actionIcon);
+    }
+
+    public void AddToSlot(GameObject slot, GameObject actionIcon)
+    {
+        if(slot.transform.childCount > 0)
+        {
+            DisplaceFromSlot(slot);
+        }
         actionIcon.transform.SetParent(slot.transform);
         actionIcon.GetComponent<RectTransform>().localPosition = new(0f, 0f);
+    }
+
+    public void DisplaceFromSlot(GameObject slot)
+    {
+        GameObject actionIcon = slot.transform.GetChild(0).gameObject;
+        PlaceInTray(actionIcon);
     }
 
     public List<GameMode.PlayerAction> GetSelectedActions()
