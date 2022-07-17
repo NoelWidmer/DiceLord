@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Dummy : Entity
+public class Dummy : Enemy
 {
     public override bool CanBeEntered => false;
 
@@ -11,6 +11,9 @@ public class Dummy : Entity
     protected override AudioClip[] DeathSounds => References.Instance.SlimeScreamSounds;
 
     public override void OnEntered(IEntity entity)
+    { }
+
+    protected override void Attack()
     { }
 
     protected override void OnDirectionalRequest()
