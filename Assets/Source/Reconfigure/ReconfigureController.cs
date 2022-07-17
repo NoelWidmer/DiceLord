@@ -118,6 +118,7 @@ public class ReconfigureController : Singleton<ReconfigureController, IReconfigu
     {
         GameObject iconClone = Instantiate(actionIcon, transform);
         iconClone.name = actionIcon.name;
+        iconClone.GetComponent<ActionIcon>().SetAction(actionIcon.GetComponent<ActionIcon>().GetAction());
 
         if (slot.transform.childCount > 0)
         {
@@ -159,7 +160,11 @@ public class ReconfigureController : Singleton<ReconfigureController, IReconfigu
             diceControllerObj.AddComponent<DiceController>();
             diceController = DiceController.Instance;
         }
-        diceController.SetActions(GetSelectedActions());
+        var selectedActions = GetSelectedActions();
+        if(selectedActions.Count == 0) { return; }
+
+        diceController.SetActions(selectedActions);
+
 
         if(SceneTracker.Instance == null) { SceneManager.LoadScene(0);  }
 
