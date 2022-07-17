@@ -35,7 +35,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     public PlayerAction[] sides = new PlayerAction[number_of_sides];
 
     private IPlayerCharacter _playerCharacter;
-    private DiceController _diceController;
+    private IDiceController _diceController;
     private CanvasController _canvasController;
 
     private List<Enemy> _enemies;
@@ -81,11 +81,21 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         }
 
         // setup dice
+        bool _firstInstance = false;
+        if(DiceController.Instance == null)
         {
-            var diceController = Instantiate(DiceControllerPrefab, transform);
-            diceController.name = nameof(DiceController);
-            _diceController = diceController.GetComponent<DiceController>();
-            _diceController.SetActions(sides);
+            _firstInstance = true;
+            var diceController = new GameObject("Dice Controller");
+            diceController.AddComponent<DiceController>();
+
+            DontDestroyOnLoad(diceController);
+        }
+
+        {
+            _diceController = DiceController.Instance;
+
+            List<PlayerAction> actions = new(sides);
+            if (_firstInstance) { _diceController.SetActions(actions); }
         }
 
         // setup ambient track

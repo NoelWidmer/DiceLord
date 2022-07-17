@@ -78,7 +78,6 @@ public class ReconfigureController : Singleton<ReconfigureController, IReconfigu
     public void PlaceInTray(GameObject actionIcon)
     {
         GameObject other = _tray.transform.Find(actionIcon.name)?.gameObject;
-        Debug.Log(other);
         if (other && !actionIcon.Equals(other))
         {
             Destroy(actionIcon);
