@@ -7,7 +7,13 @@ public interface ICanvasController
     void OnMouseMoved(Vector2 position);
 }
 
-public class CanvasController : Singleton<CanvasController, ICanvasController>, ICanvasController
+public interface IDragDrop
+{
+    Vector2 GetMousePosition();
+    void Drop(GameObject actionIcon);
+}
+
+public class CanvasController : Singleton<CanvasController, ICanvasController>, ICanvasController, IDragDrop
 {
     public GameObject SlotPrefab;
     public GameObject ActionIconPrefab;
@@ -163,12 +169,6 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     /*********************************
      * Slot
      *********************************/
-    public void AddToSlot(int idx, GameObject actionIcon)
-    {
-        GameObject slot = _slots[idx];
-        AddToSlot(slot, actionIcon);
-    }
-
     public void AddToSlot(GameObject slot, GameObject actionIcon)
     {
         if(slot.transform.childCount > 0)
@@ -193,7 +193,6 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         {
             if(slot.transform.childCount > 0)
             {
-                GameObject child = slot.transform.GetChild(0).gameObject;
                 actions.Add(slot.transform.GetChild(0).GetComponent<ActionIcon>().GetAction());
             }
         }
