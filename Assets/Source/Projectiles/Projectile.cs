@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IProjectile
 {
-    void Charge(int distance, float durationPerField, GridDirection direction);
+    void Charge(int distance, float durationPerField, GridDirection direction, AudioClip[] chargedSounds, AudioClip[] impactSounds);
     void Launch();
     void OnPartiallyPiercedEntity();
     void OnPiercedEntity();
@@ -38,8 +38,14 @@ public class Projectile : MonoBehaviour, IProjectile
     private float _speed;
     private GridDirection _direction;
 
-    public void Charge(int distance, float durationPerField, GridDirection direction)
+    private AudioClip[] _chargedSounds;
+    private AudioClip[] _impactSounds;
+
+    public void Charge(int distance, float durationPerField, GridDirection direction, AudioClip[] chargedSounds, AudioClip[] impactSounds)
     {
+        _chargedSounds = chargedSounds;
+        _impactSounds = impactSounds;
+
         _remainingDistance = distance * GridVector.DistanceBetweenFields;
         var duration = durationPerField * distance;
         _speed = distance / duration;
@@ -63,7 +69,7 @@ public class Projectile : MonoBehaviour, IProjectile
             _ => throw new NotImplementedException(),
         });
 
-        if (References.Instance.BowChargeSounds.TryGetRandomItem(out var item))
+        if (_chargedSounds.TryGetRandomItem(out var item))
         {
             this.PlayParallelSound(ref _sources, item, true);
         }
@@ -92,7 +98,7 @@ public class Projectile : MonoBehaviour, IProjectile
 
     private void PlayImpactSound()
     {
-        if (References.Instance.BowImpactSounds.TryGetRandomItem(out var item))
+        if (_impactSounds.TryGetRandomItem(out var item))
         {
             this.PlayParallelSound(ref _sources, item, true);
         }
