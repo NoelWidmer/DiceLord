@@ -33,6 +33,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     public int number_of_dice;
     public const int number_of_sides = 6;
     public PlayerAction[] sides = new PlayerAction[number_of_sides];
+    public bool overrideDice = false;
 
     private IPlayerCharacter _playerCharacter;
     private IDiceController _diceController;
@@ -95,7 +96,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             _diceController = DiceController.Instance;
 
             List<PlayerAction> actions = new(sides);
-            if (_firstInstance) { _diceController.SetActions(actions); }
+            if (overrideDice || _firstInstance) { _diceController.SetActions(actions); }
         }
 
         // setup ambient track
@@ -111,6 +112,14 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             src.volume = .2f;
             src.loop = true;
             src.Play();
+        }
+
+        if (SceneTracker.Instance == null)
+        {
+            var sceneTrackerObj = new GameObject("Scene Tracker");
+            sceneTrackerObj.AddComponent<SceneTracker>();
+
+            DontDestroyOnLoad(sceneTrackerObj);
         }
 
         // register entities
@@ -149,7 +158,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
             if (_enemies.Count == 0)
             {
-                StartCoroutine(DelaySceneLoad(gameObject.scene.buildIndex + 1));
+                SceneTracker.Instance.SetLastScene(gameObject.scene.buildIndex);
+                StartCoroutine(DelaySceneLoad(1));
             }
         }
         else if (entity is PlayerCharacter)

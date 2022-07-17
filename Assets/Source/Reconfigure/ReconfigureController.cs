@@ -2,16 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public interface IReconfigureController
 {
-
+    //void SetAvailableActions(List<GameMode.PlayerAction> actions);
 }
 
 public class ReconfigureController : Singleton<ReconfigureController, IReconfigureController>, IReconfigureController, IDragDrop, IUnityInputSystemMessages
 {
-    public List<GameMode.PlayerAction> availableActions;
     public GameObject ActionIconPrefab;
+
+    public List<GameMode.PlayerAction> availableActionsLevel1;
+    public List<GameMode.PlayerAction> availableActionsLevel2;
+    public List<GameMode.PlayerAction> availableActionsLevel3;
+    public List<GameMode.PlayerAction> availableActionsLevel4;
+    public List<GameMode.PlayerAction> availableActionsLevel5;
+    public List<GameMode.PlayerAction> availableActionsLevel6;
+    public List<GameMode.PlayerAction> availableActionsLevel7;
+    public List<GameMode.PlayerAction> availableActionsLevel8;
+
+    public List<List<GameMode.PlayerAction>> availableActionsByLevel;
 
     private GameObject _table;
     private GameObject _tray;
@@ -22,6 +33,18 @@ public class ReconfigureController : Singleton<ReconfigureController, IReconfigu
     // Start is called before the first frame update
     protected override void OnAwake()
     {
+        availableActionsByLevel = new()
+        {
+            availableActionsLevel1,
+            availableActionsLevel2,
+            availableActionsLevel3,
+            availableActionsLevel4,
+            availableActionsLevel5,
+            availableActionsLevel6,
+            availableActionsLevel7,
+            availableActionsLevel8
+        };
+
         // init canvas
         _table = transform.Find("Table").gameObject;
 
@@ -36,7 +59,7 @@ public class ReconfigureController : Singleton<ReconfigureController, IReconfigu
             _slots.Add(slot.gameObject);
         }
 
-        PopulateTray(availableActions);
+        PopulateTray(GetAvailableActions());
     }
     
     public void Drop(GameObject actionIcon)
@@ -129,7 +152,18 @@ public class ReconfigureController : Singleton<ReconfigureController, IReconfigu
 
     public void OnConfirmButton()
     {
-        // TODO: pass selected actions
+        IDiceController diceController = DiceController.Instance;
+        if(diceController == null)
+        {
+            var diceControllerObj = new GameObject("Dice Controller");
+            diceControllerObj.AddComponent<DiceController>();
+            diceController = DiceController.Instance;
+        }
+        diceController.SetActions(GetSelectedActions());
+
+        if(SceneTracker.Instance == null) { SceneManager.LoadScene(0);  }
+
+        SceneManager.LoadScene(SceneTracker.Instance.GetLastScene() + 1);
     }
 
     public void OnRoll(InputValue inputValue)
@@ -144,4 +178,12 @@ public class ReconfigureController : Singleton<ReconfigureController, IReconfigu
     { }
 
     public Vector2 GetMousePosition() => _mousePosition;
+
+    public List<GameMode.PlayerAction> GetAvailableActions()
+    {
+        if (SceneTracker.Instance == null) { return new(); }
+
+        int nextLevelIdx = SceneTracker.Instance.GetLastScene() - 1;
+        return availableActionsByLevel[nextLevelIdx];
+    }
 }
