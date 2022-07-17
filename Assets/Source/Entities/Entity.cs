@@ -50,7 +50,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     private readonly float _rangedChargeDuration = .75f;
     private readonly float _rangedPrepellDuration = .15f;
-    protected readonly int RangeDistance = 3;
+
+    protected virtual int RangeDistance => 3;
 
     public int X;
     public int Y;
