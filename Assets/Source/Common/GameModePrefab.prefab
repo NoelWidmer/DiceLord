@@ -48,5 +48,7 @@ MonoBehaviour:
   CanvasControllerPrefab: {fileID: 6458894775594740108, guid: afb576b84ff865d40bc9f5441ef17db6, type: 3}
   PlayerControllerPrefab: {fileID: 8342160545712426058, guid: 728ef938675e98648af64935b35bb240, type: 3}
   DiceControllerPrefab: {fileID: 7609912808743938612, guid: 593527db3fdf504428206e9fcef26cd4, type: 3}
-  AmbientTrack: {fileID: 8300000, guid: 652cbb680e039f240b0232b1d1418c62, type: 3}
+  AmbientTrack: {fileID: 8300000, guid: 0fb29262ffdcfa04cbfad7372bf49d1d, type: 3}
   number_of_dice: 3
+  sides: 000000000000000000000000000000000000000000000000
+  overrideDice: 0
