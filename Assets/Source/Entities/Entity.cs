@@ -283,7 +283,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                 var projectileObj = Instantiate(ProjectilePrefab);
                 projectileObj.transform.position = transform.position;
                 projectile = projectileObj.GetComponent<Projectile>();
-                projectile.Charge(RangeDistance, _rangedPrepellDuration, direction, new AudioClip[0], RangedSounds);
+                projectile.Charge(RangeDistance, _rangedPrepellDuration, direction, References.Instance.BowChargeSounds, RangedSounds);
             }
             
             StartCoroutine(DelayEjectProjectile(projectile));
