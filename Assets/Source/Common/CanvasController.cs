@@ -56,8 +56,8 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         // init buttons
         _confirmButton = _canvas.transform.Find("ConfirmButton").gameObject;
         _rollButton = _canvas.transform.Find("Table").Find("RollButton").gameObject;
-        DisableConfirmButton();
-        DisableRollButton();
+        EnableConfirmButton(false);
+        EnableRollButton(false);
     }
 
     /*********************************
