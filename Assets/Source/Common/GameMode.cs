@@ -173,12 +173,12 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         {
             if (_playerActionIndex < number_of_dice)
             {
-                // only move slot indicator, execute no action
+                // only move slot indicator, execute no action (polish)
             }
-            // enemy act (TODO)
             _canvasController.ClearTray();
             _canvasController.ClearSlots();
 
+            // enemy act
             _turnState = TurnState.EnemyAct;
             GridVector playerPosition = _playerCharacter.Coordinates;
             foreach(Enemy enemy in _enemies)
@@ -187,7 +187,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
                 enemy.EnemyAct(playerPosition);
             }
-
 
             StartNextTurn();
         }

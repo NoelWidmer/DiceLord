@@ -19,6 +19,8 @@ public abstract class Enemy : Entity
     {
         GridDirection direction;
 
+        // TODO: Move around corners, don't run into walls!
+
         GridVector playerDir = _playerPosition - Coordinates;
         if(Mathf.Abs(playerDir.X) <= Mathf.Abs(playerDir.Y))
         {
@@ -41,12 +43,23 @@ public abstract class Enemy : Entity
         // if player not in enemy range
         GridVector playerDir = _playerPosition - Coordinates;
         Debug.Log($"Vector between player and enemy {gameObject} is {playerDir}");
-        if (! ((playerDir.X == 0 && Mathf.Abs(playerDir.Y) <= RangeDistance) 
+        if (!((playerDir.X == 0 && Mathf.Abs(playerDir.Y) <= RangeDistance)
             || (playerDir.Y == 0 && Mathf.Abs(playerDir.X) <= RangeDistance)))
-        { 
+        {
             Move();
-        } else { Debug.Log($"Player was in range of enemy {gameObject} ({RangeDistance})"); }
-        // then, always
-        Attack();
+            StartCoroutine(DelayAttack(2f));
+
+        }
+        else
+        {
+            Debug.Log($"Player is in range of {gameObject} ({RangeDistance})");
+            StartCoroutine(DelayAttack(.1f));
+        }
+
+        IEnumerator DelayAttack(float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            Attack();
+        }
     }
 }

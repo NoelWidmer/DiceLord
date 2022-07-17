@@ -9,9 +9,6 @@ public class CubeMan : Enemy
     public override void OnEntered(IEntity entity)
     { }
 
-    protected override void OnDirectionalRequest()
-    { }
-
     protected override void OnDied()
     { }
 
