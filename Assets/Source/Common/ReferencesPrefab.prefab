@@ -99,3 +99,4 @@ MonoBehaviour:
   _directionalArrowHover: {fileID: 8300000, guid: c5c958fc0820f624eba6e9150ad2f57f, type: 3}
   _directionalArrowClick: {fileID: 8300000, guid: ef355b64d0e1ad34493611c2945d1380, type: 3}
   _moveBlockedSound: {fileID: 8300000, guid: 1fe2171618dfc2f4491f033c3d89aa46, type: 3}
+  _attackVisualizerPrefab: {fileID: 6415355344541356414, guid: 137140b6adee70c42b89cfb6dd25ad83, type: 3}

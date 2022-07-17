@@ -142,10 +142,20 @@ public abstract class Entity : MonoBehaviour, IEntity
         _animHandler?.PlayOrStopAttack(true);
         _state = State.AoE;
 
+        var splashes = new List<GameObject>();
+
         List<IEntity> targets = new();
         foreach(GridDirection direction in Enum.GetValues(typeof(GridDirection)))
         {
             var attackCoordinates = Coordinates.GetAdjacent(direction);
+
+            // splashes
+            {
+                var splash = Instantiate(References.Instance.AttackVisualizerPrefab);
+                splash.transform.position = attackCoordinates.GetFieldCenterPosition();
+
+                splashes.Add(splash);
+            }
 
             targets.AddRange(Grid.Instance
                 .GetEntites(attackCoordinates).ToArray()); // must copy or iterator will throw
@@ -161,7 +171,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             this.PlayParallelSound(ref _audioSources, item, true);
         }
 
-        StartCoroutine(DelayEndOffense(_aoeDuration));
+        StartCoroutine(DelayEndOffense(_aoeDuration, splashes.ToArray()));
     }
 
     protected abstract void OnDirectionalRequest();
@@ -235,7 +245,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
             foreach (var target in targets)
             {
-                target.ReceiveDamage(1);
+                target.ReceiveDamage(2);
             }
 
             if (MeleeSounds.TryGetRandomItem(out var item))
@@ -243,7 +253,10 @@ public abstract class Entity : MonoBehaviour, IEntity
                 this.PlayParallelSound(ref _audioSources, item, true);
             }
 
-            StartCoroutine(DelayEndOffense(_meleeDuration));
+            var splash = Instantiate(References.Instance.AttackVisualizerPrefab);
+            splash.transform.position = attackCoordinates.GetFieldCenterPosition();
+
+            StartCoroutine(DelayEndOffense(_meleeDuration, new[] { splash }));
         }
         else if (_state == State.RangedDirectionRequested)
         {
@@ -303,7 +316,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                 }
                 else
                 {
-                    StartCoroutine(DelayEndOffense(_rangedPrepellDuration));
+                    StartCoroutine(DelayEndOffense(_rangedPrepellDuration, null));
                 }
             }
         }
@@ -333,7 +346,10 @@ public abstract class Entity : MonoBehaviour, IEntity
 
         entity.ForceBecomeIdle();
 
-        StartCoroutine(DelayEndOffense(_repellDuration));
+        var splash = Instantiate(References.Instance.AttackVisualizerPrefab);
+        splash.transform.position = entity.Coordinates.GetFieldCenterPosition();
+
+        StartCoroutine(DelayEndOffense(_repellDuration, new[] { splash }));
     }
     
     public void ForceBecomeIdle()
@@ -449,9 +465,18 @@ public abstract class Entity : MonoBehaviour, IEntity
         }
     }
 
-    private IEnumerator DelayEndOffense(float duration)
+    private IEnumerator DelayEndOffense(float duration, GameObject[] splash)
     {
         yield return new WaitForSeconds(duration);
+
+        if (splash != null)
+        {
+            foreach (var s in splash)
+            {
+                Destroy(s);
+            }
+        }
+
         BecomeIdle();
         _animHandler?.PlayOrStopAttack(false);
         GameMode.Instance.ProcessNextAction();

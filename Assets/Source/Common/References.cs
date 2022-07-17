@@ -29,6 +29,8 @@ public interface IReferences
 
 
     AudioClip MoveBlockedSound { get; }
+
+    GameObject AttackVisualizerPrefab { get; }
 }
 
 public class References : Singleton<References, IReferences>, IReferences
@@ -114,4 +116,8 @@ public class References : Singleton<References, IReferences>, IReferences
     [SerializeField]
     private AudioClip _moveBlockedSound;
     public AudioClip MoveBlockedSound => _moveBlockedSound;
+
+    [SerializeField]
+    private GameObject _attackVisualizerPrefab;
+    public GameObject AttackVisualizerPrefab => _attackVisualizerPrefab;
 }
