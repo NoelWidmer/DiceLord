@@ -69,7 +69,7 @@ public class ActionIcon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if(_isDragging)
         {
-            Vector2 position = transform.GetComponentInParent<CanvasController>().GetMousePosition();
+            Vector2 position = transform.GetComponentInParent<IDragDrop>().GetMousePosition();
             transform.position = position;
         }
     }
@@ -86,6 +86,6 @@ public class ActionIcon : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _isDragging = false;
         transform.GetComponent<RectTransform>().localScale = _initialScaling;
 
-        transform.GetComponentInParent<CanvasController>().Drop(this.gameObject);
+        transform.GetComponentInParent<IDragDrop>().Drop(this.gameObject);
     }
 }
