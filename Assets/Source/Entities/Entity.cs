@@ -47,7 +47,7 @@ public abstract class Entity : MonoBehaviour, IEntity
     private readonly float _moveDuration = .75f;
 
     private readonly float _rangedChargeDuration = .75f;
-    private readonly float _rangedPrepellDuration = .25f;
+    private readonly float _rangedPrepellDuration = .15f;
     private readonly int _rangeDistance = 3;
 
     public int X;
@@ -57,6 +57,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public GridVector Coordinates => Grid.Instance.GetCoordiantes(this);
 
+    public GameObject ProjectilePrefab;
     public Transform Sword;
     public int Health;
 
@@ -185,17 +186,26 @@ public abstract class Entity : MonoBehaviour, IEntity
             _animHandler.PlayOrStopAttack(true);
             _state = State.Ranged;
 
-            StartCoroutine(DelayEjectProjectile());
-
+            // spawn projectile
+            IProjectile projectile;
+            {
+                var projectileObj = Instantiate(ProjectilePrefab);
+                projectileObj.transform.position = transform.position;
+                projectileObj.transform.right = -direction.GetVector();
+                projectile = projectileObj.GetComponent<Projectile>();
+            }
+            
             PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
+            StartCoroutine(DelayEjectProjectile(projectile));
 
-            IEnumerator DelayEjectProjectile()
+            IEnumerator DelayEjectProjectile(IProjectile projectile)
             {
                 yield return new WaitForSeconds(_rangedChargeDuration);
-                StartCoroutine(PrepellProjectileTo(Coordinates, _rangeDistance - 1));
+                projectile.Prepell(_rangeDistance, _rangedPrepellDuration, direction.GetVector());
+                StartCoroutine(DelayProjectileHit(Coordinates, _rangeDistance - 1));
             }
 
-            IEnumerator PrepellProjectileTo(GridVector fromCoordinates, int remainingDistance)
+            IEnumerator DelayProjectileHit(GridVector fromCoordinates, int remainingDistance)
             {
                 yield return new WaitForSeconds(_rangedPrepellDuration);
 
@@ -214,7 +224,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
                 if (remainingDistance > 0)
                 {
-                    StartCoroutine(PrepellProjectileTo(targetCoordinates, remainingDistance - 1));
+                    StartCoroutine(DelayProjectileHit(targetCoordinates, remainingDistance - 1));
                 }
                 else
                 {

@@ -23,16 +23,11 @@ public class PlayerCharacter : Entity, IPlayerCharacter
     {
         base.Awake();
 
-        var distanceBetweenFields = Vector2.Distance(Vector2.zero, new GridVector(1, 0).GetFieldCenterPosition());
-
-        var neDirection = new GridVector(1, 0).GetFieldCenterPosition().normalized;
-        var nwDirection = new Vector2(-neDirection.x, neDirection.y);
-
         {
             var arrowNE = transform.Find("Arrow NE");
             _directionalArrows.Add(arrowNE);
 
-            var offset = .75f * distanceBetweenFields * neDirection;
+            var offset = .75f * GridVector.DistanceBetweenFields * GridVector.NEDirection;
             arrowNE.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
         }
 
@@ -40,7 +35,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
             var arrowSE = transform.Find("Arrow SE");
             _directionalArrows.Add(arrowSE);
 
-            var offset = .75f * distanceBetweenFields * -nwDirection;
+            var offset = .75f * GridVector.DistanceBetweenFields * -GridVector.NWDirection;
             arrowSE.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
         }
 
@@ -48,7 +43,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
             var arrowSW = transform.Find("Arrow SW");
             _directionalArrows.Add(arrowSW);
 
-            var offset = .75f * distanceBetweenFields * -neDirection;
+            var offset = .75f * GridVector.DistanceBetweenFields * -GridVector.NEDirection;
             arrowSW.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
         }
 
@@ -56,7 +51,7 @@ public class PlayerCharacter : Entity, IPlayerCharacter
             var arrowNW = transform.Find("Arrow NW");
             _directionalArrows.Add(arrowNW);
 
-            var offset = .75f * distanceBetweenFields * nwDirection;
+            var offset = .75f * GridVector.DistanceBetweenFields * GridVector.NWDirection;
             arrowNW.transform.position = transform.position + new Vector3(offset.x, offset.y, 0f);
         }
 

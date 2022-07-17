@@ -10,6 +10,10 @@ public struct GridVector : IEquatable<GridVector>
     private const float _fieldWidth = (float)_fieldPixelWidth / _pixelsPerUnit;
     private const float _fieldHeight = (float)_fieldPixelHeight / _pixelsPerUnit;
 
+    public static readonly Vector2 NEDirection = new GridVector(1, 0).GetFieldCenterPosition().normalized;
+    public static readonly Vector2 NWDirection = new(-NEDirection.x, NEDirection.y);
+    public static readonly float DistanceBetweenFields = Vector2.Distance(Vector2.zero, new GridVector(1, 0).GetFieldCenterPosition());
+
     public readonly int X;
     public readonly int Y;
 
