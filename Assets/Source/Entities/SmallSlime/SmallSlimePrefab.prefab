@@ -48,7 +48,7 @@ MonoBehaviour:
   X: 0
   Y: 0
   ProjectilePrefab: {fileID: 0}
-  Health: 0
+  Health: 1
 --- !u!1 &3075180037623502318
 GameObject:
   m_ObjectHideFlags: 0
