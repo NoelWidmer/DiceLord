@@ -191,8 +191,8 @@ public abstract class Entity : MonoBehaviour, IEntity
             {
                 var projectileObj = Instantiate(ProjectilePrefab);
                 projectileObj.transform.position = transform.position;
-                projectileObj.transform.right = -direction.GetVector();
                 projectile = projectileObj.GetComponent<Projectile>();
+                projectile.Charge(_rangeDistance, _rangedPrepellDuration, direction);
             }
             
             PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
@@ -201,7 +201,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             IEnumerator DelayEjectProjectile(IProjectile projectile)
             {
                 yield return new WaitForSeconds(_rangedChargeDuration);
-                projectile.Prepell(_rangeDistance, _rangedPrepellDuration, direction.GetVector());
+                projectile.Launch();
                 StartCoroutine(DelayProjectileHit(Coordinates, _rangeDistance - 1));
             }
 

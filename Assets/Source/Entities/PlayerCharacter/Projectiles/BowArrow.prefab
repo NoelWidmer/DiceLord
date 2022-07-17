@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4c2c14b12055a4899a6e0ed1ca3778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NeSprite: {fileID: 21300000, guid: 13802a0695af2874ab093fbc41d2fc5b, type: 3}
+  SeSprite: {fileID: 21300000, guid: fa38b11ac1c022f4a9561dc8868cf63b, type: 3}
+  SwSprite: {fileID: 21300000, guid: 699b71e67aefeca429f5fa2abb088f3d, type: 3}
+  NwSprite: {fileID: 21300000, guid: feb58c200480a364eae26ed29386640f, type: 3}
 --- !u!1 &5657636886803139164
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,7 +75,7 @@ Transform:
   m_GameObject: {fileID: 5657636886803139164}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5657636885037299006}
@@ -115,10 +119,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -469824693
-  m_SortingLayer: 4
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 65a16a4add052504cac7e7f9ae1e4758, type: 3}
+  m_SortingLayerID: -1239424501
+  m_SortingLayer: 3
+  m_SortingOrder: 300
+  m_Sprite: {fileID: 21300000, guid: 13802a0695af2874ab093fbc41d2fc5b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
