@@ -50,7 +50,7 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     private readonly float _rangedChargeDuration = .75f;
     private readonly float _rangedPrepellDuration = .15f;
-    private readonly int _rangeDistance = 3;
+    protected readonly int RangeDistance = 3;
 
     public int X;
     public int Y;
@@ -200,7 +200,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                 var projectileObj = Instantiate(ProjectilePrefab);
                 projectileObj.transform.position = transform.position;
                 projectile = projectileObj.GetComponent<Projectile>();
-                projectile.Charge(_rangeDistance, _rangedPrepellDuration, direction);
+                projectile.Charge(RangeDistance, _rangedPrepellDuration, direction);
             }
             
             PlayParallelSound(References.Instance.RangedSounds.GetRandomItem());
@@ -210,7 +210,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             {
                 yield return new WaitForSeconds(_rangedChargeDuration);
                 projectile.Launch();
-                StartCoroutine(DelayProjectileHit(Coordinates, _rangeDistance - 1, projectile));
+                StartCoroutine(DelayProjectileHit(Coordinates, RangeDistance - 1, projectile));
             }
 
             IEnumerator DelayProjectileHit(GridVector fromCoordinates, int remainingDistance, IProjectile projectile)
