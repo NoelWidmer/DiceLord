@@ -42,6 +42,8 @@ public abstract class Entity : MonoBehaviour, IEntity
         Ranged,
         RangedDirectionRequested,
 
+        AoE,
+
         Repelling,
     }
 
@@ -51,6 +53,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     private readonly float _rangedChargeDuration = .75f;
     private readonly float _rangedPrepellDuration = .15f;
+
+    private readonly float _aoeDuration = .65f;
 
     protected virtual int RangeDistance => 3;
 
@@ -117,6 +121,34 @@ public abstract class Entity : MonoBehaviour, IEntity
         _animHandler?.setPlayerWeapon(2);
         _state = State.RangedDirectionRequested;
         OnDirectionalRequest();
+    }
+
+    public void AoE()
+    {
+        EnsureState(State.Idle);
+        _animHandler?.setPlayerWeapon(3);
+
+        _animHandler?.PlayOrStopAttack(true);
+        _state = State.AoE;
+
+        List<IEntity> targets = new();
+        foreach(GridDirection direction in Enum.GetValues(typeof(GridDirection)))
+        {
+            var attackCoordinates = Coordinates.GetAdjacent(direction);
+
+            targets.AddRange(Grid.Instance
+                .GetEntites(attackCoordinates).ToArray()); // must copy or iterator will throw
+        }
+
+        foreach (var target in targets)
+        {
+            target.ReceiveDamage(1);
+        }
+
+        this.PlayParallelSound(ref _audioSources, References.Instance.AoEAttackSounds.GetRandomItem(), true);
+
+        StartCoroutine(DelayEndOffense(_aoeDuration));
+
     }
 
     protected abstract void OnDirectionalRequest();

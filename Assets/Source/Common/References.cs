@@ -6,7 +6,7 @@ public interface IReferences
 
     AudioClip[] BowChargeSounds { get; }
     AudioClip[] BowImpactSounds { get; }
-
+    AudioClip[] AoEAttackSounds { get; }
     AudioClip[] PlayerMoveSounds { get; }
 
     AudioClip[] TakeDamageSounds { get; }
@@ -43,6 +43,11 @@ public class References : Singleton<References, IReferences>, IReferences
     [SerializeField]
     private AudioClip[] _bowImpactSounds;
     public AudioClip[] BowImpactSounds => _bowImpactSounds;
+
+    [Header("AoE")]
+    [SerializeField]
+    private AudioClip[] _aoeAttackSounds;
+    public AudioClip[] AoEAttackSounds => _aoeAttackSounds;
 
     [Header("Move")]
     [SerializeField]
