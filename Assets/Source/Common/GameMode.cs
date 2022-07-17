@@ -121,7 +121,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     {
         Debug.Log("Top of the round");
         _turnState = TurnState.Roll;
-        _canvasController.EnableRollButton();
+        _canvasController.EnableRollButton(true);
     }
 
     public void OnRollDice()
@@ -132,12 +132,12 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             return;
         }
 
-        _canvasController.DisableRollButton();
+        _canvasController.EnableRollButton(false);
         List<PlayerAction> rolls = _diceController.RollDice(number_of_dice);
         _canvasController.PopulateTray(rolls);
 
         _turnState = TurnState.Choose;
-        _canvasController.EnableConfirmButton();
+        _canvasController.EnableConfirmButton(true);
     }
 
     public void OnConfirmSelection()
@@ -148,7 +148,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             return;
         }
 
-        _canvasController.DisableConfirmButton();
+        _canvasController.EnableConfirmButton(false);
         _playerActions = _canvasController.GetSelectedActions();
         _playerActionIndex = 0;
 

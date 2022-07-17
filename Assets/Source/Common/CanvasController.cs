@@ -75,14 +75,9 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     /*********************************
      * Confirm Button
      *********************************/
-    public void EnableConfirmButton()
+    public void EnableConfirmButton(bool enabled)
     {
-        _confirmButton.GetComponent<Button>().interactable = true;
-    }
-
-    public void DisableConfirmButton()
-    {
-        _confirmButton.GetComponent<Button>().interactable = false;
+        _confirmButton.GetComponent<Button>().interactable = enabled;
     }
 
     public void OnConfirmButton()
@@ -94,14 +89,9 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     /*********************************
      * Roll Button
      *********************************/
-    public void EnableRollButton()
+    public void EnableRollButton(bool enabled)
     {
-        _rollButton.GetComponent<Button>().interactable = true;
-    }
-
-    public void DisableRollButton()
-    {
-        _rollButton.GetComponent<Button>().interactable = false;
+        _rollButton.GetComponent<Button>().interactable = enabled;
     }
 
     public void OnRollButton()
