@@ -471,8 +471,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8c5172e9f7edb0743ae620281aa8e4f0, type: 3}
   - {fileID: 8300000, guid: 1c7119bb76da3bf419b3f4e544de534d, type: 3}
   RangedSounds:
-  - {fileID: 8300000, guid: 192d1e4e544eb6647bb845faa8609939, type: 3}
-  - {fileID: 8300000, guid: 5adbe9e79a7f9254d9ee981b8713d138, type: 3}
+  - {fileID: 8300000, guid: 04d2337c9661ca341b7df254e7544d39, type: 3}
+  - {fileID: 8300000, guid: 7346028b48691bb4c86ce619a99ea090, type: 3}
   AoESounds: []
   MoveSounds:
   - {fileID: 8300000, guid: d448fdcc2c56fd4479248559cb3a6f91, type: 3}
