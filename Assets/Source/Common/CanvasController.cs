@@ -82,7 +82,6 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
     public void OnConfirmButton()
     {
-        Debug.Log("Confirm");
         _gameMode.OnConfirmSelection();
     }
 
@@ -96,7 +95,6 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
     public void OnRollButton()
     {
-        Debug.Log("Roll");
         _gameMode.OnRollDice();
     }
 
