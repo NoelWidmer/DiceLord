@@ -511,7 +511,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -519,6 +519,27 @@ TextureImporter:
       bones: []
       spriteID: 2cd71d0611fb39343a7f8bafed2d62fd
       internalID: 1902843042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CHSpriteSheet_20
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 128
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50fc05c59a1b2cc4fa89edef3f6c1adb
+      internalID: -246220600
       vertices: []
       indices: 
       edges: []
@@ -540,6 +561,7 @@ TextureImporter:
       CHSpriteSheet_14: -132274868
       CHSpriteSheet_5: 1023805147
       CHSpriteSheet_15: -459620824
+      CHSpriteSheet_20: -246220600
       CHSpriteSheet_17: 1877029
       CHSpriteSheet_8: -1939525253
       CHSpriteSheet_1: 798867251
