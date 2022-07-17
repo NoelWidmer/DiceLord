@@ -63,9 +63,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5eb658ae589b7044b9c636d72cf7a8dd, type: 3}
   - {fileID: 8300000, guid: 87b7ce84479799745b3ce294737d86f6, type: 3}
   _cubeManTakeDamageSounds:
-  - {fileID: 8300000, guid: c410bb2c46d7d7c4ba03689dbd976cfb, type: 3}
-  - {fileID: 8300000, guid: c5cd891957439914b80095bc917e0aa6, type: 3}
-  - {fileID: 8300000, guid: 81e14ec18109f6441b11be78026d8a2f, type: 3}
+  - {fileID: 8300000, guid: 1779a92dfb670cf44802094d8632da17, type: 3}
+  - {fileID: 8300000, guid: 0337d10ddbe584a42a06395b63330fde, type: 3}
+  - {fileID: 8300000, guid: 885fecea75597c842be015ef2ccc085e, type: 3}
   _cubeManScreamSounds:
   - {fileID: 8300000, guid: 00c6574fe69ada04ab6c3af966db4cd6, type: 3}
   - {fileID: 8300000, guid: b561afe024d29c34da24933da6527e98, type: 3}
