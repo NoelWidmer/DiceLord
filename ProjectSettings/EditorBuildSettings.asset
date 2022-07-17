@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Levels/TitleScreen.unity
     guid: 268c4d46b18d99c4fb02f84627935c46
   - enabled: 1
+    path: Assets/Levels/ReconfigureDice.unity
+    guid: d613c1b6576505443b17d93fbb49e6fc
+  - enabled: 1
     path: Assets/Levels/Level1.unity
     guid: fe4778a4b6ccf944f8ec2fd1c1ca09ac
   - enabled: 1

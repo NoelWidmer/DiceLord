@@ -17,7 +17,7 @@ public class MenuController : MonoBehaviour
     public void StartGame()
     {
         Click();
-        StartCoroutine(Delay(() => SceneManager.LoadScene(gameObject.scene.buildIndex + 1)));
+        StartCoroutine(Delay(() => SceneManager.LoadScene(gameObject.scene.buildIndex + 2))); // next is the reconfigure screen
     }
 
     IEnumerator Delay(Action action)

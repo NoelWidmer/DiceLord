@@ -295,6 +295,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: ReconfigureController (Canvas)
       objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel1.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel2.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel3.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel4.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel1.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel1.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel2.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel2.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel3.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel3.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel3.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel4.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel4.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851739309413797858, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
+      propertyPath: availableActionsLevel4.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6851739309413797861, guid: 2fa69a44629edcc43b95c24dc22f573a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
