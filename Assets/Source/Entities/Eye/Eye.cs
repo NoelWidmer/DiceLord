@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Eye : Entity
+public class Eye : Enemy
 {
     public override bool CanBeEntered => false;
     public override bool CanRepell => true;
@@ -11,9 +11,8 @@ public class Eye : Entity
     public override void OnEntered(IEntity entity)
     { }
 
-    protected override void OnDirectionalRequest()
-    { }
-
     protected override void OnDied()
     { }
+
+    protected override void Attack() { Ranged(); }
 }

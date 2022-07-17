@@ -21,6 +21,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     public AudioClip AmbientTrack;
 
     public int number_of_dice;
+    public const int number_of_sides = 6;
+    public PlayerAction[] sides = new PlayerAction[number_of_sides];
 
     private IPlayerCharacter _playerCharacter;
     private DiceController _diceController;
@@ -73,6 +75,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             var diceController = Instantiate(DiceControllerPrefab, transform);
             diceController.name = nameof(DiceController);
             _diceController = diceController.GetComponent<DiceController>();
+            _diceController.SetActions(sides);
         }
 
         // setup ambient track
