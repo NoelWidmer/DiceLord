@@ -144,7 +144,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                     }
                     else
                     {
-                        this.PlayParallelSound(ref _audioSources, References.Instance.DirectionalArrowHover);
+                        this.PlayParallelSound(ref _audioSources, References.Instance.DirectionalArrowHover, true);
                         _animHandler?.PlayOrStopMove(false);
                         GameMode.Instance.ProcessNextAction();
                     }
@@ -158,7 +158,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             void DoMove()
             {
                 _animHandler?.PlayOrStopMove(true);
-                this.PlayParallelSound(ref _audioSources, References.Instance.PlayerMoveSounds.GetRandomItem());
+                this.PlayParallelSound(ref _audioSources, References.Instance.PlayerMoveSounds.GetRandomItem(), true);
                 _state = State.Moving;
                 _movingToCoordiantes = newCoordinates;
                 _remainingMoveDistance = (newCoordinates.GetFieldCenterPosition() - Coordinates.GetFieldCenterPosition()).magnitude;
@@ -181,7 +181,7 @@ public abstract class Entity : MonoBehaviour, IEntity
                 target.ReceiveDamage(1);
             }
 
-            this.PlayParallelSound(ref _audioSources, References.Instance.SwordAttackSounds.GetRandomItem());
+            this.PlayParallelSound(ref _audioSources, References.Instance.SwordAttackSounds.GetRandomItem(), true);
 
             StartCoroutine(DelayEndOffense(_meleeDuration));
         }
@@ -266,7 +266,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         _state = State.Repelling;
         entity.ReceiveDamage(1);
 
-        this.PlayParallelSound(ref _audioSources, References.Instance.SwordAttackSounds.GetRandomItem());
+        this.PlayParallelSound(ref _audioSources, References.Instance.SwordAttackSounds.GetRandomItem(), true);
 
         entity.ForceBecomeIdle();
 
@@ -330,7 +330,7 @@ public abstract class Entity : MonoBehaviour, IEntity
             Debug.Log($"{name} took {damage} damage and died.");
 
             var clip = DeathSounds.GetRandomItem();
-            this.PlayParallelSound(ref _audioSources, clip);
+            this.PlayParallelSound(ref _audioSources, clip, true);
 
             Health = 0;
             OnDied();
@@ -348,7 +348,7 @@ public abstract class Entity : MonoBehaviour, IEntity
         {
             _animHandler?.TakeDamage();
             Debug.Log($"{name} took {damage} damage and has {newHealth} health left.");
-            this.PlayParallelSound(ref _audioSources, TakeDamageSounds.GetRandomItem());
+            this.PlayParallelSound(ref _audioSources, TakeDamageSounds.GetRandomItem(), true);
             Health = newHealth;
         }
     }
