@@ -458,5 +458,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   X: 0
   Y: 0
-  ProjectilePrefab: {fileID: 0}
+  ProjectilePrefab: {fileID: 5657636885037299001, guid: 0259cf5fbb6385e40bb330b00fbfe022, type: 3}
   Health: 0
