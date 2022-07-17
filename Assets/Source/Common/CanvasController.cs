@@ -87,8 +87,11 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
 
     public void OnConfirmButton()
     {
-        this.PlayParallelSound(ref _sources, ConfirmSound, false);
-        _gameMode.OnConfirmSelection();
+        if (GameMode.Instance.TurnState == TurnState.Choose)
+        {
+            this.PlayParallelSound(ref _sources, ConfirmSound, false);
+            _gameMode.OnConfirmSelection();
+        }
     }
 
     /*********************************
