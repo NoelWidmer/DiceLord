@@ -606,6 +606,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SlotPrefab: {fileID: 8229567146693369053, guid: b01f5bbf5d7796c4188fb06fc6c9348f, type: 3}
   ActionIconPrefab: {fileID: 1223491560733359859, guid: f3472254b69c38f48b3b434e71cf70f4, type: 3}
+  ConfirmSound: {fileID: 8300000, guid: ef355b64d0e1ad34493611c2945d1380, type: 3}
+  DropSound: {fileID: 8300000, guid: 1e9d854dba4d34d42a8adc1a56156b51, type: 3}
 --- !u!1 &7287749652283980417
 GameObject:
   m_ObjectHideFlags: 0
