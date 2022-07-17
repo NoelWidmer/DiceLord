@@ -40,7 +40,10 @@ public class DiceController : Singleton<DiceController, IDiceController>, IDiceC
         List<GameMode.PlayerAction> rolls = new();
         for(int i = 0; i < n; i++)
         {
-            rolls.Add(_actions.GetRandomItem());
+            if (_actions.TryGetRandomItem(out var item))
+            {
+                rolls.Add(item);
+            };
         }
         return rolls;
     }
