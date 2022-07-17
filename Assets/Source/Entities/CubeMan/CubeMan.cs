@@ -12,8 +12,5 @@ public class CubeMan : Enemy
     protected override void OnDied()
     { }
 
-    protected override void Attack()
-    {
-        Melee();
-    }
+    protected override void Attack() { Melee(); }
 }
