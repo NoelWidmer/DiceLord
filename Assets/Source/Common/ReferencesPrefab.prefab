@@ -47,15 +47,15 @@ MonoBehaviour:
   _swordAttackSounds:
   - {fileID: 8300000, guid: 8c5172e9f7edb0743ae620281aa8e4f0, type: 3}
   - {fileID: 8300000, guid: 1c7119bb76da3bf419b3f4e544de534d, type: 3}
-  _rangedSounds:
-  - {fileID: 8300000, guid: 192d1e4e544eb6647bb845faa8609939, type: 3}
-  - {fileID: 8300000, guid: 5adbe9e79a7f9254d9ee981b8713d138, type: 3}
   _bowChargeSounds:
   - {fileID: 8300000, guid: f09b4c5efeeb3c84a94530fd4fb8d005, type: 3}
   - {fileID: 8300000, guid: 7f8455e79272c424d9bb2ef7b3145d46, type: 3}
   _bowImpactSounds:
   - {fileID: 8300000, guid: 9cf3897d010ec8a4f8b8be336cd2bb09, type: 3}
   - {fileID: 8300000, guid: ef453603212e30a40a390d146b0d284e, type: 3}
+  _aoeAttackSounds:
+  - {fileID: 8300000, guid: 7346028b48691bb4c86ce619a99ea090, type: 3}
+  - {fileID: 8300000, guid: 04d2337c9661ca341b7df254e7544d39, type: 3}
   _playerMoveSounds:
   - {fileID: 8300000, guid: 3ae286ac191759149b1a4aec93b8f47c, type: 3}
   - {fileID: 8300000, guid: b4fc6aad6fe17254eba30cfbb12904db, type: 3}
