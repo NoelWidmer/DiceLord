@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -128,8 +129,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     {
         if(_turnState != TurnState.Roll)
         {
-            Debug.Log("We're not in the Roll state, but you tried to roll");
-            return;
+            throw new InvalidOperationException("We're not in the Roll state, but you tried to roll");
         }
 
         _canvasController.EnableRollButton(false);
@@ -144,8 +144,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     {
         if(_turnState != TurnState.Choose)
         {
-            Debug.Log("We're not in the Choose state, but you tried to confirm");
-            return;
+            throw new InvalidOperationException("We're not in the Choose state, but you tried to confirm");
         }
 
         _canvasController.EnableConfirmButton(false);
