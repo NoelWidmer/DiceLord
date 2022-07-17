@@ -147,6 +147,11 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         }
     }
 
+    private void Update()
+    {
+        _canvasController.SetHealthIndicator(_playerCharacter.Health);
+    }
+
     public void OnEntityDied(IEntity entity, float deathDuration)
     {
         Grid.Instance.RemoveEntity(entity);
@@ -158,8 +163,11 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
             if (_enemies.Count == 0)
             {
-                SceneTracker.Instance.SetLastScene(gameObject.scene.buildIndex);
-                StartCoroutine(DelaySceneLoad(1));
+                int levelIdx = gameObject.scene.buildIndex;
+                SceneTracker.Instance.SetLastScene(levelIdx);
+                int lastLevelIdx = SceneManager.sceneCountInBuildSettings - 2; // 0-indexed and end screen
+                if (levelIdx == lastLevelIdx) { StartCoroutine(DelaySceneLoad(lastLevelIdx + 1)); }
+                else { StartCoroutine(DelaySceneLoad(1)); }
             }
         }
         else if (entity is PlayerCharacter)
