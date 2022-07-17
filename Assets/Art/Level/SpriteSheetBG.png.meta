@@ -166,6 +166,132 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: SpriteSheetBG_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 170
+        width: 50
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c30c22a9e7bb60449300e1f7df1e728
+      internalID: 1693839355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SpriteSheetBG_4
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 170
+        width: 19
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 378a6c3077db63f4abcb708667a0b38a
+      internalID: -1740598748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SpriteSheetBG_5
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 152
+        width: 50
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 688598dfa2bfb244f9813e7ad514d52a
+      internalID: -414760110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SpriteSheetBG_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 127
+        width: 50
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53850d5b8a57bfa4cac68158e108b0eb
+      internalID: 1718928715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SpriteSheetBG_7
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 152
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94869111a4315ff4fb5a8fadae13cb40
+      internalID: -441062090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SpriteSheetBG_8
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 127
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 190bae39da201cd4c8a8fb30375f3f20
+      internalID: 898229119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -177,8 +303,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      SpriteSheetBG_7: -441062090
+      SpriteSheetBG_5: -414760110
+      SpriteSheetBG_8: 898229119
+      SpriteSheetBG_6: 1718928715
       SpriteSheetBG_1: 998561761
+      SpriteSheetBG_3: 1693839355
       SpriteSheetBG_2: 1619477264
+      SpriteSheetBG_4: -1740598748
       SpriteSheetBG_0: -1296779219
   spritePackingTag: 
   pSDRemoveMatte: 0
