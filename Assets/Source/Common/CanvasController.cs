@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public interface ICanvasController
 {
@@ -17,8 +18,13 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     private GameObject _slotsArea;
     private Rect _slotsAreaRect;
     private List<GameObject> _slots;
+    private GameObject _confirmButton;
+    private GameObject _rollButton;
     private GameMode _gameMode;
 
+    /*********************************
+     * Init
+     *********************************/
     protected override void OnAwake()
     {
         // init canvas
@@ -46,8 +52,17 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
             slot.GetComponent<RectTransform>().localPosition = new(offset + (i * spacing), 0f);
             _slots.Add(slot);
         }
+
+        // init buttons
+        _confirmButton = _canvas.transform.Find("ConfirmButton").gameObject;
+        _rollButton = _canvas.transform.Find("Table").Find("RollButton").gameObject;
+        DisableConfirmButton();
+        DisableRollButton();
     }
 
+    /*********************************
+     * Mouse Position
+     *********************************/
     private Vector2 _mousePosition;
 
     public Vector2 GetMousePosition() => _mousePosition;
@@ -57,6 +72,47 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         _mousePosition = position;
     }
 
+    /*********************************
+     * Confirm Button
+     *********************************/
+    public void EnableConfirmButton()
+    {
+        _confirmButton.GetComponent<Button>().interactable = true;
+    }
+
+    public void DisableConfirmButton()
+    {
+        _confirmButton.GetComponent<Button>().interactable = false;
+    }
+
+    public void OnConfirmButton()
+    {
+        Debug.Log("Confirm");
+        _gameMode.OnConfirmSelection();
+    }
+
+    /*********************************
+     * Roll Button
+     *********************************/
+    public void EnableRollButton()
+    {
+        _rollButton.GetComponent<Button>().interactable = true;
+    }
+
+    public void DisableRollButton()
+    {
+        _rollButton.GetComponent<Button>().interactable = false;
+    }
+
+    public void OnRollButton()
+    {
+        Debug.Log("Roll");
+        _gameMode.OnRollDice();
+    }
+
+    /*********************************
+     * Drag & Drop
+     *********************************/
     public void Drop(GameObject actionIcon)
     {
         Vector3 localMouse;
@@ -86,6 +142,9 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         PlaceInTray(actionIcon);
     }
 
+    /*********************************
+     * Tray
+     *********************************/
     public void PopulateTray(List<GameMode.PlayerAction> rolls)
     { 
         foreach(var roll in rolls)
@@ -114,6 +173,11 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         }
     }
 
+    public GameObject GetTray() => _tray;
+
+    /*********************************
+     * Slot
+     *********************************/
     public void AddToSlot(int idx, GameObject actionIcon)
     {
         GameObject slot = _slots[idx];
@@ -162,6 +226,4 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
             }
         }
     }
-
-    public GameObject GetTray() => _tray;
 }
