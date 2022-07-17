@@ -459,7 +459,7 @@ MonoBehaviour:
   X: 0
   Y: 0
   ProjectilePrefab: {fileID: 0}
-  Health: 1
+  Health: 3
   TakeDamageSounds:
   - {fileID: 8300000, guid: 1779a92dfb670cf44802094d8632da17, type: 3}
   - {fileID: 8300000, guid: 0337d10ddbe584a42a06395b63330fde, type: 3}
