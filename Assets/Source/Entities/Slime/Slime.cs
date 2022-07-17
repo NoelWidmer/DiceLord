@@ -12,8 +12,5 @@ public class Slime : Enemy
     public override void OnEntered(IEntity entity)
     { }
 
-    protected override void OnDied()
-    { }
-
-    protected override void Attack() { AoE(); }
+    protected override void Attack() { Melee(); }
 }

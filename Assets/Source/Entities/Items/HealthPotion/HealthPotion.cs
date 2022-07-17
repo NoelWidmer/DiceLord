@@ -16,7 +16,4 @@ public class HealthPotion : Entity
 
     protected override void OnDirectionalRequest()
     { }
-
-    protected override void OnDied()
-    { }
 }

@@ -12,8 +12,5 @@ public class SmallSlime : Enemy
     public override void OnEntered(IEntity entity)
     { }
 
-    protected override void OnDied()
-    { }
-
     protected override void Attack() { Melee(); }
 }

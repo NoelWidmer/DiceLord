@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public interface IGameMode
 {
-    void OnPlayerCharacterDied();
+    void OnEntityDied(IEntity entity);
     void ProcessNextAction();
 }
 
@@ -109,6 +110,22 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         {
             yield return new WaitForSeconds(.25f);
             StartNextTurn();
+        }
+    }
+    
+    public void OnEntityDied(IEntity entity)
+    {
+        Grid.Instance.RemoveEntity(entity);
+
+        if (entity is Enemy enemy)
+        {
+            _enemies.Remove(enemy);
+            _queuedEnemies.Remove(enemy);
+        }
+        else if (entity is PlayerCharacter)
+        {
+            Debug.Log("Game Over!");
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -264,10 +281,5 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
             _playerActionIndex += 1;
         }
-    }
-
-    public void OnPlayerCharacterDied()
-    {
-        Debug.Log("Game Over!");
     }
 }
