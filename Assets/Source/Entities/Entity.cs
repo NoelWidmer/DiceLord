@@ -149,7 +149,6 @@ public abstract class Entity : MonoBehaviour, IEntity
         this.PlayParallelSound(ref _audioSources, References.Instance.AoEAttackSounds.GetRandomItem(), true);
 
         StartCoroutine(DelayEndOffense(_aoeDuration));
-
     }
 
     protected abstract void OnDirectionalRequest();
