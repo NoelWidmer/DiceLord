@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public interface ICanvasController
 {
     void OnMouseMoved(Vector2 position);
+    void SetHealthIndicator(int n);
 }
 
 public interface IDragDrop
@@ -26,6 +28,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
     private List<GameObject> _slots;
     private GameObject _confirmButton;
     private GameObject _rollButton;
+    private GameObject _healthIndicator;
     private GameMode _gameMode;
 
     public AudioClip ConfirmSound;
@@ -67,6 +70,9 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         _rollButton = _canvas.transform.Find("Table").Find("RollButton").gameObject;
         EnableConfirmButton(false);
         EnableRollButton(false);
+
+        // init healthIndicator
+        _healthIndicator = _canvas.transform.Find("HealthIndicator").gameObject;
     }
 
     /*********************************
@@ -219,5 +225,10 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
                 DestroyImmediate(slot.transform.GetChild(0).gameObject);
             }
         }
+    }
+
+    public void SetHealthIndicator(int n)
+    {
+        _healthIndicator.GetComponent<TextMeshPro>().text = n.ToString();
     }
 }
