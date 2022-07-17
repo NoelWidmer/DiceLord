@@ -137,20 +137,20 @@ public abstract class Entity : MonoBehaviour, IEntity
     private GameObject SpawnSplash(GridVector coordinates)
     {
         var splash = Instantiate(References.Instance.AttackVisualizerPrefab);
-        splash.transform.position = coordinates.GetFieldCenterPosition();
-        StartCoroutine(EnsureDestroySplash());
+        splash.transform.position = coordinates.GetFieldCenterPosition(); 
+        _splashes.Add(splash);
+        return splash;
+    }
 
-        IEnumerator EnsureDestroySplash()
+    private void OnDestroy()
+    {
+        foreach (var splash in _splashes)
         {
-            yield return new WaitForSeconds(2);
-
             if (splash != null)
             {
                 Destroy(splash);
             }
         }
-
-        return splash;
     }
 
     public void AoE()
@@ -186,6 +186,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
         StartCoroutine(DelayEndOffense(_aoeDuration, splashes.ToArray()));
     }
+
+    private List<GameObject> _splashes = new();
 
     protected abstract void OnDirectionalRequest();
 
