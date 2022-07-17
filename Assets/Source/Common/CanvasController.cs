@@ -41,7 +41,7 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         _gameMode = transform.GetComponentInParent<GameMode>();
 
         _slots = new();
-        for (int i = 0; i < _gameMode.number_of_dice; i++) //TODO
+        for (int i = 0; i < _gameMode.number_of_dice; i++)
         {
             var slot = Instantiate(SlotPrefab, transform);
             slot.name = "Slot " + i;
@@ -110,9 +110,6 @@ public class CanvasController : Singleton<CanvasController, ICanvasController>, 
         {
             Rect slotRect = slot.transform.GetComponent<RectTransform>().rect;
             localMouse = slot.transform.GetComponent<RectTransform>().InverseTransformPoint(_mousePosition);
-            Debug.Log(slot);
-            Debug.Log(slotRect.position);
-            Debug.Log(localMouse);
 
             Bounds slotBounds = new(new(0f,0f,0f), slotRect.size * 1.2f);
             if(slotBounds.Contains(localMouse))
