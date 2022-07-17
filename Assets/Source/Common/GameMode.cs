@@ -166,7 +166,7 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
                 int levelIdx = gameObject.scene.buildIndex;
                 SceneTracker.Instance.SetLastScene(levelIdx);
                 int lastLevelIdx = SceneManager.sceneCountInBuildSettings - 2; // 0-indexed and end screen
-                if (levelIdx == lastLevelIdx) { StartCoroutine(DelaySceneLoad(lastLevelIdx + 1)); }
+                if (levelIdx == lastLevelIdx) { StartCoroutine(DelaySceneLoad(levelIdx + 1)); }
                 else { StartCoroutine(DelaySceneLoad(1)); }
             }
         }
