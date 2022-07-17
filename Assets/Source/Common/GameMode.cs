@@ -147,11 +147,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
         }
     }
 
-    private void Update()
-    {
-        _canvasController.SetHealthIndicator(_playerCharacter.Health);
-    }
-
     public void OnEntityDied(IEntity entity, float deathDuration)
     {
         Grid.Instance.RemoveEntity(entity);
@@ -328,5 +323,6 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
             _playerActionIndex += 1;
         }
+        _canvasController.SetHealthIndicator(_playerCharacter.Health);
     }
 }
