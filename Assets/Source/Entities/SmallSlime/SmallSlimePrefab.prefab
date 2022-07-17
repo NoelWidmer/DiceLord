@@ -56,10 +56,7 @@ MonoBehaviour:
   DeathSounds:
   - {fileID: 8300000, guid: 49ff581374593f949b96d1adcc4a2d49, type: 3}
   - {fileID: 8300000, guid: 1e8396e37df34284581c45b061774bcb, type: 3}
-  MeleeSounds:
-  - {fileID: 8300000, guid: 72d223a3753bfb14fab85d9be915d708, type: 3}
-  - {fileID: 8300000, guid: a6b1f0ceb2830bc49969ec9724cf2390, type: 3}
-  - {fileID: 8300000, guid: c59dff4c292e711458be00a94e205038, type: 3}
+  MeleeSounds: []
   RangedSounds:
   - {fileID: 8300000, guid: 997460488a8b4ef47b655e878ed7c5ec, type: 3}
   - {fileID: 8300000, guid: b377cac335038b746bdbbca446bd1116, type: 3}
