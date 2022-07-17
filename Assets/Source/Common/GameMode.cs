@@ -25,6 +25,8 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
     private DiceController _diceController;
     private CanvasController _canvasController;
 
+    private List<Enemy> _enemies;
+
     public enum PlayerAction
     {
         NOP,
@@ -83,11 +85,18 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
 
         // register entities
         {
+            _enemies = new();
             IEntity[] entities = FindObjectsOfType<Entity>();
             foreach (var entity in entities)
             {
                 Grid.Instance.RegisterEntity(entity);
+                if(entity.GetType().IsSubclassOf(typeof(Enemy)))
+                {
+                    _enemies.Add((Enemy)entity);
+                }
             }
+
+            Debug.Log($"Registered {_enemies.Count} enemies");
         }
 
         StartCoroutine(DelayFirstTurn());
@@ -171,6 +180,15 @@ public class GameMode : Singleton<GameMode, IGameMode>, IGameMode
             _canvasController.ClearSlots();
 
             _turnState = TurnState.EnemyAct;
+            GridVector playerPosition = _playerCharacter.Coordinates;
+            foreach(Enemy enemy in _enemies)
+            {
+                if (!enemy) { _enemies.Remove(enemy); }
+
+                enemy.EnemyAct(playerPosition);
+            }
+
+
             StartNextTurn();
         }
         else

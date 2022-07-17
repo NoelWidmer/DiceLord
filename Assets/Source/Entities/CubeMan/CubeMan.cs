@@ -1,10 +1,8 @@
 using UnityEngine;
 
-public class CubeMan : Entity
+public class CubeMan : Enemy
 {
-    public override bool CanBeEntered => false;
-    public override bool CanRepell => true;
-
+    protected override int RangeDistance => 1;
     protected override AudioClip[] TakeDamageSounds => References.Instance.CubeManTakeDamageSounds;
     protected override AudioClip[] DeathSounds => References.Instance.CubeManScreamSounds;
 
@@ -16,4 +14,9 @@ public class CubeMan : Entity
 
     protected override void OnDied()
     { }
+
+    protected override void Attack()
+    {
+        Melee();
+    }
 }
