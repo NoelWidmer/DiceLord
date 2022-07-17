@@ -1858,6 +1858,30 @@ PrefabInstance:
       propertyPath: number_of_dice
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 9126880827913645253, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
+      propertyPath: sides.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9126880827913645253, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
+      propertyPath: sides.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9126880827913645253, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
+      propertyPath: sides.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9126880827913645253, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
+      propertyPath: sides.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9126880827913645253, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
+      propertyPath: sides.Array.data[4]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9126880827913645253, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
+      propertyPath: sides.Array.data[5]
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9a8c12a2bd736547afd0534abac1a7d, type: 3}
 --- !u!1001 &1668664745

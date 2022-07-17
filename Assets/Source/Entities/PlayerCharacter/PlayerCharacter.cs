@@ -79,9 +79,4 @@ public class PlayerCharacter : Entity, IPlayerCharacter
 
     public override void OnEntered(IEntity entity)
     { }
-
-    protected override void OnDied()
-    {
-        GameMode.Instance.OnPlayerCharacterDied();
-    }
 }

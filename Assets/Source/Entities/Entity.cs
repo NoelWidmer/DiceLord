@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public interface IEntity
 {
@@ -336,15 +337,16 @@ public abstract class Entity : MonoBehaviour, IEntity
             this.PlayParallelSound(ref _audioSources, clip, true);
 
             Health = 0;
-            OnDied();
 
-            Grid.Instance.RemoveEntity(this);
+            GameMode.Instance.OnEntityDied(this);
+
             StartCoroutine(DelayDestroy());
 
             IEnumerator DelayDestroy()
             {
                 yield return new WaitForSeconds(clip.length);
                 Destroy(gameObject);
+                SceneManager.LoadScene(gameObject.scene.buildIndex + 1);
             }
         }
         else
@@ -358,8 +360,6 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     protected abstract AudioClip[] TakeDamageSounds { get; }
     protected abstract AudioClip[] DeathSounds { get; }
-
-    protected abstract void OnDied();
 
     public void ReceiveHealth(int health)
     {

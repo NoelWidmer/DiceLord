@@ -20,7 +20,4 @@ public class InvisibleWall : Entity
 
     protected override void OnDirectionalRequest()
     { }
-
-    protected override void OnDied()
-    { }
 }

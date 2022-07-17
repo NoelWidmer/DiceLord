@@ -13,9 +13,6 @@ public class Dummy : Entity
     public override void OnEntered(IEntity entity)
     { }
 
-    protected override void OnDied()
-    { }
-
     protected override void OnDirectionalRequest()
     { }
 }
