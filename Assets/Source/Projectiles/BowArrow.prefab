@@ -46,9 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NeSprite: {fileID: 21300000, guid: 13802a0695af2874ab093fbc41d2fc5b, type: 3}
+  NeSpriteBroken: {fileID: 21300000, guid: 5234f0954bff3ed4aa3e6e19df48111b, type: 3}
   SeSprite: {fileID: 21300000, guid: fa38b11ac1c022f4a9561dc8868cf63b, type: 3}
+  SeSpriteBroken: {fileID: 21300000, guid: 0083537ed2b02d24381f9b8a48efcb0c, type: 3}
   SwSprite: {fileID: 21300000, guid: 699b71e67aefeca429f5fa2abb088f3d, type: 3}
+  SwSpriteBroken: {fileID: 21300000, guid: 61af2d50329096f43bc02783bdfe76f1, type: 3}
   NwSprite: {fileID: 21300000, guid: feb58c200480a364eae26ed29386640f, type: 3}
+  NwSpriteBroken: {fileID: 21300000, guid: f555aea953358764c838bc680faf47c9, type: 3}
 --- !u!1 &5657636886803139164
 GameObject:
   m_ObjectHideFlags: 0

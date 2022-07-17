@@ -6,6 +6,8 @@ using UnityEngine;
 
 public interface IEntity
 {
+    Transform Transform { get; }
+
     GridVector GetStartCoordinates();
     GridVector Coordinates { get; }
 
@@ -52,6 +54,8 @@ public abstract class Entity : MonoBehaviour, IEntity
 
     public int X;
     public int Y;
+    
+    public Transform Transform => transform;
 
     public GridVector GetStartCoordinates() => new(X, Y);
 
@@ -202,10 +206,10 @@ public abstract class Entity : MonoBehaviour, IEntity
             {
                 yield return new WaitForSeconds(_rangedChargeDuration);
                 projectile.Launch();
-                StartCoroutine(DelayProjectileHit(Coordinates, _rangeDistance - 1));
+                StartCoroutine(DelayProjectileHit(Coordinates, _rangeDistance - 1, projectile));
             }
 
-            IEnumerator DelayProjectileHit(GridVector fromCoordinates, int remainingDistance)
+            IEnumerator DelayProjectileHit(GridVector fromCoordinates, int remainingDistance, IProjectile projectile)
             {
                 yield return new WaitForSeconds(_rangedPrepellDuration);
 
@@ -219,12 +223,13 @@ public abstract class Entity : MonoBehaviour, IEntity
 
                 foreach (var target in targets)
                 {
+                    projectile.Hit();
                     target.ReceiveDamage(1);
                 }
 
                 if (remainingDistance > 0)
                 {
-                    StartCoroutine(DelayProjectileHit(targetCoordinates, remainingDistance - 1));
+                    StartCoroutine(DelayProjectileHit(targetCoordinates, remainingDistance - 1, projectile));
                 }
                 else
                 {
