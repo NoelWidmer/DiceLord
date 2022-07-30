@@ -101,4 +101,67 @@ public class Grid : Singleton<Grid, IGrid>, IGrid
         string GetEntityNotFoundErrorMessage()
             => $"This {entity} was expected at {coordiantes} but couldn't be found.";
     }
+
+    private PathNode VectorToNode(GridVector pos)
+    {
+        return new PathNode(GetEntites(pos).Count > 0, pos);
+    }
+
+    public List<GridVector> FindPath(GridVector startPos, GridVector targetPos)
+    {
+        PathNode startNode = VectorToNode(startPos);
+        PathNode targetNode = VectorToNode(targetPos);
+
+        List<PathNode> toSearch = new() { VectorToNode(startPos) };
+        List<PathNode> processed = new();
+
+        while (toSearch.Count > 0)
+        {
+            PathNode current = toSearch[0];
+
+            processed.Add(current);
+            toSearch.Remove(current);
+
+            if (current.Equals(targetNode))
+            {
+                PathNode retraceNode = current;
+                List<GridVector> path = new();
+                while (retraceNode != startNode)
+                {
+                    path.Add(retraceNode.Position);
+                    retraceNode = retraceNode.Parent;
+                }
+                return path;
+            }
+
+            foreach (GridDirection direction in Enum.GetValues(typeof(GridDirection)))
+            {
+                PathNode neigborNode = VectorToNode(current.Position.GetAdjacent(direction));
+                if (processed.Contains(neigborNode) || neigborNode.IsBlocked)
+                    continue;
+
+                int searchIndex = toSearch.IndexOf(neigborNode);
+                bool inSearch = searchIndex >= 0;
+                if (inSearch)
+                { neigborNode = toSearch[searchIndex]; }
+
+                int costToNeighbor = current.GCost + current.GetDistance(neigborNode);
+
+                if (!inSearch || costToNeighbor < neigborNode.GCost)
+                {
+                    neigborNode.GCost = costToNeighbor;
+                    neigborNode.Parent = current;
+
+                    if (!inSearch)
+                    {
+                        neigborNode.HCost = neigborNode.GetDistance(targetNode);
+                        toSearch.Add(neigborNode);
+                    }
+                }
+            }
+
+            toSearch.Sort();
+        }
+        return null;
+    }
 }
